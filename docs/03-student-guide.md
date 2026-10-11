@@ -50,13 +50,13 @@ Run commands from the repository root, using your actual BE number and file path
 
 ```powershell
 npm.cmd run practice -- students/BE01/week-01/typescript/inspector.ts
-npm.cmd run test:practice -- students/BE01/week-03/typescript/validate-event.test.ts
+npm.cmd run test:practice -- students/BE01/week-05/typescript/validate-event.test.ts
 npm.cmd run typecheck
 ```
 
-`practice` and `test:practice` use tsx to execute TypeScript; they do not check types. Run `typecheck` separately. For the Week 2 intentional type error, capture the expected compiler failure, then restore valid code and rerun the check before committing.
+`practice` and `test:practice` use tsx to execute TypeScript; they do not check types. Run `typecheck` separately. For the Week 4 intentional type error, capture the expected compiler failure, then restore valid code and rerun the check before committing.
 
-From Week 4, follow the [application wiring guide](12-application-wiring.md). Copy the API starter once, keep `week-04/api/app.ts` as the factory and `server.ts` as the listener, and connect later modules to that app.
+From Week 6, follow the [application wiring guide](12-application-wiring.md). Copy the API starter once, keep `week-06/api/app.ts` as the factory and `server.ts` as the listener, and connect later modules to that app.
 
 ```powershell
 npm.cmd run dev:student -- BE01
@@ -66,13 +66,13 @@ npm.cmd run test:student:db -- BE01
 
 Database tests require the dedicated `_test` database. Tests use separate disposable schemas; individual apps use their own lab schema. Root dependencies support all labs, so do not install another dependency set every week. `npm.cmd test` includes shared/tooling tests and all authored student fast tests present; `npm.cmd run check` verifies the full repository without requiring a database. `npm.cmd run test:db` includes shared and authored student database tests. Targeted commands above help isolate your own failure.
 
-## Add the React client in Week 10
+## Add the React client in Week 16
 
 Copy only if the destination does not already exist:
 
 ```powershell
-Copy-Item -LiteralPath "fixtures/web-starter" -Destination "students/BE01/week-10/client" -Recurse
-npm.cmd run dev --prefix students/BE01/week-10/client
+Copy-Item -LiteralPath "fixtures/web-starter" -Destination "students/BE01/week-16/client" -Recurse
+npm.cmd run dev --prefix students/BE01/week-16/client
 ```
 
 Keep editing this client in later weeks. Stop the shared UI/API before running your own: they use the same ports, 5173 and 3000. The client uses relative `/api` requests through the supplied proxy.
@@ -81,6 +81,14 @@ Keep editing this client in later weeks. Stop the shared UI/API before running y
 
 Follow the [shared-project responsibilities](06-team-roles.md). Everyone practises all core skills, but the main application is built from different assigned contributions. Each shared task has an available owner, a non-author reviewer, a bounded file scope and required proof. Rotate implementation, test and review responsibilities rather than assigning permanent specialists.
 
-For an assigned shared task, create a separate branch from current main, such as `be01-week-06-shared-migration`, and open a separate PR into main. Reuse reviewed practice, adapt imports into shared modules and include its focused tests. Preserve authorship and use a task-ID commit such as `D03.1 shared add event migration`. Shared code must not import a student's folder.
+For an assigned shared task, create a separate branch from current main, such as `be01-week-08-shared-migration`, and open a separate PR into main. Reuse reviewed practice, adapt imports into shared modules and include its focused tests. Preserve authorship and use a task-ID commit such as `D03.1 shared add event migration`. Shared code must not import a student's folder.
 
 Record the actual owner, review and PR in the week's contribution log. If an owner is unavailable, a maintainer reassigns the unfinished task and preserves existing work. Continue your own practice; do not wait for that person's code or copy the shared solution as your answer. Keep the shared slot inside the weekly budget: promotion reuses proven work, not a second unrelated assignment. Record evidence using the [assessment guide](10-assessment.md).
+
+## Problem-solving and final evidence
+
+Every week, complete its common two-hour problem-solving block inside your own workspace. Follow [the practice guide](14-problem-solving.md), include boundary cases and explain one corrected attempt. This block is included in the 15-hour core budget.
+
+After the core product works, follow [the Week 19 extension guide](15-individual-extension.md). Keep it in your continuing app unless a maintainer accepts a separate shared-task PR. Everyone still completes the same core and review obligations.
+
+Week 20 combines independent start, a short demo, case study, attributable commits and an oral/no-AI repair. Keep technical observations public and grades private. AI may support ordinary learning; it is not allowed during the explicitly identified checkpoints.

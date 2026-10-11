@@ -12,15 +12,17 @@ No programming experience is assumed. Follow docs/02-windows-setup.md sections 1
 
 ## Outcome
 
-A reviewed brief, a safe event summary, and one authored pull request.
+A reviewed brief, a safe event summary, and one authored pull request. Milestone: Agreed client brief.
 
 ## Learn and use
 
-| Task    | Concepts and reading                                                                                                                                                                                                                                              | Minutes |
-| ------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------: |
-| `E01.1` | User stories, scope and a one-page context diagram. [MerchantDesk client brief](../docs/01-project-brief.md)                                                                                                                                                      |      50 |
-| `T01.1` | Values, variables, objects, console output and the TS/JS relationship. [TypeScript for new programmers](https://www.typescriptlang.org/docs/handbook/typescript-from-scratch), [JavaScript guide](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide)  |      65 |
-| `E01.2` | Diffs, branches, commits and pull requests. [Git book basics](https://git-scm.com/book/en/v2/Git-Basics-Getting-a-Git-Repository), [GitHub reviews](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/reviewing-changes-in-pull-requests) |      35 |
+| Task    | Concepts and reading                                                                                                                                                                                                                                              | Planned task minutes |
+| ------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------: |
+| `E01.1` | User stories, scope and a one-page context diagram. [MerchantDesk client brief](../docs/01-project-brief.md)                                                                                                                                                      |                  100 |
+| `T01.1` | Values, variables, objects, console output and the TS/JS relationship. [TypeScript for new programmers](https://www.typescriptlang.org/docs/handbook/typescript-from-scratch), [JavaScript guide](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide)  |                  130 |
+| `E01.2` | Diffs, branches, commits and pull requests. [Git book basics](https://git-scm.com/book/en/v2/Git-Basics-Getting-a-Git-Repository), [GitHub reviews](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/reviewing-changes-in-pull-requests) |                   70 |
+
+Task time is part of the [15-hour core weekly budget](../docs/11-scope-and-continuation.md), not the whole week. Guided learning, consolidation, review, shared work and the two-hour problem-solving block are also included. Up to five additional hours are for repetition or finishing feedback, not extra required technologies.
 
 ## Core tasks
 
@@ -54,18 +56,27 @@ A reviewed brief, a safe event summary, and one authored pull request.
 
 **Known trap:** Run Git commands from the repository root, not your home directory.
 
+## Two-hour problem-solving block (`P01.1`)
+
+**Focus:** Trace values and a simple decision.
+
+Given a synthetic amount and a boolean captured flag, return an explicit label without loose equality; explain the result for zero and a numeric string.
+
+**Evidence path:** `students/<student-id>/week-01/problem-solving/README.md`.
+
+**Proof:** Include a runnable decision function, an expected/actual case table, one corrected prediction and a plain-language explanation. Automated test files begin in Week 2; no algorithm knowledge is assumed.
+
+Follow the [problem-solving guide](../docs/14-problem-solving.md). This common block is included in the weekly budget and does not replace the three project tasks.
+
 ## Shared contribution
 
-Assigned task owners contribute reviewed work to `shared/delivery/brief.md and shared/delivery/context.md`. Record the non-author review or witness in the [Week 1 contribution log](../shared/delivery/rotations/week-01.md).
-
-## Milestone: Agreed client brief
-
-Record this shared milestone as complete only after a non-author reproduces the outcome and records commands and results in the contribution log.
+Assigned task owners contribute reviewed work to `shared/delivery/brief.md and shared/delivery/context.md`. Record scope, non-author review and actual proof in the [Week 1 contribution log](../shared/delivery/rotations/week-01.md). Everyone completes the same core practice; no fixed pair is a prerequisite.
 
 ## Completion checklist
 
-- [ ] Three focused task-ID commits with the required proof
-- [ ] Peer review and assigned shared task or witness work completed
-- [ ] One implementation decision and failure case explained
+- [ ] Focused task-ID commits include required implementation and failure proofs
+- [ ] The common problem-solving block and one corrected attempt are recorded
+- [ ] Peer review and assigned shared task or witness work are complete
+- [ ] One implementation decision and failure case are explained
 
 Next: [Week 2](week-02.md).

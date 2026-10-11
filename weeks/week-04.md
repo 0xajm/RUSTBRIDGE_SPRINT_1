@@ -1,73 +1,82 @@
-# Week 4: Cross the HTTP boundary without losing the model
+# Week 4: Represent events and ask the first SQL questions
 
-MerchantDesk | Sprint 1 | B: Backend Development + T: TypeScript and JavaScript + E: Engineering and Delivery
+MerchantDesk | Sprint 1 | T: TypeScript and JavaScript + D: SQL and Persistence + E: Engineering and Delivery
 
 ## The project need
 
-Another program must send or request events without sharing the API's memory.
+The merchant needs event counts, while fields such as amounts and event kinds need an agreed meaning.
 
 ## Before you start
 
-Read the HTTP contract in docs/04-api-and-security-contract.md. PostgreSQL practice and TypeScript exercises continue; do not replace them with a standalone framework course.
-
-## Keep the application connected
-
-Copy the immutable API starter once. Keep week-04/api/app.ts and server.ts as the factory/listener through later weeks.
-
-See the [application wiring guide](../docs/12-application-wiring.md) for commands and module connections.
+Bring Week 1's inspector. Install PostgreSQL using setup sections 4-5 and load fixtures/practice.sql into your personal practice database. The fixture is supplied now, not promised by a later week.
 
 ## Outcome
 
-A tiny HTTP application, observable async behavior and an API plan.
+Typed event data, real SQL answers and an explicit input contract.
 
 ## Learn and use
 
-| Task    | Concepts and reading                                                                                                                                                                                                                                                                              | Minutes |
-| ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------: |
-| `B01.1` | HTTP methods, paths, headers, status, JSON and app factories. [HTTP overview](https://developer.mozilla.org/en-US/docs/Web/HTTP/Overview), [Fastify getting started](https://fastify.dev/docs/v5.7.x/Guides/Getting-Started/), [Fastify testing](https://fastify.dev/docs/v5.7.x/Guides/Testing/) |      60 |
-| `T04.1` | Promises, await, try/catch, JSON parsing and cleanup. [Using promises](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Using_promises)                                                                                                                                              |      50 |
-| `E04.1` | Request/response contracts and design trade-offs. [MerchantDesk API contract](../docs/04-api-and-security-contract.md), [HTTP overview](https://developer.mozilla.org/en-US/docs/Web/HTTP/Overview)                                                                                               |      40 |
+| Task    | Concepts and reading                                                                                                                                                                                                                   | Planned task minutes |
+| ------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------: |
+| `T02.1` | Primitive types, arrays, object types, branches and iteration. [Everyday types](https://www.typescriptlang.org/docs/handbook/2/everyday-types.html), [JavaScript guide](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide) |                  100 |
+| `D01.1` | Tables, rows, SELECT, WHERE, ORDER BY and GROUP BY. [PostgreSQL 17 tutorial](https://www.postgresql.org/docs/17/tutorial.html)                                                                                                         |                  130 |
+| `E02.1` | Runtime input, integer minor units, timestamps and non-goals. [MerchantDesk API contract](../docs/04-api-and-security-contract.md)                                                                                                     |                   70 |
+
+Task time is part of the [15-hour core weekly budget](../docs/11-scope-and-continuation.md), not the whole week. Guided learning, consolidation, review, shared work and the two-hour problem-solving block are also included. Up to five additional hours are for repetition or finishing feedback, not extra required technologies.
 
 ## Core tasks
 
-### 1. Build and inspect a tiny Fastify API (`B01.1`)
+### 1. Work with a typed event list (`T02.1`)
 
-- [ ] Copy the immutable fixtures/api-starter once into your week-04/api folder as described in docs/12-application-wiring.md. Continue its exported createApp factory and separate server.ts listener. Add an in-memory GET /api/events returning a few synthetic records, send a request with curl.exe and add an app.inject test in app.test.ts. Run the app with npm.cmd run dev:student -- BE01, replacing BE01. Bind to loopback and retain this entry point in later weeks.
+- [ ] Define an event type using the actual fixture fields. Iterate over several events, select captured payments and count them. Compare a loop with filter. Explain one case where a missing value differs from zero.
 
-**Primary path:** `students/<student-id>/week-04/api/app.ts`.
+**Primary path:** `students/<student-id>/week-04/typescript/event-list.ts`.
 
-**Proof for review:** An annotated exchange names method, URL, response status and JSON. The test runs without opening a network port.
+**Proof for review:** The captured count matches the fixture. npm.cmd run typecheck rejects an intentionally wrong assignment; restore valid code and rerun successfully before committing.
 
-**Known trap:** The in-memory lab is local and temporary. It has no authentication yet and must not be publicly exposed.
+**Known trap:** Type annotations do not validate JSON received from another process.
 
-### 2. Observe async work and failure (`T04.1`)
+### 2. Load and query the practice database (`D01.1`)
 
-- [ ] Read the supplied fixture with node:fs/promises. Compare an awaited result with the Promise itself. Handle a missing file and malformed JSON deliberately; pass parsed data through the earlier checks. Explain why async is not a new thread for each request.
+- [ ] Load the supplied SQL using the setup guide, then write queries for captured events, merchant totals and the latest events. Put answers and commands in NOTES.md. This is a personal practice database, not the shared final schema.
 
-**Primary path:** `students/<student-id>/week-04/typescript/async-reader.ts`.
+**Primary path:** `students/<student-id>/week-04/sql/first-queries.sql`.
 
-**Proof for review:** Successful and failing runs terminate with useful, safe messages. A parsing failure is not mistaken for an empty event list.
+**Proof for review:** Queries return real rows from the supplied fixture, including both merchants. State what one row means.
 
-**Known trap:** Catch only what you can explain; do not catch every error and return success.
+**Known trap:** Install time belongs inside this task's budget. Ask for setup help instead of borrowing a personal database.
 
-### 3. Review the API and schema together (`E04.1`)
+### 3. Agree the event field rules (`E02.1`)
 
-- [ ] Specify the initial POST/list/detail routes, field rules, error shape and the future owner filter. Draw the request path and name the limits of the in-memory version. Compare the plan with Week 3's relational model.
+- [ ] Use docs/01-project-brief.md and fixtures/cases.json to specify required fields, bounds, allowed event kinds and the duplicate key. Explain why merchant identity will eventually come from authentication, not an arbitrary body field.
 
-**Primary path:** `students/<student-id>/week-04/design/api-contract.md`.
+**Primary path:** `students/<student-id>/week-04/design/event-contract.md`.
 
-**Proof for review:** A peer can name what belongs in HTTP, validation and persistence, and what is missing before public deployment.
+**Proof for review:** Every fixture case has an expected accept/reject result and a reason. Money is expressed in integer paise, not floating point rupees.
 
-**Known trap:** Do not invent queue, Rust service or microservice boundaries in Sprint 1.
+**Known trap:** Sandbox event data is not authorization and this course does not process payments.
+
+## Two-hour problem-solving block (`P04.1`)
+
+**Focus:** Typed records and simple scans.
+
+Find the first matching event ID in a typed array and return an explicit not-found result; compare loop and find.
+
+**Evidence path:** `students/<student-id>/week-04/problem-solving/README.md`.
+
+**Proof:** Include the solution and tests, empty/boundary cases, one corrected attempt and a plain-language explanation. Revisit one earlier exercise within the same two-hour block.
+
+Follow the [problem-solving guide](../docs/14-problem-solving.md). This common block is included in the weekly budget and does not replace the three project tasks.
 
 ## Shared contribution
 
-Assigned task owners contribute reviewed work to `shared/api/src/app.ts and shared/delivery/api-contract.md`. Record the non-author review or witness in the [Week 4 contribution log](../shared/delivery/rotations/week-04.md).
+Assigned task owners contribute reviewed work to `shared/delivery/event-contract.md and shared/database/practice-notes.md`. Record scope, non-author review and actual proof in the [Week 4 contribution log](../shared/delivery/rotations/week-04.md). Everyone completes the same core practice; no fixed pair is a prerequisite.
 
 ## Completion checklist
 
-- [ ] Three focused task-ID commits with the required proof
-- [ ] Peer review and assigned shared task or witness work completed
-- [ ] One implementation decision and failure case explained
+- [ ] Focused task-ID commits include required implementation and failure proofs
+- [ ] The common problem-solving block and one corrected attempt are recorded
+- [ ] Peer review and assigned shared task or witness work are complete
+- [ ] One implementation decision and failure case are explained
 
 Next: [Week 5](week-05.md).

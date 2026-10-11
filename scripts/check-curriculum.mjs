@@ -4,17 +4,29 @@ import path from 'node:path';
 
 assert.ok(existsSync('curriculum.json'), 'Run from the repository root.');
 const data = JSON.parse(readFileSync('curriculum.json', 'utf8'));
-assert.equal(data.weeks.length, 15);
+assert.equal(data.weeks.length, 20);
+assert.equal(data.durationWeeks, 20);
+assert.deepEqual(data.weeklyHours, {
+  core: 15,
+  maximum: 20,
+  problemSolving: 2,
+});
+assert.deepEqual(data.application, {
+  apiRoot: 'week-06/api',
+  migrationRoot: 'week-08/database/migrations',
+  clientRoot: 'week-16/client',
+});
 assert.equal(data.students.length, 10);
 assert.equal(new Set(data.students).size, 10);
 const ids = new Set();
+const problemIds = new Set();
 for (const [index, week] of data.weeks.entries()) {
   const number = String(week.number).padStart(2, '0');
   assert.equal(week.number, index + 1);
   assert.equal(week.tasks.length, 3);
   assert.equal(
     Object.values(week.budget).reduce((a, b) => a + b, 0),
-    300,
+    data.weeklyHours.core * 60,
   );
   assert.equal(
     week.tasks.reduce((sum, task) => sum + task.minutes, 0),
@@ -30,6 +42,23 @@ for (const [index, week] of data.weeks.entries()) {
   assert.match(contribution, /\|\s*Owner\s*\|/);
   assert.match(contribution, /\|\s*Non-author reviewer\s*\|/);
   assert.ok(!/Build pair:|Review\/witness pair:/.test(contribution));
+  assert.equal(
+    week.budget.problemSolving,
+    data.weeklyHours.problemSolving * 60,
+  );
+  assert.equal(week.budget.practice, 120);
+  assert.equal(week.budget.shared, 60);
+  assert.equal(week.budget.tasks, 300);
+  const problem = week.problemSolving;
+  assert.equal(problem.id, 'P' + number + '.1');
+  assert.equal(problem.path, 'week-' + number + '/problem-solving/README.md');
+  assert.ok(!problemIds.has(problem.id));
+  problemIds.add(problem.id);
+  for (const key of ['id', 'path', 'focus', 'instructions', 'proof'])
+    assert.ok(
+      text.includes(problem[key]),
+      'Missing weekly problem-solving: ' + problem.id + ':' + key,
+    );
   for (const track of week.tracks) assert.ok(data.tracks[track]);
   for (const task of week.tasks) {
     assert.ok(!ids.has(task.id), 'Duplicate task: ' + task.id);
@@ -55,9 +84,64 @@ for (const [index, week] of data.weeks.entries()) {
     );
     assert.ok(pointer.includes('weeks/week-' + number + '.md'));
     for (const task of week.tasks) assert.ok(pointer.includes(task.id));
+    assert.ok(
+      pointer.includes(problem.id),
+      'Missing student problem-solving pointer: ' + student + ':' + number,
+    );
   }
 }
-assert.equal(ids.size, 45);
+assert.equal(ids.size, 60);
+assert.equal(problemIds.size, 20);
+
+const publishedTaskIds = [
+  'E01.1',
+  'T01.1',
+  'E01.2',
+  'T02.1',
+  'D01.1',
+  'E02.1',
+  'T03.1',
+  'D02.1',
+  'E03.1',
+  'B01.1',
+  'T04.1',
+  'E04.1',
+  'B02.1',
+  'C01.1',
+  'E05.1',
+  'D03.1',
+  'B03.1',
+  'E06.1',
+  'D04.1',
+  'T05.1',
+  'B04.1',
+  'B05.1',
+  'B05.2',
+  'E07.1',
+  'D05.1',
+  'B06.1',
+  'C02.1',
+  'C03.1',
+  'C03.2',
+  'B07.1',
+  'C04.1',
+  'C04.2',
+  'E08.1',
+  'D06.1',
+  'B08.1',
+  'E09.1',
+  'B09.1',
+  'C05.1',
+  'E10.1',
+  'E11.1',
+  'D07.1',
+  'E11.2',
+  'E12.1',
+  'C06.1',
+  'E12.2',
+];
+for (const id of publishedTaskIds)
+  assert.ok(ids.has(id), 'Published task ID was removed: ' + id);
 
 const official =
   'https://github.com/StartwithDot/FULLSTACK-BACKEND-ENG-SPRINT-1';
@@ -81,9 +165,9 @@ assert.ok(
   ),
 );
 const wiring = readFileSync('docs/12-application-wiring.md', 'utf8');
-assert.ok(wiring.includes('week-04/api/app.ts'));
-assert.ok(wiring.includes('week-04/api/server.ts'));
-for (const week of data.weeks.filter((week) => week.number >= 4)) {
+assert.ok(wiring.includes('week-06/api/app.ts'));
+assert.ok(wiring.includes('week-06/api/server.ts'));
+for (const week of data.weeks.filter((week) => week.number >= 6)) {
   const number = String(week.number).padStart(2, '0');
   assert.ok(
     readFileSync('weeks/week-' + number + '.md', 'utf8').includes(
@@ -91,6 +175,35 @@ for (const week of data.weeks.filter((week) => week.number >= 4)) {
     ),
   );
 }
+const studentContext = readFileSync('scripts/student-context.mjs', 'utf8');
+assert.ok(
+  studentContext.includes('/' + data.application.apiRoot + '/server.ts'),
+);
+assert.ok(
+  readFileSync('scripts/run-student-api.mjs', 'utf8').includes(
+    'studentApiRelativePath(student)',
+  ),
+);
+assert.ok(guide.includes(data.application.apiRoot + '/app.ts'));
+assert.ok(guide.includes(data.application.clientRoot));
+const dependencies = JSON.parse(readFileSync('package.json', 'utf8'));
+assert.ok(
+  !dependencies.dependencies.next && !dependencies.devDependencies.next,
+);
+for (const file of [
+  'fixtures/openapi-starter.json',
+  'shared/api/openapi.json',
+]) {
+  const specification = JSON.parse(readFileSync(file, 'utf8'));
+  assert.match(specification.openapi, /^3\.1\./);
+  assert.ok(specification.paths['/health/live']);
+}
+for (const file of [
+  'docs/13-api-documentation.md',
+  'docs/14-problem-solving.md',
+  'docs/15-individual-extension.md',
+])
+  assert.ok(existsSync(file));
 const handoff = readFileSync('admin/payhook-handoff.md', 'utf8');
 assert.ok(handoff.includes('/integrations/payhook/events'));
 assert.ok(handoff.includes('Authorization: Bearer'));
@@ -132,5 +245,5 @@ function visit(directory) {
 }
 visit('.');
 console.log(
-  'Verified 15 weeks, 45 task IDs, 10 student folders, weekly budgets, resource keys, local links and no em dashes.',
+  'Verified 20 weeks, 60 core task IDs, 20 problem-solving blocks, 10 students, 15-hour core budgets, application paths, local links and no em dashes.',
 );

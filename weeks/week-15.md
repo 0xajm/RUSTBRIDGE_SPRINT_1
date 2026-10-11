@@ -1,77 +1,86 @@
-# Week 15: Demonstrate and hand over the merchant application
+# Week 15: Investigate a backend failure and rehearse its clean start
 
-MerchantDesk | Sprint 1 | E: Engineering and Delivery + C: Client Integration
+MerchantDesk | Sprint 1 | E: Engineering and Delivery + D: SQL and Persistence
 
 ## The project need
 
-The product and learning evidence must survive the original builders and continue into Sprint 2.
+The application must be maintainable when something fails and when a different person starts it.
 
 ## Before you start
 
-Do not add new features this week. Bring the clean-start corrections, test matrix, approved contracts and authored contribution links.
+Use a reversible failure only in disposable/local test data. The maintainer chooses a fixture or condition, not a destructive change to a real database.
 
 ## Keep the application connected
 
-Hand over the assembled MerchantDesk application, including its actual startup commands, migrations and tests.
-
-See the [application wiring guide](../docs/12-application-wiring.md) for commands and module connections.
+Use the Week 6 API factory and keep all numbered migrations in the Week 8 migration directory. See the [application wiring guide](../docs/12-application-wiring.md) for commands and module connections.
 
 ## Outcome
 
-A reproducible local product, an honest demo and attributable contribution evidence.
+An evidence-led backend repair, an explained query plan and a corrected API runbook.
 
 ## Learn and use
 
-| Task    | Concepts and reading                                                                                                                                                                              | Minutes |
-| ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------: |
-| `E12.1` | Actual architecture, migrations, seed accounts, tests and limitations. [Delivery documentation](../shared/delivery/README.md)                                                                     |      60 |
-| `C06.1` | User-focused demo and browser/API evidence. [MerchantDesk API contract](../docs/04-api-and-security-contract.md)                                                                                  |      35 |
-| `E12.2` | Clean-start proof, authorship and technical explanation. [Assessment and review](../docs/10-assessment.md), [Git book basics](https://git-scm.com/book/en/v2/Git-Basics-Getting-a-Git-Repository) |      55 |
+| Task    | Concepts and reading                                                                                                                                                                          | Planned task minutes |
+| ------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------: |
+| `E11.1` | Evidence-led debugging and regression tests. [Fastify logging](https://fastify.dev/docs/v5.7.x/Reference/Logging/), [Node 22 test runner](https://nodejs.org/docs/latest-v22.x/api/test.html) |                  120 |
+| `D07.1` | EXPLAIN, filter/order alignment and measurement limits. [PostgreSQL EXPLAIN](https://www.postgresql.org/docs/17/using-explain.html)                                                           |                   90 |
+| `E11.2` | Setup instructions, fresh state and reproducibility. [Windows setup](../docs/02-windows-setup.md)                                                                                             |                   90 |
+
+Task time is part of the [15-hour core weekly budget](../docs/11-scope-and-continuation.md), not the whole week. Guided learning, consolidation, review, shared work and the two-hour problem-solving block are also included. Up to five additional hours are for repetition or finishing feedback, not extra required technologies.
 
 ## Core tasks
 
-### 1. Finish the runbook and architecture (`E12.1`)
+### 1. Break, investigate and fix one failure (`E11.1`)
 
-- [ ] Write the final native-Windows runbook with clone/install, local configuration, database creation, migration/seed, API/UI start, tests, common failures and shutdown. Include a diagram matching actual code and a short next-sprint boundary. Propose the shared root README update in the shared-task PR.
+- [ ] Investigate one local failure such as a wrong DB URL, missing owner filter, unhandled SQL conflict. Record evidence and wrong guesses before changing code. Add a failing regression test, fix the cause and write a brief blameless postmortem.
 
-**Primary path:** `students/<student-id>/week-15/delivery/runbook.md`.
+**Primary path:** `students/<student-id>/week-15/incident/postmortem.md`.
 
-**Proof for review:** A stranger can find every command, secret variable and dependency; unfinished product work is named, not hidden.
+**Proof for review:** Your evidence identifies the cause and a regression test catches the original bug.
 
-**Known trap:** Do not describe Docker, queues, Rust, deployment or real payments as implemented in Sprint 1.
+**Known trap:** Never inject failures into another person's database or loosen validation until a test goes green.
 
-### 2. Demonstrate the merchant's real actions (`C06.1`)
+### 2. Explain one index from the query (`D07.1`)
 
-- [ ] Demonstrate login, one accepted fixture, invalid input, duplicate/conflicting ID, filtered/paged viewing, another merchant's rejection and logout. Explain one UI/API/DB request path and state the local-only and session-revocation limits.
+- [ ] Inspect the merchant list query with EXPLAIN on synthetic rows. Propose a supporting merchant/time/ID index and compare plans before/after on a suitable fixture size. Add it through a new migration if justified. Say why a tiny table may use a sequential scan correctly.
 
-**Primary path:** `students/<student-id>/week-15/delivery/demo.md`.
+**Primary path:** `students/<student-id>/week-15/database/query-plan.sql`.
 
-**Proof for review:** The demo shows negative cases as well as success, with no real money, credentials or customer data.
+**Proof for review:** The index proposal matches actual filters/order and the explanation does not claim a measured speedup without evidence.
 
-**Known trap:** A polished screen does not replace backend evidence.
+**Known trap:** An index is not automatically better for every table or write-heavy operation.
 
-### 3. Complete the independent start and contribution record (`E12.2`)
+### 3. Rehearse a clean backend start (`E11.2`)
 
-- [ ] Have a non-author follow the final runbook and record commands/outcomes. Link your own core task commits/PRs and shared-project contributions. Write two defensible resume statements about work you actually did and one limitation you can explain. Keep private grading outside this public repository.
+- [ ] Draft week-20/delivery/runbook.md from NOTES.md and the wiring guide. Have a peer use a fresh named disposable database and npm ci to migrate, seed, start the API, sign in through the simulator and submit/list an event without verbal shortcuts. Record and fix confusing steps. Mark UI steps as pending until Weeks 16-17; extend this same runbook in Weeks 19-20.
 
-**Primary path:** `students/<student-id>/week-15/delivery/handover.md`.
+**Primary path:** `students/<student-id>/week-15/delivery/clean-start-notes.md`.
 
-**Proof for review:** The final witness succeeds using the runbook, core tests pass, and individual contributions are attributable.
+**Proof for review:** A non-author reaches the protected API and persisted event using written commands; missing steps are corrected and no browser completion is claimed yet.
 
-**Known trap:** Do not claim production ownership, Rust expertise or smart-contract work from this sprint.
+**Known trap:** Do not delete or reset a personal or shared database to make the rehearsal look clean.
+
+## Two-hour problem-solving block (`P15.1`)
+
+**Focus:** Two-pointer reasoning.
+
+Merge two sorted synthetic ID lists into one ordered list; explain pointer movement and input assumptions.
+
+**Evidence path:** `students/<student-id>/week-15/problem-solving/README.md`.
+
+**Proof:** Include the solution and tests, empty/boundary cases, one corrected attempt and a plain-language explanation. Revisit one earlier exercise within the same two-hour block.
+
+Follow the [problem-solving guide](../docs/14-problem-solving.md). This common block is included in the weekly budget and does not replace the three project tasks.
 
 ## Shared contribution
 
-Assigned task owners contribute reviewed work to `shared/delivery/runbook.md, shared/delivery/final-architecture.md, shared/delivery/demo.md and README.md`. Record the non-author review or witness in the [Week 15 contribution log](../shared/delivery/rotations/week-15.md).
-
-## Milestone: Independent handover
-
-Record this shared milestone as complete only after a non-author reproduces the outcome and records commands and results in the contribution log.
+Assigned task owners contribute reviewed work to `shared/delivery/incident.md, shared/database/migrations/ and shared/delivery/runbook.md`. Record scope, non-author review and actual proof in the [Week 15 contribution log](../shared/delivery/rotations/week-15.md). Everyone completes the same core practice; no fixed pair is a prerequisite.
 
 ## Completion checklist
 
-- [ ] Three focused task-ID commits with the required proof
-- [ ] Peer review and assigned shared task or witness work completed
-- [ ] One implementation decision and failure case explained
+- [ ] Focused task-ID commits include required implementation and failure proofs
+- [ ] The common problem-solving block and one corrected attempt are recorded
+- [ ] Peer review and assigned shared task or witness work are complete
+- [ ] One implementation decision and failure case are explained
 
-Next: carry the reviewed API, schema, interface and limitations into the Rust-focused Sprint 2.
+Next: [Week 16](week-16.md).

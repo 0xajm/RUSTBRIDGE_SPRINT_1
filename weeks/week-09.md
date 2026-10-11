@@ -1,77 +1,86 @@
-# Week 9: Enforce merchant ownership across every route
+# Week 9: Handle repetition and bound the list
 
-MerchantDesk | Sprint 1 | D: SQL and Persistence + B: Backend Development + C: Client Integration
+MerchantDesk | Sprint 1 | D: SQL and Persistence + T: TypeScript and JavaScript + B: Backend Development
 
 ## The project need
 
-A signed-in operator must not see or write another merchant's events.
+Repeated event IDs can create duplicate records, and an unbounded list can grow without limit.
 
 ## Before you start
 
-Seed two synthetic merchants and one operator for each. Derive merchant ownership from a verified session and current database operator, never from the request body or URL alone.
+Keep the app local-only until the auth and ownership work is complete. Use PostgreSQL uniqueness, not a SELECT-before-INSERT assumption.
 
 ## Keep the application connected
 
-Apply owned SQL inside the existing repository and test that same assembled app. The authenticated consumer calls the continuing server started by dev:student.
-
-See the [application wiring guide](../docs/12-application-wiring.md) for commands and module connections.
+Use the Week 6 API factory and keep all numbered migrations in the Week 8 migration directory. See the [application wiring guide](../docs/12-application-wiring.md) for commands and module connections.
 
 ## Outcome
 
-A working authenticated event API with cross-merchant rejection.
+Database-backed duplicate behavior and a stable, bounded listing contract.
 
 ## Learn and use
 
-| Task    | Concepts and reading                                                                                                                                                                                                | Minutes |
-| ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------: |
-| `D05.1` | Owner-filtered SQL, join boundaries and foreign keys. [Parameterized node-postgres queries](https://node-postgres.com/features/queries), [PostgreSQL 17 tutorial](https://www.postgresql.org/docs/17/tutorial.html) |      55 |
-| `B06.1` | Authentication hooks, authorization and negative integration tests. [Fastify testing](https://fastify.dev/docs/v5.7.x/Guides/Testing/)                                                                              |      60 |
-| `C02.1` | Cookie-aware HTTP consumers and safe configuration. [Using Fetch](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch)                                                                           |      35 |
+| Task    | Concepts and reading                                                                                                                                                                                                                 | Planned task minutes |
+| ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | -------------------: |
+| `D04.1` | Composite uniqueness, ON CONFLICT and concurrent requests. [PostgreSQL constraints](https://www.postgresql.org/docs/17/ddl-constraints.html), [PostgreSQL INSERT and conflicts](https://www.postgresql.org/docs/17/sql-insert.html)  |                  110 |
+| `T05.1` | Unions, interfaces, Map/Set basics and simple complexity reasoning. [Narrowing](https://www.typescriptlang.org/docs/handbook/2/narrowing.html), [Everyday types](https://www.typescriptlang.org/docs/handbook/2/everyday-types.html) |                   90 |
+| `B04.1` | Query validation, LIMIT/OFFSET and deterministic ordering. [PostgreSQL LIMIT and OFFSET](https://www.postgresql.org/docs/17/queries-limit.html), [Parameterized node-postgres queries](https://node-postgres.com/features/queries)   |                  100 |
+
+Task time is part of the [15-hour core weekly budget](../docs/11-scope-and-continuation.md), not the whole week. Guided learning, consolidation, review, shared work and the two-hour problem-solving block are also included. Up to five additional hours are for repetition or finishing feedback, not extra required technologies.
 
 ## Core tasks
 
-### 1. Scope every database operation (`D05.1`)
+### 1. Protect event identity in the database (`D04.1`)
 
-- [ ] Apply merchant_id filters to list, detail, conflict lookup and insertion paths. Resolve an operator's current merchant in the database. For an existing event owned by another merchant return the same 404 as a missing ID. Keep duplicate keys merchant-scoped.
+- [ ] Inspect existing rows for duplicate merchant/provider identities before adding the unique key (merchant_id, provider_event_id) through a new migration. If duplicates exist, preserve them and agree an explicit reconciliation with the reviewer; do not silently delete or reset. Test a fresh schema and the upgrade fixture. Define identical repeat as 200 with the existing ID, and changed content under the same identity as 409. Use an atomic insert/conflict path. Add a small test that starts two identical requests together. Keep the stated SQL artifact and include the applied forward migration as week-08/database/migrations/002-event-identity.sql in the same task commit.
 
-**Primary path:** `students/<student-id>/week-09/database/owned-queries.sql`.
+**Primary path:** `students/<student-id>/week-09/database/deduplication.sql`.
 
-**Proof for review:** Merchant A cannot read B's event even with its exact ID. Each merchant may use the same provider_event_id independently.
+**Proof for review:** Sequential and overlapping identical requests leave one row; the same ID with changed agreed fields returns 409 and keeps the first record.
 
-**Known trap:** A hidden UI button is not database authorization.
+**Known trap:** An in-process Set or pre-insert check alone does not protect concurrent database writes.
 
-### 2. Test the protected API end to end (`B06.1`)
+### 2. Give repository outcomes explicit types (`T05.1`)
 
-- [ ] Test anonymous list/read/write, A reading B's known ID, a forged merchant_id field, and a valid A write. Reject the injected owner field through body validation. Cover login/logout origins and safe error bodies. Use the existing app factory and a disposable database.
+- [ ] Model created, repeated and conflict results as a union. Show one pure HTTP mapping function and explain where a Map can help a practice lookup and where the database must remain authoritative. Add tests for each outcome.
 
-**Primary path:** `students/<student-id>/week-09/api/ownership.db.test.ts`.
+**Primary path:** `students/<student-id>/week-09/typescript/repository-results.ts`.
 
-**Proof for review:** 401 for anonymous, 404 for another owner's detail, 400 for forged body field, and successful own-merchant requests. No test relies only on UI behavior.
+**Proof for review:** The caller must handle every result variant. A note compares linear array lookup with a keyed lookup without invented benchmark claims.
 
-**Known trap:** Ensure Fastify does not silently strip merchant_id and make the forged request look accepted.
+**Known trap:** Do not add advanced generics or classes without a useful substitution boundary.
 
-### 3. Update the simulator to authenticate (`C02.1`)
+### 3. Add filtering and stable pagination (`B04.1`)
 
-- [ ] Read disposable credentials from local environment variables, log in, reuse the returned cookie on one event request, and send the configured Origin. Keep passwords/cookies out of output. Do not parse combined Set-Cookie strings by splitting on commas.
+- [ ] Implement kind filtering plus limit 1-50 and non-negative offset. Order by received_at DESC, id DESC. Include merchant scope in the repository interface even though real principals arrive in Week 11. Test ties, no results and invalid bounds.
 
-**Primary path:** `students/<student-id>/week-09/client/send-authenticated.ts`.
+**Primary path:** `students/<student-id>/week-09/api/list-events.ts`.
 
-**Proof for review:** The same script succeeds for its merchant and fails without the cookie. A witness reproduces the flow.
+**Proof for review:** Repeated reads of unchanged data have stable order and no page exceeds 50 rows.
 
-**Known trap:** This is a sandbox API client, not a signed payment-provider webhook integration.
+**Known trap:** Offset pagination can shift when new rows arrive; document that limitation instead of promising snapshot paging.
+
+## Two-hour problem-solving block (`P09.1`)
+
+**Focus:** Complexity and deterministic order.
+
+Sort synthetic timestamp/ID pairs with a deterministic tie-breaker; explain costs and test ties.
+
+**Evidence path:** `students/<student-id>/week-09/problem-solving/README.md`.
+
+**Proof:** Include the solution and tests, empty/boundary cases, one corrected attempt and a plain-language explanation. Revisit one earlier exercise within the same two-hour block.
+
+Follow the [problem-solving guide](../docs/14-problem-solving.md). This common block is included in the weekly budget and does not replace the three project tasks.
 
 ## Shared contribution
 
-Assigned task owners contribute reviewed work to `shared/api/src/routes/events.ts, shared/api/test/ownership.db.test.ts and shared/simulator/send-event.ts`. Record the non-author review or witness in the [Week 9 contribution log](../shared/delivery/rotations/week-09.md).
-
-## Milestone: Protected merchant flow
-
-Record this shared milestone as complete only after a non-author reproduces the outcome and records commands and results in the contribution log.
+Assigned task owners contribute reviewed work to `shared/database/migrations/002-event-identity.sql, shared/api/src/repository.ts and shared/api/src/routes/events.ts`. Record scope, non-author review and actual proof in the [Week 9 contribution log](../shared/delivery/rotations/week-09.md). Everyone completes the same core practice; no fixed pair is a prerequisite.
 
 ## Completion checklist
 
-- [ ] Three focused task-ID commits with the required proof
-- [ ] Peer review and assigned shared task or witness work completed
-- [ ] One implementation decision and failure case explained
+- [ ] Focused task-ID commits include required implementation and failure proofs
+- [ ] The common problem-solving block and one corrected attempt are recorded
+- [ ] Peer review and assigned shared task or witness work are complete
+- [ ] One implementation decision and failure case are explained
 
 Next: [Week 10](week-10.md).

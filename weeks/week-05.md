@@ -1,77 +1,82 @@
-# Week 5: Receive one event end to end
+# Week 5: Functions, relational boundaries and first tests
 
-MerchantDesk | Sprint 1 | B: Backend Development + C: Client Integration + E: Engineering and Delivery
+MerchantDesk | Sprint 1 | T: TypeScript and JavaScript + D: SQL and Persistence + E: Engineering and Delivery
 
 ## The project need
 
-The merchant must accept a useful event and reject malformed input consistently.
+The event contract must become reusable checks, and events must remain attached to a real merchant.
 
 ## Before you start
 
-Bring the app factory and field contract. Use Fastify's built-in JSON Schema; do not introduce a second validation framework.
-
-## Keep the application connected
-
-Continue the Week 4 app. Register week-05/api/events.ts in its factory and remove the demonstration GET before installing the replacement; do not start a second server.
-
-See the [application wiring guide](../docs/12-application-wiring.md) for commands and module connections.
+Bring the Week 4 contract and a loaded practice database. Use the fixture cases instead of searching for external data.
 
 ## Outcome
 
-A simulator request reaches the API and is visible through a list endpoint.
+A reusable validation exercise, a relational model and tests that detect a bug.
 
 ## Learn and use
 
-| Task    | Concepts and reading                                                                                                                                                                                                                  | Minutes |
-| ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------: |
-| `B02.1` | JSON Schema, request limits, safe errors and in-memory persistence. [Fastify validation](https://fastify.dev/docs/v5.7.x/Reference/Validation-and-Serialization/), [Fastify testing](https://fastify.dev/docs/v5.7.x/Guides/Testing/) |      65 |
-| `C01.1` | Node fetch, request bodies, HTTP errors and client/server separation. [Using Fetch](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch)                                                                           |      45 |
-| `E05.1` | Reproduction, diagrams and restart limitations. [Assessment and review](../docs/10-assessment.md)                                                                                                                                     |      40 |
+| Task    | Concepts and reading                                                                                                                                                                                                                                                                     | Planned task minutes |
+| ------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------: |
+| `T03.1` | Functions, unknown, narrowing, return values and modules. [Functions](https://www.typescriptlang.org/docs/handbook/2/functions.html), [Narrowing](https://www.typescriptlang.org/docs/handbook/2/narrowing.html), [Modules](https://www.typescriptlang.org/docs/handbook/2/modules.html) |                  110 |
+| `D02.1` | Primary keys, foreign keys, joins, required fields and constraints. [PostgreSQL constraints](https://www.postgresql.org/docs/17/ddl-constraints.html), [PostgreSQL 17 tutorial](https://www.postgresql.org/docs/17/tutorial.html)                                                        |                  100 |
+| `E03.1` | node:test, assertions, test cases and focused debugging. [Node 22 test runner](https://nodejs.org/docs/latest-v22.x/api/test.html)                                                                                                                                                       |                   90 |
+
+Task time is part of the [15-hour core weekly budget](../docs/11-scope-and-continuation.md), not the whole week. Guided learning, consolidation, review, shared work and the two-hour problem-solving block are also included. Up to five additional hours are for repetition or finishing feedback, not extra required technologies.
 
 ## Core tasks
 
-### 1. Add the validated event route (`B02.1`)
+### 1. Validate a small unknown input (`T03.1`)
 
-- [ ] Add POST /api/events and GET /api/events to your lab. Validate the full body shape and enforce the agreed amount bounds and event kinds. Configure coercion/removal deliberately so bad types and unexpected owner fields are rejected rather than silently rewritten. Add good and bad injection tests. Export registerEventRoutes and register it in week-04/api/app.ts, replacing the earlier demonstration GET. Later repositories are injected into this same route module.
+- [ ] Write a pure function that accepts unknown and returns either a small valid event or explicit issues. Handle null, wrong kinds and non-integer/out-of-range amounts. Keep validation separate from printing. Focus on the agreed subset; full route JSON Schema comes in Week 7.
 
-**Primary path:** `students/<student-id>/week-05/api/events.ts`.
+**Primary path:** `students/<student-id>/week-05/typescript/validate-event.ts`.
 
-**Proof for review:** A valid event gets 201 and can be listed; invalid type, missing ID and oversized body get deliberate failures. Database persistence and auth are still later tasks.
+**Proof for review:** Valid fixture records pass and bad amount, missing ID, null and unknown kind produce errors without a crash.
 
-**Known trap:** Keep the lab loopback-only. A typed request body alone is not runtime validation.
+**Known trap:** An as Event assertion changes the compiler's view, not the received data.
 
-### 2. Write the first API consumer (`C01.1`)
+### 2. Model and test the relationship (`D02.1`)
 
-- [ ] Send one fixture event to the local API with Node fetch, inspect response.ok and parse the response safely. Try one malformed request. This is an API consumer script, not React yet.
+- [ ] Draw merchants and events with one-row meanings. In a new schema inside your practice database, create a small pair of related tables and try a broken foreign key and a duplicate primary key. Join events to merchant names and explain unmatched rows.
 
-**Primary path:** `students/<student-id>/week-05/client/send-event.ts`.
+**Primary path:** `students/<student-id>/week-05/sql/relationships.sql`.
 
-**Proof for review:** The script records the accepted ID and reports a non-2xx as a failure instead of claiming success.
+**Proof for review:** The database rejects the deliberate relational mistakes; your join result is explained in NOTES.md.
 
-**Known trap:** Fetch can resolve successfully when HTTP returns 400; a network rejection is a different failure.
+**Known trap:** Do not edit or destroy another student's data. The final shared migration is written in Week 8.
 
-### 3. Witness the flow and update the diagram (`E05.1`)
+### 3. Prove and break the validator (`E03.1`)
 
-- [ ] Have a peer run the simulator -> API -> list flow. Record actual commands, one invalid request and what disappears after restart. Update the architecture with actual local ports.
+- [ ] Add at least four tests, including one bad input. Run npm run test:practice -- followed by this test path. Deliberately remove a check, observe a failing test and restore it. Link one peer review.
 
-**Primary path:** `students/<student-id>/week-05/delivery/first-flow.md`.
+**Primary path:** `students/<student-id>/week-05/typescript/validate-event.test.ts`.
 
-**Proof for review:** A non-author reproduces the flow and can explain the persistence gap.
+**Proof for review:** A recorded test fails for the introduced bug and passes after restoration.
 
-**Known trap:** Do not claim durable acceptance or a production webhook service from this demonstration.
+**Known trap:** A green run without an assertion does not prove validation.
+
+## Two-hour problem-solving block (`P05.1`)
+
+**Focus:** Boundary cases and tests.
+
+Validate a provider ID against its length/character rules and explain tests at each boundary.
+
+**Evidence path:** `students/<student-id>/week-05/problem-solving/README.md`.
+
+**Proof:** Include the solution and tests, empty/boundary cases, one corrected attempt and a plain-language explanation. Revisit one earlier exercise within the same two-hour block.
+
+Follow the [problem-solving guide](../docs/14-problem-solving.md). This common block is included in the weekly budget and does not replace the three project tasks.
 
 ## Shared contribution
 
-Assigned task owners contribute reviewed work to `shared/api/src/routes/events.ts, shared/simulator/send-event.ts and shared/delivery/first-flow.md`. Record the non-author review or witness in the [Week 5 contribution log](../shared/delivery/rotations/week-05.md).
-
-## Milestone: First local event flow
-
-Record this shared milestone as complete only after a non-author reproduces the outcome and records commands and results in the contribution log.
+Assigned task owners contribute reviewed work to `shared/delivery/data-model.md and shared/api/test/contract.test.ts`. Record scope, non-author review and actual proof in the [Week 5 contribution log](../shared/delivery/rotations/week-05.md). Everyone completes the same core practice; no fixed pair is a prerequisite.
 
 ## Completion checklist
 
-- [ ] Three focused task-ID commits with the required proof
-- [ ] Peer review and assigned shared task or witness work completed
-- [ ] One implementation decision and failure case explained
+- [ ] Focused task-ID commits include required implementation and failure proofs
+- [ ] The common problem-solving block and one corrected attempt are recorded
+- [ ] Peer review and assigned shared task or witness work are complete
+- [ ] One implementation decision and failure case are explained
 
 Next: [Week 6](week-06.md).

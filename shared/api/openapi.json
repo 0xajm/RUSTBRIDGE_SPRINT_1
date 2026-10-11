@@ -1,0 +1,46 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "MerchantDesk starter API",
+    "version": "0.1.0",
+    "description": "Supplied liveness shell only. Students add and verify the implemented event and operator API in Weeks 10 and 14."
+  },
+  "servers": [
+    {
+      "url": "http://127.0.0.1:3000",
+      "description": "Loopback development only; not public hosting."
+    }
+  ],
+  "paths": {
+    "/health/live": {
+      "get": {
+        "operationId": "checkLiveness",
+        "summary": "Check whether the process is alive",
+        "description": "Does not establish PostgreSQL readiness.",
+        "responses": {
+          "200": {
+            "description": "The process is running.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "const": "ok"
+                    },
+                    "mode": {
+                      "type": "string"
+                    }
+                  },
+                  "required": ["status"],
+                  "additionalProperties": false
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

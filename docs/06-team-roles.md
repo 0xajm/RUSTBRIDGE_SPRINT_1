@@ -30,6 +30,8 @@ Preserve student authorship when merging assessed work. A non-author must reprod
 
 ## Time and evidence
 
-The 30-minute shared slot remains inside the weekly budget. Keep contributions small by reusing tested practice; split or replan work that does not fit rather than silently adding homework or dropping required proof.
+The 60-minute shared slot remains inside the weekly budget. Keep contributions small by reusing tested practice; split or replan work that does not fit rather than silently adding homework or dropping required proof.
 
 Log actual owners, PRs, commands, results and reassignment notes. Assignment alone is not completion. A weekly review explains one failure, one trade-off and one next step, not a ranking of students. Keep answer guidance, grades and personal support records outside this public repo.
+
+The common problem-solving blocks and Week 19 extension remain individual learning evidence. Do not assign one person to algorithms and another to the extension as substitutes for learning both. Maintain a bounded shared core; extensions are promoted only when accepted as useful scope through separate review.

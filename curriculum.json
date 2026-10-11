@@ -15,7 +15,7 @@
         {
           "id": "E01.1",
           "title": "Write the brief and context map",
-          "minutes": 50,
+          "minutes": 100,
           "path": "week-01/discovery/brief.md",
           "learn": "User stories, scope and a one-page context diagram",
           "resources": ["brief"],
@@ -26,7 +26,7 @@
         {
           "id": "T01.1",
           "title": "Run a safe event inspector",
-          "minutes": 65,
+          "minutes": 130,
           "path": "week-01/typescript/inspector.ts",
           "learn": "Values, variables, objects, console output and the TS/JS relationship",
           "resources": ["ts", "js"],
@@ -37,7 +37,7 @@
         {
           "id": "E01.2",
           "title": "Complete the Git and review loop",
-          "minutes": 35,
+          "minutes": 70,
           "path": "week-01/review.md",
           "learn": "Diffs, branches, commits and pull requests",
           "resources": ["git", "review"],
@@ -47,15 +47,144 @@
         }
       ],
       "budget": {
-        "learning": 90,
-        "tasks": 150,
-        "shared": 30,
-        "review": 30
+        "learning": 180,
+        "tasks": 300,
+        "practice": 120,
+        "shared": 60,
+        "review": 120,
+        "problemSolving": 120
       },
-      "tracks": ["E", "T"]
+      "tracks": ["E", "T"],
+      "problemSolving": {
+        "id": "P01.1",
+        "path": "week-01/problem-solving/README.md",
+        "focus": "Trace values and a simple decision",
+        "instructions": "Given a synthetic amount and a boolean captured flag, return an explicit label without loose equality; explain the result for zero and a numeric string.",
+        "proof": "Include a runnable decision function, an expected/actual case table, one corrected prediction and a plain-language explanation. Automated test files begin in Week 2; no algorithm knowledge is assumed."
+      }
     },
     {
       "number": 2,
+      "title": "Make values, decisions and functions explainable",
+      "phase": "Understand",
+      "need": "A merchant event summary needs predictable decisions, not copied code that only works for one example.",
+      "before": "Continue the Week 1 inspector. Use TypeScript files to practise JavaScript behavior; no PostgreSQL, server or React is needed.",
+      "outcome": "Small pure functions, deliberate branches and a reproduced debugging correction.",
+      "shared": "shared/simulator/summary.ts and shared/delivery/foundations.md",
+      "tracks": ["T", "E"],
+      "tasks": [
+        {
+          "id": "T01.2",
+          "title": "Trace values and make explicit decisions",
+          "minutes": 100,
+          "path": "week-02/typescript/decisions.ts",
+          "learn": "const/let, primitive values, strict equality, conditions and integer arithmetic",
+          "resources": ["js", "ts"],
+          "instructions": "Write small examples using one synthetic event. Distinguish a missing amount, zero, a numeric string and an integer. Use explicit branches to produce a summary or a stated input issue. Trace the values before running the program; keep integer paise separate from display formatting.",
+          "proof": "Recorded predictions match the actual output for at least six cases, including missing, zero and wrong-type values. Explain one corrected prediction.",
+          "trap": "Truthiness and loose equality can hide zero or turn bad input into apparently valid data."
+        },
+        {
+          "id": "T01.3",
+          "title": "Extract and test a pure summary function",
+          "minutes": 100,
+          "path": "week-02/typescript/summary.ts",
+          "learn": "Parameters, return values, scope, pure functions and assertions",
+          "resources": ["functions", "nodeTest"],
+          "instructions": "Extract a function from the inspector that takes an explicitly typed event and returns a summary without reading files or printing. Write summary.test.ts with assertions for at least three event kinds and an amount. Explain parameters, local variables and return values. Continue calling it from the inspector.",
+          "proof": "The same input produces the same summary, tests fail when a result is deliberately wrong, and running the function does not mutate the input.",
+          "trap": "A console message or copied expected value without an assertion is not a test."
+        },
+        {
+          "id": "E01.3",
+          "title": "Investigate one small programming mistake",
+          "minutes": 100,
+          "path": "week-02/review/debugging.md",
+          "learn": "Reading stack traces, minimal reproductions, feedback and repair",
+          "resources": ["js", "review"],
+          "instructions": "Introduce a reversible mistake in your own exercise, such as a wrong branch or an undefined property. Record expected versus actual behavior, the relevant error or assertion and a small reproduction. Repair it and have a peer explain the cause. Keep the valid implementation and its regression test in the final commit.",
+          "proof": "The notes contain an actual failing observation, a reasoned repair and the passing command. No intentional broken code remains in the PR.",
+          "trap": "Do not fix a failing test by deleting its assertion or hiding an error with a success return."
+        }
+      ],
+      "budget": {
+        "learning": 180,
+        "tasks": 300,
+        "practice": 120,
+        "shared": 60,
+        "review": 120,
+        "problemSolving": 120
+      },
+      "problemSolving": {
+        "id": "P02.1",
+        "path": "week-02/problem-solving/README.md",
+        "focus": "Branching and small functions",
+        "instructions": "Write a function that counts a character in a string using a loop; handle empty input and explain every variable.",
+        "proof": "Include the solution and tests, empty/boundary cases, one corrected attempt and a plain-language explanation. Revisit one earlier exercise within the same two-hour block."
+      }
+    },
+    {
+      "number": 3,
+      "title": "Work with collections and reusable modules",
+      "phase": "Practice",
+      "need": "The merchant needs useful summaries over several records without changing the original event data.",
+      "before": "Use the supplied events.json bodies and the Week 2 pure function. SQL begins in Week 4; do not install another runtime or testing framework.",
+      "outcome": "Correct collection summaries, reusable imports and honest malformed-input failures.",
+      "shared": "shared/simulator/event-summary.ts and shared/simulator/test/",
+      "tracks": ["T", "E"],
+      "tasks": [
+        {
+          "id": "T02.2",
+          "title": "Summarise events using loops and collection methods",
+          "minutes": 100,
+          "path": "week-03/typescript/collections.ts",
+          "learn": "Arrays, iteration, filter/map, accumulator state and empty inputs",
+          "resources": ["js", "functions"],
+          "instructions": "Load or import the synthetic event fixture, then implement captured-event selection and event-kind counts. Compare a loop with filter/map on the same data. Test empty and single-item lists as well as the complete fixture. Keep the original list unchanged; do not assume all events represent captured money.",
+          "proof": "Both implementations agree with fixture expectations, including empty input. Tests catch a wrong count and unintended input mutation.",
+          "trap": "Counting records is not a financial balance; failed payments and refunds must not be silently added to a captured total."
+        },
+        {
+          "id": "T02.3",
+          "title": "Create a safe keyed lookup and explain its limits",
+          "minutes": 100,
+          "path": "week-03/typescript/event-lookup.ts",
+          "learn": "Objects, Map, duplicate keys, strings and simple time/space reasoning",
+          "resources": ["js", "types"],
+          "instructions": "Build an in-memory lookup by provider_event_id for this one-source fixture. Use a Map and report duplicate fixture identities rather than silently overwriting them. Test missing and duplicate IDs. Compare a linear scan with a keyed lookup in plain language; the database-backed merchant identity comes later.",
+          "proof": "A known ID is found, a missing ID is deliberate, and a duplicate fixture is reported without losing the original. Explain the extra memory used by the lookup.",
+          "trap": "This practice lookup is not concurrent deduplication, authorization or a substitute for PostgreSQL uniqueness."
+        },
+        {
+          "id": "E02.2",
+          "title": "Separate modules and preserve parsing failures",
+          "minutes": 100,
+          "path": "week-03/typescript/read-events.ts",
+          "learn": "Imports/exports, JSON parsing, runtime input and useful errors",
+          "resources": ["modules", "nodeTest"],
+          "instructions": "Move the summary/lookup helpers into exported modules and import them from one small fixture reader. Use .js specifiers in Node-oriented imports. Test malformed JSON and a non-array body in read-events.test.ts; do not treat either as an empty successful list. Record run, test and typecheck commands.",
+          "proof": "A clean run reuses the modules, while malformed and wrong-shaped input fail deliberately. The tests import functions without automatically running a file-reading CLI.",
+          "trap": "A TypeScript annotation on parsed JSON does not prove the runtime shape is correct."
+        }
+      ],
+      "budget": {
+        "learning": 180,
+        "tasks": 300,
+        "practice": 120,
+        "shared": 60,
+        "review": 120,
+        "problemSolving": 120
+      },
+      "problemSolving": {
+        "id": "P03.1",
+        "path": "week-03/problem-solving/README.md",
+        "focus": "Arrays and immutable summaries",
+        "instructions": "Count event kinds without changing the input array; test empty input and all three supported kinds.",
+        "proof": "Include the solution and tests, empty/boundary cases, one corrected attempt and a plain-language explanation. Revisit one earlier exercise within the same two-hour block."
+      }
+    },
+    {
+      "number": 4,
       "title": "Represent events and ask the first SQL questions",
       "phase": "Understand",
       "need": "The merchant needs event counts, while fields such as amounts and event kinds need an agreed meaning.",
@@ -66,8 +195,8 @@
         {
           "id": "T02.1",
           "title": "Work with a typed event list",
-          "minutes": 50,
-          "path": "week-02/typescript/event-list.ts",
+          "minutes": 100,
+          "path": "week-04/typescript/event-list.ts",
           "learn": "Primitive types, arrays, object types, branches and iteration",
           "resources": ["types", "js"],
           "instructions": "Define an event type using the actual fixture fields. Iterate over several events, select captured payments and count them. Compare a loop with filter. Explain one case where a missing value differs from zero.",
@@ -77,8 +206,8 @@
         {
           "id": "D01.1",
           "title": "Load and query the practice database",
-          "minutes": 65,
-          "path": "week-02/sql/first-queries.sql",
+          "minutes": 130,
+          "path": "week-04/sql/first-queries.sql",
           "learn": "Tables, rows, SELECT, WHERE, ORDER BY and GROUP BY",
           "resources": ["pg"],
           "instructions": "Load the supplied SQL using the setup guide, then write queries for captured events, merchant totals and the latest events. Put answers and commands in NOTES.md. This is a personal practice database, not the shared final schema.",
@@ -88,8 +217,8 @@
         {
           "id": "E02.1",
           "title": "Agree the event field rules",
-          "minutes": 35,
-          "path": "week-02/design/event-contract.md",
+          "minutes": 70,
+          "path": "week-04/design/event-contract.md",
           "learn": "Runtime input, integer minor units, timestamps and non-goals",
           "resources": ["contract"],
           "instructions": "Use docs/01-project-brief.md and fixtures/cases.json to specify required fields, bounds, allowed event kinds and the duplicate key. Explain why merchant identity will eventually come from authentication, not an arbitrary body field.",
@@ -98,49 +227,58 @@
         }
       ],
       "budget": {
-        "learning": 90,
-        "tasks": 150,
-        "shared": 30,
-        "review": 30
+        "learning": 180,
+        "tasks": 300,
+        "practice": 120,
+        "shared": 60,
+        "review": 120,
+        "problemSolving": 120
       },
-      "tracks": ["T", "D", "E"]
+      "tracks": ["T", "D", "E"],
+      "problemSolving": {
+        "id": "P04.1",
+        "path": "week-04/problem-solving/README.md",
+        "focus": "Typed records and simple scans",
+        "instructions": "Find the first matching event ID in a typed array and return an explicit not-found result; compare loop and find.",
+        "proof": "Include the solution and tests, empty/boundary cases, one corrected attempt and a plain-language explanation. Revisit one earlier exercise within the same two-hour block."
+      }
     },
     {
-      "number": 3,
+      "number": 5,
       "title": "Functions, relational boundaries and first tests",
       "phase": "Practice",
       "need": "The event contract must become reusable checks, and events must remain attached to a real merchant.",
-      "before": "Bring the Week 2 contract and a loaded practice database. Use the fixture cases instead of searching for external data.",
+      "before": "Bring the Week 4 contract and a loaded practice database. Use the fixture cases instead of searching for external data.",
       "outcome": "A reusable validation exercise, a relational model and tests that detect a bug.",
       "shared": "shared/delivery/data-model.md and shared/api/test/contract.test.ts",
       "tasks": [
         {
           "id": "T03.1",
           "title": "Validate a small unknown input",
-          "minutes": 55,
-          "path": "week-03/typescript/validate-event.ts",
+          "minutes": 110,
+          "path": "week-05/typescript/validate-event.ts",
           "learn": "Functions, unknown, narrowing, return values and modules",
           "resources": ["functions", "narrow", "modules"],
-          "instructions": "Write a pure function that accepts unknown and returns either a small valid event or explicit issues. Handle null, wrong kinds and non-integer/out-of-range amounts. Keep validation separate from printing. Focus on the agreed subset; full route JSON Schema comes in Week 5.",
+          "instructions": "Write a pure function that accepts unknown and returns either a small valid event or explicit issues. Handle null, wrong kinds and non-integer/out-of-range amounts. Keep validation separate from printing. Focus on the agreed subset; full route JSON Schema comes in Week 7.",
           "proof": "Valid fixture records pass and bad amount, missing ID, null and unknown kind produce errors without a crash.",
           "trap": "An as Event assertion changes the compiler's view, not the received data."
         },
         {
           "id": "D02.1",
           "title": "Model and test the relationship",
-          "minutes": 50,
-          "path": "week-03/sql/relationships.sql",
+          "minutes": 100,
+          "path": "week-05/sql/relationships.sql",
           "learn": "Primary keys, foreign keys, joins, required fields and constraints",
           "resources": ["constraints", "pg"],
           "instructions": "Draw merchants and events with one-row meanings. In a new schema inside your practice database, create a small pair of related tables and try a broken foreign key and a duplicate primary key. Join events to merchant names and explain unmatched rows.",
           "proof": "The database rejects the deliberate relational mistakes; your join result is explained in NOTES.md.",
-          "trap": "Do not edit or destroy another student's data. The final shared migration is written in Week 6."
+          "trap": "Do not edit or destroy another student's data. The final shared migration is written in Week 8."
         },
         {
           "id": "E03.1",
           "title": "Prove and break the validator",
-          "minutes": 45,
-          "path": "week-03/typescript/validate-event.test.ts",
+          "minutes": 90,
+          "path": "week-05/typescript/validate-event.test.ts",
           "learn": "node:test, assertions, test cases and focused debugging",
           "resources": ["nodeTest"],
           "instructions": "Add at least four tests, including one bad input. Run npm run test:practice -- followed by this test path. Deliberately remove a check, observe a failing test and restore it. Link one peer review.",
@@ -149,15 +287,24 @@
         }
       ],
       "budget": {
-        "learning": 90,
-        "tasks": 150,
-        "shared": 30,
-        "review": 30
+        "learning": 180,
+        "tasks": 300,
+        "practice": 120,
+        "shared": 60,
+        "review": 120,
+        "problemSolving": 120
       },
-      "tracks": ["T", "D", "E"]
+      "tracks": ["T", "D", "E"],
+      "problemSolving": {
+        "id": "P05.1",
+        "path": "week-05/problem-solving/README.md",
+        "focus": "Boundary cases and tests",
+        "instructions": "Validate a provider ID against its length/character rules and explain tests at each boundary.",
+        "proof": "Include the solution and tests, empty/boundary cases, one corrected attempt and a plain-language explanation. Revisit one earlier exercise within the same two-hour block."
+      }
     },
     {
-      "number": 4,
+      "number": 6,
       "title": "Cross the HTTP boundary without losing the model",
       "phase": "Practice",
       "need": "Another program must send or request events without sharing the API's memory.",
@@ -168,19 +315,19 @@
         {
           "id": "B01.1",
           "title": "Build and inspect a tiny Fastify API",
-          "minutes": 60,
-          "path": "week-04/api/app.ts",
+          "minutes": 120,
+          "path": "week-06/api/app.ts",
           "learn": "HTTP methods, paths, headers, status, JSON and app factories",
           "resources": ["http", "fastify", "ftest"],
-          "instructions": "Copy the immutable fixtures/api-starter once into your week-04/api folder as described in docs/12-application-wiring.md. Continue its exported createApp factory and separate server.ts listener. Add an in-memory GET /api/events returning a few synthetic records, send a request with curl.exe and add an app.inject test in app.test.ts. Run the app with npm.cmd run dev:student -- BE01, replacing BE01. Bind to loopback and retain this entry point in later weeks.",
+          "instructions": "Copy the immutable fixtures/api-starter once into your week-06/api folder as described in docs/12-application-wiring.md. Continue its exported createApp factory and separate server.ts listener. Add an in-memory GET /api/events returning a few synthetic records, send a request with curl.exe and add an app.inject test in app.test.ts. Run the app with npm.cmd run dev:student -- BE01, replacing BE01. Bind to loopback and retain this entry point in later weeks.",
           "proof": "An annotated exchange names method, URL, response status and JSON. The test runs without opening a network port.",
           "trap": "The in-memory lab is local and temporary. It has no authentication yet and must not be publicly exposed."
         },
         {
           "id": "T04.1",
           "title": "Observe async work and failure",
-          "minutes": 50,
-          "path": "week-04/typescript/async-reader.ts",
+          "minutes": 100,
+          "path": "week-06/typescript/async-reader.ts",
           "learn": "Promises, await, try/catch, JSON parsing and cleanup",
           "resources": ["async"],
           "instructions": "Read the supplied fixture with node:fs/promises. Compare an awaited result with the Promise itself. Handle a missing file and malformed JSON deliberately; pass parsed data through the earlier checks. Explain why async is not a new thread for each request.",
@@ -190,25 +337,34 @@
         {
           "id": "E04.1",
           "title": "Review the API and schema together",
-          "minutes": 40,
-          "path": "week-04/design/api-contract.md",
+          "minutes": 80,
+          "path": "week-06/design/api-contract.md",
           "learn": "Request/response contracts and design trade-offs",
           "resources": ["contract", "http"],
-          "instructions": "Specify the initial POST/list/detail routes, field rules, error shape and the future owner filter. Draw the request path and name the limits of the in-memory version. Compare the plan with Week 3's relational model.",
+          "instructions": "Specify the initial POST/list/detail routes, field rules, error shape and the future owner filter. Draw the request path and name the limits of the in-memory version. Compare the plan with Week 5's relational model.",
           "proof": "A peer can name what belongs in HTTP, validation and persistence, and what is missing before public deployment.",
           "trap": "Do not invent queue, Rust service or microservice boundaries in Sprint 1."
         }
       ],
       "budget": {
-        "learning": 90,
-        "tasks": 150,
-        "shared": 30,
-        "review": 30
+        "learning": 180,
+        "tasks": 300,
+        "practice": 120,
+        "shared": 60,
+        "review": 120,
+        "problemSolving": 120
       },
-      "tracks": ["B", "T", "E"]
+      "tracks": ["B", "T", "E"],
+      "problemSolving": {
+        "id": "P06.1",
+        "path": "week-06/problem-solving/README.md",
+        "focus": "Strings and maps",
+        "instructions": "Build a character-frequency Map and find the first non-repeated character; explain memory use.",
+        "proof": "Include the solution and tests, empty/boundary cases, one corrected attempt and a plain-language explanation. Revisit one earlier exercise within the same two-hour block."
+      }
     },
     {
-      "number": 5,
+      "number": 7,
       "title": "Receive one event end to end",
       "phase": "Practice",
       "need": "The merchant must accept a useful event and reject malformed input consistently.",
@@ -220,19 +376,19 @@
         {
           "id": "B02.1",
           "title": "Add the validated event route",
-          "minutes": 65,
-          "path": "week-05/api/events.ts",
+          "minutes": 130,
+          "path": "week-07/api/events.ts",
           "learn": "JSON Schema, request limits, safe errors and in-memory persistence",
           "resources": ["validation", "ftest"],
-          "instructions": "Add POST /api/events and GET /api/events to your lab. Validate the full body shape and enforce the agreed amount bounds and event kinds. Configure coercion/removal deliberately so bad types and unexpected owner fields are rejected rather than silently rewritten. Add good and bad injection tests. Export registerEventRoutes and register it in week-04/api/app.ts, replacing the earlier demonstration GET. Later repositories are injected into this same route module.",
-          "proof": "A valid event gets 201 and can be listed; invalid type, missing ID and oversized body get deliberate failures. Database persistence and auth are still later tasks.",
+          "instructions": "Add POST /api/events and GET /api/events plus GET /api/events/:id to your lab. Return 404 for a missing record ID; merchant authorization arrives in Weeks 11-12. Validate the full body shape and enforce the agreed amount bounds and event kinds. Configure coercion/removal deliberately so bad types and unexpected owner fields are rejected rather than silently rewritten. Add good and bad injection tests. Export registerEventRoutes and register it in week-06/api/app.ts, replacing the earlier demonstration GET. Later repositories are injected into this same route module.",
+          "proof": "A valid event gets 201 and can be listed and read by ID; a missing ID gets 404; invalid type, missing ID and oversized body get deliberate failures. Database persistence and auth are still later tasks.",
           "trap": "Keep the lab loopback-only. A typed request body alone is not runtime validation."
         },
         {
           "id": "C01.1",
           "title": "Write the first API consumer",
-          "minutes": 45,
-          "path": "week-05/client/send-event.ts",
+          "minutes": 90,
+          "path": "week-07/client/send-event.ts",
           "learn": "Node fetch, request bodies, HTTP errors and client/server separation",
           "resources": ["fetch"],
           "instructions": "Send one fixture event to the local API with Node fetch, inspect response.ok and parse the response safely. Try one malformed request. This is an API consumer script, not React yet.",
@@ -242,8 +398,8 @@
         {
           "id": "E05.1",
           "title": "Witness the flow and update the diagram",
-          "minutes": 40,
-          "path": "week-05/delivery/first-flow.md",
+          "minutes": 80,
+          "path": "week-07/delivery/first-flow.md",
           "learn": "Reproduction, diagrams and restart limitations",
           "resources": ["evidence"],
           "instructions": "Have a peer run the simulator -> API -> list flow. Record actual commands, one invalid request and what disappears after restart. Update the architecture with actual local ports.",
@@ -252,15 +408,24 @@
         }
       ],
       "budget": {
-        "learning": 90,
-        "tasks": 150,
-        "shared": 30,
-        "review": 30
+        "learning": 180,
+        "tasks": 300,
+        "practice": 120,
+        "shared": 60,
+        "review": 120,
+        "problemSolving": 120
       },
-      "tracks": ["B", "C", "E"]
+      "tracks": ["B", "C", "E"],
+      "problemSolving": {
+        "id": "P07.1",
+        "path": "week-07/problem-solving/README.md",
+        "focus": "Sets and duplicate identity",
+        "instructions": "Find repeated IDs in a fixture list with a Set while retaining first-seen order; explain why this is not database deduplication.",
+        "proof": "Include the solution and tests, empty/boundary cases, one corrected attempt and a plain-language explanation. Revisit one earlier exercise within the same two-hour block."
+      }
     },
     {
-      "number": 6,
+      "number": 8,
       "title": "Make accepted events survive restart",
       "phase": "Build",
       "need": "Restarting the API currently loses all accepted events.",
@@ -272,19 +437,19 @@
         {
           "id": "D03.1",
           "title": "Write and apply the first migration",
-          "minutes": 55,
-          "path": "week-06/database/migrations/001-events.sql",
+          "minutes": 110,
+          "path": "week-08/database/migrations/001-events.sql",
           "learn": "DDL, constraints, timestamps and forward migrations",
           "resources": ["pg", "constraints"],
-          "instructions": "Create merchants and payment_events from the agreed field contract, including a foreign key, amount check and timestamp columns. Use the supplied runner via npm.cmd run migrate:practice -- students/BE01/week-06/database/migrations, replacing BE01. Read fixtures/migration-runner.ts and its support tests, then explain ordered version tracking, one-client transactions and repeat-run behavior. Write schema-relative SQL without transaction commands; do not invent runner plumbing in this task.",
+          "instructions": "Create merchants and payment_events from the agreed field contract, including a foreign key, amount check and timestamp columns. Use the supplied runner via npm.cmd run migrate:practice -- students/BE01/week-08/database/migrations, replacing BE01. Read fixtures/migration-runner.ts and its support tests, then explain ordered version tracking, one-client transactions and repeat-run behavior. Write schema-relative SQL without transaction commands; do not invent runner plumbing in this task.",
           "proof": "An empty test database migrates; invalid amount/merchant writes fail; a second runner invocation preserves rows.",
           "trap": "Do not edit a migration after the shared cohort has applied it. Add a new migration."
         },
         {
           "id": "B03.1",
           "title": "Connect a pooled repository",
-          "minutes": 60,
-          "path": "week-06/api/repository.ts",
+          "minutes": 120,
+          "path": "week-08/api/repository.ts",
           "learn": "pg pooling, parameterized queries, dependency injection and shutdown",
           "resources": ["queries", "pool", "transactions"],
           "instructions": "Replace the in-memory storage through a small injected repository. Use bounded Pool configuration, parameter placeholders and finally-based client release. Keep app construction separate from listening and close the pool on shutdown.",
@@ -294,8 +459,8 @@
         {
           "id": "E06.1",
           "title": "Prove persistence and isolate the test",
-          "minutes": 35,
-          "path": "week-06/api/persistence.db.test.ts",
+          "minutes": 70,
+          "path": "week-08/api/persistence.db.test.ts",
           "learn": "Database integration tests and restart evidence",
           "resources": ["ftest"],
           "instructions": "Use a dedicated test database/schema. Accept one event, close/rebuild the app, and read it back. Record the commands. Demonstrate that a failing database write is not reported as accepted.",
@@ -304,15 +469,24 @@
         }
       ],
       "budget": {
-        "learning": 90,
-        "tasks": 150,
-        "shared": 30,
-        "review": 30
+        "learning": 180,
+        "tasks": 300,
+        "practice": 120,
+        "shared": 60,
+        "review": 120,
+        "problemSolving": 120
       },
-      "tracks": ["D", "B", "E"]
+      "tracks": ["D", "B", "E"],
+      "problemSolving": {
+        "id": "P08.1",
+        "path": "week-08/problem-solving/README.md",
+        "focus": "Nested data and lookup",
+        "instructions": "Join small merchant/event arrays by ID in memory and preserve a merchant with no events; compare nested scans and a lookup.",
+        "proof": "Include the solution and tests, empty/boundary cases, one corrected attempt and a plain-language explanation. Revisit one earlier exercise within the same two-hour block."
+      }
     },
     {
-      "number": 7,
+      "number": 9,
       "title": "Handle repetition and bound the list",
       "phase": "Build",
       "need": "Repeated event IDs can create duplicate records, and an unbounded list can grow without limit.",
@@ -323,19 +497,19 @@
         {
           "id": "D04.1",
           "title": "Protect event identity in the database",
-          "minutes": 55,
-          "path": "week-07/database/deduplication.sql",
+          "minutes": 110,
+          "path": "week-09/database/deduplication.sql",
           "learn": "Composite uniqueness, ON CONFLICT and concurrent requests",
           "resources": ["constraints", "conflict"],
-          "instructions": "Inspect existing rows for duplicate merchant/provider identities before adding the unique key (merchant_id, provider_event_id) through a new migration. If duplicates exist, preserve them and agree an explicit reconciliation with the reviewer; do not silently delete or reset. Test a fresh schema and the upgrade fixture. Define identical repeat as 200 with the existing ID, and changed content under the same identity as 409. Use an atomic insert/conflict path. Add a small test that starts two identical requests together. Keep the stated SQL artifact and include the applied forward migration as week-06/database/migrations/002-event-identity.sql in the same task commit.",
+          "instructions": "Inspect existing rows for duplicate merchant/provider identities before adding the unique key (merchant_id, provider_event_id) through a new migration. If duplicates exist, preserve them and agree an explicit reconciliation with the reviewer; do not silently delete or reset. Test a fresh schema and the upgrade fixture. Define identical repeat as 200 with the existing ID, and changed content under the same identity as 409. Use an atomic insert/conflict path. Add a small test that starts two identical requests together. Keep the stated SQL artifact and include the applied forward migration as week-08/database/migrations/002-event-identity.sql in the same task commit.",
           "proof": "Sequential and overlapping identical requests leave one row; the same ID with changed agreed fields returns 409 and keeps the first record.",
           "trap": "An in-process Set or pre-insert check alone does not protect concurrent database writes."
         },
         {
           "id": "T05.1",
           "title": "Give repository outcomes explicit types",
-          "minutes": 45,
-          "path": "week-07/typescript/repository-results.ts",
+          "minutes": 90,
+          "path": "week-09/typescript/repository-results.ts",
           "learn": "Unions, interfaces, Map/Set basics and simple complexity reasoning",
           "resources": ["narrow", "types"],
           "instructions": "Model created, repeated and conflict results as a union. Show one pure HTTP mapping function and explain where a Map can help a practice lookup and where the database must remain authoritative. Add tests for each outcome.",
@@ -345,25 +519,94 @@
         {
           "id": "B04.1",
           "title": "Add filtering and stable pagination",
-          "minutes": 50,
-          "path": "week-07/api/list-events.ts",
+          "minutes": 100,
+          "path": "week-09/api/list-events.ts",
           "learn": "Query validation, LIMIT/OFFSET and deterministic ordering",
           "resources": ["limit", "queries"],
-          "instructions": "Implement kind filtering plus limit 1-50 and non-negative offset. Order by received_at DESC, id DESC. Include merchant scope in the repository interface even though real principals arrive next. Test ties, no results and invalid bounds.",
+          "instructions": "Implement kind filtering plus limit 1-50 and non-negative offset. Order by received_at DESC, id DESC. Include merchant scope in the repository interface even though real principals arrive in Week 11. Test ties, no results and invalid bounds.",
           "proof": "Repeated reads of unchanged data have stable order and no page exceeds 50 rows.",
           "trap": "Offset pagination can shift when new rows arrive; document that limitation instead of promising snapshot paging."
         }
       ],
       "budget": {
-        "learning": 90,
-        "tasks": 150,
-        "shared": 30,
-        "review": 30
+        "learning": 180,
+        "tasks": 300,
+        "practice": 120,
+        "shared": 60,
+        "review": 120,
+        "problemSolving": 120
       },
-      "tracks": ["D", "T", "B"]
+      "tracks": ["D", "T", "B"],
+      "problemSolving": {
+        "id": "P09.1",
+        "path": "week-09/problem-solving/README.md",
+        "focus": "Complexity and deterministic order",
+        "instructions": "Sort synthetic timestamp/ID pairs with a deterministic tie-breaker; explain costs and test ties.",
+        "proof": "Include the solution and tests, empty/boundary cases, one corrected attempt and a plain-language explanation. Revisit one earlier exercise within the same two-hour block."
+      }
     },
     {
-      "number": 8,
+      "number": 10,
+      "title": "Document and consume the continuing HTTP API",
+      "phase": "Build",
+      "need": "Another engineer must be able to call the working API without guessing request bodies, paging or errors.",
+      "before": "The Week 6 factory now uses the Week 8 database repository and Week 9 identity/paging behavior. Follow docs/13-api-documentation.md and copy its specification starter once.",
+      "outcome": "A reviewed API description, a reproducible consumer and an explicit request/response boundary.",
+      "shared": "shared/api/openapi.json, shared/simulator/send-event.ts and shared/delivery/api-exchanges.md",
+      "tracks": ["B", "C", "E"],
+      "tasks": [
+        {
+          "id": "B02.2",
+          "title": "Describe the implemented API in OpenAPI",
+          "minutes": 100,
+          "path": "week-10/api/openapi.json",
+          "learn": "HTTP contracts, OpenAPI paths, schemas, examples and response status codes",
+          "resources": ["openapi", "apiDocs", "contract"],
+          "instructions": "Extend the supplied liveness specification with POST/list/detail event operations that your app currently implements. Describe public fields, strict input, query bounds, 200/201/400/409/413 outcomes and paging. Use synthetic examples. Mark login/ownership as planned until Weeks 11-12; never describe the unauthenticated lab as production-safe. Match the canonical contract, not internal DB rows.",
+          "proof": "A peer can construct a valid request and a changed-identity conflict from the specification, and compares documented responses with the real app. The JSON parses successfully.",
+          "trap": "A syntactically valid OpenAPI file alone does not prove the server follows it."
+        },
+        {
+          "id": "C01.2",
+          "title": "Write a consumer from a peer's specification",
+          "minutes": 100,
+          "path": "week-10/client/contract-client.ts",
+          "learn": "HTTP request construction, status handling and client/server independence",
+          "resources": ["fetch", "http", "apiDocs"],
+          "instructions": "Read a peer's OpenAPI and make a small Node/TypeScript client for submit, list and detail. Use the local API, check response.ok and expected shape, and handle a 409, malformed input and an unreachable listener explicitly. Accept the local base URL through ignored environment configuration. Do not import server repository modules.",
+          "proof": "The peer reproduces the client against the continuing app; a non-2xx and a network failure are distinguished and neither is reported as acceptance.",
+          "trap": "This is our API consumer, not a Stripe/Razorpay integration or another backend server."
+        },
+        {
+          "id": "E04.2",
+          "title": "Review HTTP exchanges against the contract",
+          "minutes": 100,
+          "path": "week-10/delivery/api-exchanges.md",
+          "learn": "Headers, wire formats, safe public errors and documented limitations",
+          "resources": ["http", "contract", "review"],
+          "instructions": "Record redacted exchanges for created, repeated, conflicting, invalid and paged requests. Compare the JSON with the written contract and report one mismatch or explicitly state the checked cases. Explain Content-Type, the URL query string and why internal SQL must not appear in a response. Apply peer corrections to the same API/specification.",
+          "proof": "The recorded requests run against your app and match its status/body; secrets and internal error details are absent. Any mismatch has a failing test and a reviewed fix.",
+          "trap": "Do not invent evidence for authentication or readiness routes not implemented yet."
+        }
+      ],
+      "budget": {
+        "learning": 180,
+        "tasks": 300,
+        "practice": 120,
+        "shared": 60,
+        "review": 120,
+        "problemSolving": 120
+      },
+      "problemSolving": {
+        "id": "P10.1",
+        "path": "week-10/problem-solving/README.md",
+        "focus": "Parsing and explicit errors",
+        "instructions": "Parse a bounded decimal paging string without accepting fractions/signs/empty input; return a typed result.",
+        "proof": "Include the solution and tests, empty/boundary cases, one corrected attempt and a plain-language explanation. Revisit one earlier exercise within the same two-hour block."
+      }
+    },
+    {
+      "number": 11,
       "title": "Authenticate a merchant operator",
       "phase": "Build",
       "need": "The API must distinguish a signed-in operator from an anonymous request before exposing merchant data.",
@@ -374,8 +617,8 @@
         {
           "id": "B05.1",
           "title": "Add seeded operator login",
-          "minutes": 60,
-          "path": "week-08/api/login.ts",
+          "minutes": 120,
+          "path": "week-11/api/login.ts",
           "learn": "Authentication, password hashing, seeded accounts and generic failures",
           "resources": ["crypto", "session"],
           "instructions": "Add operators related to merchants and a local seed script that reads demo passwords from ignored environment variables. Use the supplied async password helper rather than plaintext storage. Validate and bound login fields, query by email with parameters, and return the same failure message for absent users and wrong passwords. No signup/reset feature is required.",
@@ -385,19 +628,19 @@
         {
           "id": "B05.2",
           "title": "Use an expiring cookie session",
-          "minutes": 50,
-          "path": "week-08/api/session.ts",
+          "minutes": 100,
+          "path": "week-11/api/session.ts",
           "learn": "HttpOnly cookies, plugin expiry, logout and server identity",
           "resources": ["session"],
-          "instructions": "Use a generated 32-byte key from ignored configuration, explicit one-hour plugin expiry and matching cookie lifetime. Set HttpOnly and SameSite=Lax. Secure is false only for loopback HTTP development; HTTPS requires Secure. Regenerate at login, delete at logout, and protect event routes with a server-resolved operator.",
+          "instructions": "Use a generated 32-byte key from ignored configuration, explicit one-hour plugin expiry and matching cookie lifetime. Set HttpOnly and SameSite=Lax. Secure is false only for loopback HTTP development; HTTPS requires Secure. Regenerate at login, delete at logout, and protect event routes with a server-resolved operator. Implement GET /api/me with the public operator envelope and POST /api/logout with a JSON {} request, cookie deletion and bodyless 204 response; both use the same verified current operator.",
           "proof": "Missing/tampered/expired cookies fail; logout clears the browser session; a server-side check enforces expiry.",
           "trap": "Stateless logout clears this browser's cookie but does not revoke a stolen copy before expiry. Name that limitation."
         },
         {
           "id": "E07.1",
           "title": "Review the auth and browser boundary",
-          "minutes": 40,
-          "path": "week-08/security/auth-model.md",
+          "minutes": 80,
+          "path": "week-11/security/auth-model.md",
           "learn": "Authentication versus authorization, CSRF and local-only operation",
           "resources": ["csrf"],
           "instructions": "Draw where credentials, encrypted cookie and merchant ID live. For login/logout/event writes require application/json and an exact allowed Origin including scheme/host/port; test missing or foreign origins. Node simulator and injection tests must deliberately send the agreed Origin. Do not rely on SameSite alone.",
@@ -406,15 +649,24 @@
         }
       ],
       "budget": {
-        "learning": 90,
-        "tasks": 150,
-        "shared": 30,
-        "review": 30
+        "learning": 180,
+        "tasks": 300,
+        "practice": 120,
+        "shared": 60,
+        "review": 120,
+        "problemSolving": 120
       },
-      "tracks": ["B", "E"]
+      "tracks": ["B", "E"],
+      "problemSolving": {
+        "id": "P11.1",
+        "path": "week-11/problem-solving/README.md",
+        "focus": "Hash maps and counting",
+        "instructions": "Find whether a list of integer amounts has a pair with a stated sum; compare a simple scan and keyed solution on synthetic data.",
+        "proof": "Include the solution and tests, empty/boundary cases, one corrected attempt and a plain-language explanation. Revisit one earlier exercise within the same two-hour block."
+      }
     },
     {
-      "number": 9,
+      "number": 12,
       "title": "Enforce merchant ownership across every route",
       "phase": "Build",
       "need": "A signed-in operator must not see or write another merchant's events.",
@@ -426,8 +678,8 @@
         {
           "id": "D05.1",
           "title": "Scope every database operation",
-          "minutes": 55,
-          "path": "week-09/database/owned-queries.sql",
+          "minutes": 110,
+          "path": "week-12/database/owned-queries.sql",
           "learn": "Owner-filtered SQL, join boundaries and foreign keys",
           "resources": ["queries", "pg"],
           "instructions": "Apply merchant_id filters to list, detail, conflict lookup and insertion paths. Resolve an operator's current merchant in the database. For an existing event owned by another merchant return the same 404 as a missing ID. Keep duplicate keys merchant-scoped.",
@@ -437,8 +689,8 @@
         {
           "id": "B06.1",
           "title": "Test the protected API end to end",
-          "minutes": 60,
-          "path": "week-09/api/ownership.db.test.ts",
+          "minutes": 120,
+          "path": "week-12/api/ownership.db.test.ts",
           "learn": "Authentication hooks, authorization and negative integration tests",
           "resources": ["ftest"],
           "instructions": "Test anonymous list/read/write, A reading B's known ID, a forged merchant_id field, and a valid A write. Reject the injected owner field through body validation. Cover login/logout origins and safe error bodies. Use the existing app factory and a disposable database.",
@@ -448,8 +700,8 @@
         {
           "id": "C02.1",
           "title": "Update the simulator to authenticate",
-          "minutes": 35,
-          "path": "week-09/client/send-authenticated.ts",
+          "minutes": 70,
+          "path": "week-12/client/send-authenticated.ts",
           "learn": "Cookie-aware HTTP consumers and safe configuration",
           "resources": ["fetch"],
           "instructions": "Read disposable credentials from local environment variables, log in, reuse the returned cookie on one event request, and send the configured Origin. Keep passwords/cookies out of output. Do not parse combined Set-Cookie strings by splitting on commas.",
@@ -458,15 +710,204 @@
         }
       ],
       "budget": {
-        "learning": 90,
-        "tasks": 150,
-        "shared": 30,
-        "review": 30
+        "learning": 180,
+        "tasks": 300,
+        "practice": 120,
+        "shared": 60,
+        "review": 120,
+        "problemSolving": 120
       },
-      "tracks": ["D", "B", "C"]
+      "tracks": ["D", "B", "C"],
+      "problemSolving": {
+        "id": "P12.1",
+        "path": "week-12/problem-solving/README.md",
+        "focus": "Isolation and identity keys",
+        "instructions": "Group events by merchant plus provider ID; demonstrate how provider ID alone conflates two merchants.",
+        "proof": "Include the solution and tests, empty/boundary cases, one corrected attempt and a plain-language explanation. Revisit one earlier exercise within the same two-hour block."
+      }
     },
     {
-      "number": 10,
+      "number": 13,
+      "title": "Consolidate correctness before adding polish",
+      "phase": "Build",
+      "need": "The protected backend needs reliable transaction and regression proofs before the client is added.",
+      "before": "Consolidate the working protected backend. Use earlier labs and their failing tests; browser implementation is scheduled for Weeks 16-17. Retain all ownership and validation checks.",
+      "outcome": "A coherent test matrix, one exercised transaction and corrected weak cases.",
+      "shared": "shared/api/test/, shared/database/README.md and shared/delivery/test-matrix.md",
+      "tasks": [
+        {
+          "id": "D06.1",
+          "title": "Exercise rollback on one checked-out client",
+          "minutes": 100,
+          "path": "week-13/database/rollback.ts",
+          "learn": "Transactions, rollback, client release and isolated state",
+          "resources": ["transactions"],
+          "instructions": "In a disposable test namespace, perform two related writes, deliberately fail the second and prove the first was rolled back. Use one checked-out client, BEGIN/COMMIT/ROLLBACK and finally release. Explain why a single event insert does not need an artificial multi-step transaction.",
+          "proof": "The deliberate failure leaves no partial first write and the pool remains usable afterward.",
+          "trap": "Do not hold a database transaction around a network request."
+        },
+        {
+          "id": "B08.1",
+          "title": "Strengthen a weak boundary test",
+          "minutes": 120,
+          "path": "week-13/api/boundary.db.test.ts",
+          "learn": "Adversarial cases, timestamps, amount bounds and conflict semantics",
+          "resources": ["ftest", "nodeTest"],
+          "instructions": "Choose the weakest core API boundary and add a test that exposes it: amount coercion, impossible date, equal timestamp paging, changed duplicate content or cross-owner lookup. Fix the bug, then rerun the whole current suite. Improve parsing without loosening the agreed field contract.",
+          "proof": "Your added test fails before the fix and passes afterward; the existing core checks remain green.",
+          "trap": "A test relying on whichever row happens to come first is not stable."
+        },
+        {
+          "id": "E09.1",
+          "title": "Map requirements to evidence and revise",
+          "minutes": 80,
+          "path": "week-13/quality/test-matrix.md",
+          "learn": "Risk-based tests, explain-back and focused revision",
+          "resources": ["evidence"],
+          "instructions": "Map each implemented V1 behavior to a unit, HTTP or real-database check. Mark browser proofs as scheduled for Weeks 16-18 rather than claiming they already ran. Add one missing backend proof and revisit a Week 4/5 concept from memory, then correct your explanation against the code.",
+          "proof": "Every implemented backend milestone has a named check; not-yet-implemented browser checks are labelled pending and your revision records a real correction.",
+          "trap": "Coverage percentages and green starter tests do not prove the completed merchant features."
+        }
+      ],
+      "budget": {
+        "learning": 180,
+        "tasks": 300,
+        "practice": 120,
+        "shared": 60,
+        "review": 120,
+        "problemSolving": 120
+      },
+      "tracks": ["D", "B", "E"],
+      "problemSolving": {
+        "id": "P13.1",
+        "path": "week-13/problem-solving/README.md",
+        "focus": "Stack basics",
+        "instructions": "Check balanced delimiters in a small string using a stack; handle empty and mismatched input.",
+        "proof": "Include the solution and tests, empty/boundary cases, one corrected attempt and a plain-language explanation. Revisit one earlier exercise within the same two-hour block."
+      }
+    },
+    {
+      "number": 14,
+      "title": "Review the protected contract and repair a boundary",
+      "phase": "Build",
+      "need": "The authenticated API needs a contract that exposes its trust boundaries and tests that survive adversarial requests.",
+      "before": "Bring two seeded merchants, the ownership suite and Week 10 OpenAPI. Keep all tests local and disposable; no new authentication mechanism or security vendor is required.",
+      "outcome": "A current authenticated API specification, a negative-request matrix and an explained no-AI repair.",
+      "shared": "shared/api/openapi.json, shared/api/test/security.db.test.ts and shared/delivery/security-review.md",
+      "tracks": ["B", "E"],
+      "tasks": [
+        {
+          "id": "B10.1",
+          "title": "Update OpenAPI for authentication and ownership",
+          "minutes": 100,
+          "path": "week-14/design/openapi-review.md",
+          "learn": "Cookie security schemes, Origin requirements and non-leaking authorization responses",
+          "resources": ["openapi", "apiDocs", "contract"],
+          "instructions": "Continue the Week 10 specification rather than copying another version into the app. Keep week-10/api/openapi.json canonical and record this review at the task path. Add login/logout/me, cookie authentication, exact Origin on writes, generic 401, owned 404 and safe public response schemas. Record readiness as planned until Week 18. Compare it with two real merchant flows.",
+          "proof": "A peer signs in and reads owned events using the updated spec, while anonymous/other-owner cases match the documented responses. Logout is a bodyless 204 after a JSON {} request.",
+          "trap": "An Origin header is not service authentication, and an HttpOnly cookie is not a claim that authorization is automatic."
+        },
+        {
+          "id": "B10.2",
+          "title": "Prove rejected requests do not change stored data",
+          "minutes": 100,
+          "path": "week-14/api/security.db.test.ts",
+          "learn": "Trust-boundary tests, malformed JSON, rejected ownership and durable state",
+          "resources": ["ftest", "nodeTest", "contract"],
+          "instructions": "Build a small negative-request table covering malformed JSON, wrong body types, unexpected merchant_id, missing/bad cookies and missing/foreign Origin. Include at least one body-limit case and one invalid query case. Assert the deliberate safe response and that no event was inserted or overwritten. Use an isolated real DB schema and close its apps/pools.",
+          "proof": "At least six distinct rejection cases leave the original row count/content unchanged; a valid authenticated control request still succeeds. Existing core tests remain green.",
+          "trap": "A rejection status alone does not establish that a write was never committed; inspect the isolated database too."
+        },
+        {
+          "id": "E13.1",
+          "title": "Repair and explain a small defect without AI",
+          "minutes": 100,
+          "path": "week-14/review/checkpoint.md",
+          "learn": "Independent debugging, minimal changes and oral explain-back",
+          "resources": ["evidence", "ai"],
+          "instructions": "In a 30-minute supervised or witnessed checkpoint, inspect a small reversible defect in your own validator, query boundary or HTTP mapping without AI or copied solutions. Documentation is allowed. Write a failing assertion, repair the cause and explain input, trust boundary and outcome. If incomplete, record it honestly and schedule a focused retry; do not publish private grading.",
+          "proof": "A non-author records the observed failing/passing commands and your explanation. The final code satisfies the unchanged core contract.",
+          "trap": "The checkpoint tests understanding, not memorised syntax, speed rankings or willingness to bypass a check."
+        }
+      ],
+      "budget": {
+        "learning": 180,
+        "tasks": 300,
+        "practice": 120,
+        "shared": 60,
+        "review": 120,
+        "problemSolving": 120
+      },
+      "problemSolving": {
+        "id": "P14.1",
+        "path": "week-14/problem-solving/README.md",
+        "focus": "Binary search and prerequisites",
+        "instructions": "Find a target in a sorted integer list with binary search; test missing/boundary targets and explain the sorted-input requirement.",
+        "proof": "Include the solution and tests, empty/boundary cases, one corrected attempt and a plain-language explanation. Revisit one earlier exercise within the same two-hour block."
+      }
+    },
+    {
+      "number": 15,
+      "title": "Investigate a backend failure and rehearse its clean start",
+      "phase": "Deliver",
+      "need": "The application must be maintainable when something fails and when a different person starts it.",
+      "before": "Use a reversible failure only in disposable/local test data. The maintainer chooses a fixture or condition, not a destructive change to a real database.",
+      "outcome": "An evidence-led backend repair, an explained query plan and a corrected API runbook.",
+      "shared": "shared/delivery/incident.md, shared/database/migrations/ and shared/delivery/runbook.md",
+      "tasks": [
+        {
+          "id": "E11.1",
+          "title": "Break, investigate and fix one failure",
+          "minutes": 120,
+          "path": "week-15/incident/postmortem.md",
+          "learn": "Evidence-led debugging and regression tests",
+          "resources": ["logs", "nodeTest"],
+          "instructions": "Investigate one local failure such as a wrong DB URL, missing owner filter, unhandled SQL conflict. Record evidence and wrong guesses before changing code. Add a failing regression test, fix the cause and write a brief blameless postmortem.",
+          "proof": "Your evidence identifies the cause and a regression test catches the original bug.",
+          "trap": "Never inject failures into another person's database or loosen validation until a test goes green."
+        },
+        {
+          "id": "D07.1",
+          "title": "Explain one index from the query",
+          "minutes": 90,
+          "path": "week-15/database/query-plan.sql",
+          "learn": "EXPLAIN, filter/order alignment and measurement limits",
+          "resources": ["explain"],
+          "instructions": "Inspect the merchant list query with EXPLAIN on synthetic rows. Propose a supporting merchant/time/ID index and compare plans before/after on a suitable fixture size. Add it through a new migration if justified. Say why a tiny table may use a sequential scan correctly.",
+          "proof": "The index proposal matches actual filters/order and the explanation does not claim a measured speedup without evidence.",
+          "trap": "An index is not automatically better for every table or write-heavy operation."
+        },
+        {
+          "id": "E11.2",
+          "title": "Rehearse a clean backend start",
+          "minutes": 90,
+          "path": "week-15/delivery/clean-start-notes.md",
+          "learn": "Setup instructions, fresh state and reproducibility",
+          "resources": ["setup"],
+          "instructions": "Draft week-20/delivery/runbook.md from NOTES.md and the wiring guide. Have a peer use a fresh named disposable database and npm ci to migrate, seed, start the API, sign in through the simulator and submit/list an event without verbal shortcuts. Record and fix confusing steps. Mark UI steps as pending until Weeks 16-17; extend this same runbook in Weeks 19-20.",
+          "proof": "A non-author reaches the protected API and persisted event using written commands; missing steps are corrected and no browser completion is claimed yet.",
+          "trap": "Do not delete or reset a personal or shared database to make the rehearsal look clean."
+        }
+      ],
+      "budget": {
+        "learning": 180,
+        "tasks": 300,
+        "practice": 120,
+        "shared": 60,
+        "review": 120,
+        "problemSolving": 120
+      },
+      "tracks": ["E", "D"],
+      "problemSolving": {
+        "id": "P15.1",
+        "path": "week-15/problem-solving/README.md",
+        "focus": "Two-pointer reasoning",
+        "instructions": "Merge two sorted synthetic ID lists into one ordered list; explain pointer movement and input assumptions.",
+        "proof": "Include the solution and tests, empty/boundary cases, one corrected attempt and a plain-language explanation. Revisit one earlier exercise within the same two-hour block."
+      }
+    },
+    {
+      "number": 16,
       "title": "Build a small merchant interface while tightening responses",
       "phase": "Build",
       "need": "A merchant needs to inspect event data without typing curl commands; backend responses must stay safe.",
@@ -477,19 +918,19 @@
         {
           "id": "C03.1",
           "title": "Render a typed event list",
-          "minutes": 50,
-          "path": "week-10/client/src/EventList.tsx",
+          "minutes": 100,
+          "path": "week-16/client/src/EventList.tsx",
           "learn": "JSX, typed props, lists, keys and minimal semantic markup",
           "resources": ["react"],
-          "instructions": "Copy the supplied web scaffold into your own week-10/client once. Add an EventList component with typed props and stable event IDs as keys. Show event kind, currency, integer-derived display amount and timestamp. Use a heading and a table or accessible list.",
+          "instructions": "Copy the supplied web scaffold into your own week-16/client once. Add an EventList component with typed props and stable event IDs as keys. Show event kind, currency, integer-derived display amount and timestamp. Use a heading and a table or accessible list.",
           "proof": "The local UI renders two events and a meaningful empty state; a peer can explain where props come from.",
           "trap": "React renders the interface. HTTP fetch, not React itself, transports API requests."
         },
         {
           "id": "C03.2",
           "title": "Add a small controlled filter",
-          "minutes": 45,
-          "path": "week-10/client/src/App.tsx",
+          "minutes": 90,
+          "path": "week-16/client/src/App.tsx",
           "learn": "useState, event handlers, forms and labels",
           "resources": ["state"],
           "instructions": "Add a labelled kind selector and a submit/reset interaction on the static data. Keep data in the parent and explain a prop/state distinction. Use the supplied modest CSS; do not add a design system, router or global state package.",
@@ -499,8 +940,8 @@
         {
           "id": "B07.1",
           "title": "Shape and test safe API responses",
-          "minutes": 55,
-          "path": "week-10/api/response-contract.test.ts",
+          "minutes": 110,
+          "path": "week-16/api/response-contract.test.ts",
           "learn": "Response DTOs, JSON Schema and privacy boundaries",
           "resources": ["validation", "ftest"],
           "instructions": "Return only public event fields and the paging envelope. Add response schemas and tests proving operator password hashes, cookie values and internal SQL errors are absent. Compare the response shape with the UI props; use an explicit mapping instead of pretending DB rows are already browser models.",
@@ -509,27 +950,36 @@
         }
       ],
       "budget": {
-        "learning": 90,
-        "tasks": 150,
-        "shared": 30,
-        "review": 30
+        "learning": 180,
+        "tasks": 300,
+        "practice": 120,
+        "shared": 60,
+        "review": 120,
+        "problemSolving": 120
       },
-      "tracks": ["C", "B"]
+      "tracks": ["C", "B"],
+      "problemSolving": {
+        "id": "P16.1",
+        "path": "week-16/problem-solving/README.md",
+        "focus": "Transformations and pure functions",
+        "instructions": "Project event records to public fields without mutating inputs; test that a private field is absent.",
+        "proof": "Include the solution and tests, empty/boundary cases, one corrected attempt and a plain-language explanation. Revisit one earlier exercise within the same two-hour block."
+      }
     },
     {
-      "number": 11,
+      "number": 17,
       "title": "Connect the interface to the protected backend",
       "phase": "Build",
       "need": "The interface currently shows static data and needs real authenticated event queries.",
-      "before": "Keep editing your week-10/client scaffold. Start only one UI on port 5173 and the API on 3000; Vite proxies /api to the API. The browser uses relative /api URLs.",
+      "before": "Keep editing your week-16/client scaffold. Start only one UI on port 5173 and the API on 3000; Vite proxies /api to the API. The browser uses relative /api URLs.",
       "outcome": "A signed-in merchant can inspect its own persisted events through React.",
       "shared": "shared/web/src/api.ts, shared/web/src/App.tsx and shared/delivery/browser-flow.md",
       "tasks": [
         {
           "id": "C04.1",
           "title": "Fetch and render real events",
-          "minutes": 60,
-          "path": "week-10/client/src/api.ts",
+          "minutes": 120,
+          "path": "week-16/client/src/api.ts",
           "learn": "Fetch, effects, loading/error/empty states and cancellation",
           "resources": ["fetch", "effect"],
           "instructions": "Replace static reads with relative /api fetch calls using docs/04-api-and-security-contract.md. Add next/previous page controls using the returned limit/offset, reset offset when the filter changes, and let the operator inspect one selected event through /api/events/:id. Check response.ok and validate the expected response shape at the client boundary. Model loading, empty, data and error states explicitly. Abort superseded requests and prevent stale list/detail results from overwriting newer selections. No frontend router is needed.",
@@ -539,8 +989,8 @@
         {
           "id": "C04.2",
           "title": "Connect login and logout",
-          "minutes": 55,
-          "path": "week-10/client/src/App.tsx",
+          "minutes": 110,
+          "path": "week-16/client/src/App.tsx",
           "learn": "Controlled credentials, cookie sessions and authentication UX",
           "resources": ["state", "fetch"],
           "instructions": "Add a small login form and logout action using the protected API. Rely on the HttpOnly cookie; do not copy tokens into localStorage. Refresh /api/me on startup, return to login on 401, and use only relative /api paths through the proxy. Clear merchant records and cancel/ignore pending list/detail results when logging out, losing authentication or switching operators.",
@@ -550,8 +1000,8 @@
         {
           "id": "E08.1",
           "title": "Witness the browser-to-database path",
-          "minutes": 35,
-          "path": "week-11/delivery/browser-flow.md",
+          "minutes": 70,
+          "path": "week-17/delivery/browser-flow.md",
           "learn": "Browser network tools and end-to-end evidence",
           "resources": ["http"],
           "instructions": "Have a peer trace the browser request, Vite development proxy, Fastify route and PostgreSQL query. Record login, filtering, empty data and unauthorized behavior without screenshots containing credentials. Include a small sequence diagram.",
@@ -560,66 +1010,24 @@
         }
       ],
       "budget": {
-        "learning": 90,
-        "tasks": 150,
-        "shared": 30,
-        "review": 30
+        "learning": 180,
+        "tasks": 300,
+        "practice": 120,
+        "shared": 60,
+        "review": 120,
+        "problemSolving": 120
       },
-      "tracks": ["C", "E"]
+      "tracks": ["C", "E"],
+      "problemSolving": {
+        "id": "P17.1",
+        "path": "week-17/problem-solving/README.md",
+        "focus": "Async reasoning",
+        "instructions": "Use a controlled delayed Promise to demonstrate why an older result must not overwrite a newer selection; record the resolved order.",
+        "proof": "Include the solution and tests, empty/boundary cases, one corrected attempt and a plain-language explanation. Revisit one earlier exercise within the same two-hour block."
+      }
     },
     {
-      "number": 12,
-      "title": "Consolidate correctness before adding polish",
-      "phase": "Build",
-      "need": "The happy-path demo works, but duplicates, transactions and regressions need trustworthy checks.",
-      "before": "This is a consolidation week with no new framework. Use earlier labs and their failing tests; retain all essential ownership and validation checks.",
-      "outcome": "A coherent test matrix, one exercised transaction and corrected weak cases.",
-      "shared": "shared/api/test/, shared/database/README.md and shared/delivery/test-matrix.md",
-      "tasks": [
-        {
-          "id": "D06.1",
-          "title": "Exercise rollback on one checked-out client",
-          "minutes": 50,
-          "path": "week-12/database/rollback.ts",
-          "learn": "Transactions, rollback, client release and isolated state",
-          "resources": ["transactions"],
-          "instructions": "In a disposable test namespace, perform two related writes, deliberately fail the second and prove the first was rolled back. Use one checked-out client, BEGIN/COMMIT/ROLLBACK and finally release. Explain why a single event insert does not need an artificial multi-step transaction.",
-          "proof": "The deliberate failure leaves no partial first write and the pool remains usable afterward.",
-          "trap": "Do not hold a database transaction around a network request."
-        },
-        {
-          "id": "B08.1",
-          "title": "Strengthen a weak boundary test",
-          "minutes": 60,
-          "path": "week-12/api/boundary.db.test.ts",
-          "learn": "Adversarial cases, timestamps, amount bounds and conflict semantics",
-          "resources": ["ftest", "nodeTest"],
-          "instructions": "Choose the weakest core API boundary and add a test that exposes it: amount coercion, impossible date, equal timestamp paging, changed duplicate content or cross-owner lookup. Fix the bug, then rerun the whole current suite. Improve parsing without loosening the agreed field contract.",
-          "proof": "Your added test fails before the fix and passes afterward; the existing core checks remain green.",
-          "trap": "A test relying on whichever row happens to come first is not stable."
-        },
-        {
-          "id": "E09.1",
-          "title": "Map requirements to evidence and revise",
-          "minutes": 40,
-          "path": "week-12/quality/test-matrix.md",
-          "learn": "Risk-based tests, explain-back and focused revision",
-          "resources": ["evidence"],
-          "instructions": "Map each V1 behavior to a unit, HTTP, real-database or browser check. Identify one missing proof, add it or explain the remaining limit. Revisit a Week 2/3 concept from memory, then correct your explanation against the code.",
-          "proof": "Every milestone behavior has a named check and your revision records a real correction.",
-          "trap": "Coverage percentages and green starter tests do not prove the completed merchant features."
-        }
-      ],
-      "budget": {
-        "learning": 90,
-        "tasks": 150,
-        "shared": 30,
-        "review": 30
-      },
-      "tracks": ["D", "B", "E"]
-    },
-    {
-      "number": 13,
+      "number": 18,
       "title": "Make failures visible and requests bounded",
       "phase": "Deliver",
       "need": "A slow database, bad request or expired session should produce a useful failure rather than a misleading demo.",
@@ -630,8 +1038,8 @@
         {
           "id": "B09.1",
           "title": "Bound and diagnose the API",
-          "minutes": 60,
-          "path": "week-13/api/operation.ts",
+          "minutes": 120,
+          "path": "week-18/api/operation.ts",
           "learn": "Body/query limits, timeouts, readiness and structured logs",
           "resources": ["logs", "pool"],
           "instructions": "Enforce the 16 KiB event body cap, bounded page/filter inputs and database connection/query timeouts. Keep liveness separate from readiness: readiness must fail when the database cannot serve a simple check. Log request ID, route, outcome and safe event ID, with cookie/auth/password/session key redaction.",
@@ -641,8 +1049,8 @@
         {
           "id": "C05.1",
           "title": "Make the client honest during failure",
-          "minutes": 40,
-          "path": "week-10/client/src/App.tsx",
+          "minutes": 80,
+          "path": "week-16/client/src/App.tsx",
           "learn": "Recoverable errors, accessible feedback and duplicate-submit prevention",
           "resources": ["react", "fetch"],
           "instructions": "Exercise 401, a 400 response, empty data and a stopped API on the existing login/list/detail interface. Preserve useful filter state, label errors, disable an in-flight login or navigation action and offer a retry for failed reads. Event submission stays in the API/simulator; no event-entry form is required. Do not add automatic write retries that hide an event's identity.",
@@ -652,8 +1060,8 @@
         {
           "id": "E10.1",
           "title": "Verify the current CI gate",
-          "minutes": 50,
-          "path": "week-13/quality/ci-proof.md",
+          "minutes": 100,
+          "path": "week-18/quality/ci-proof.md",
           "learn": "Existing checks, real DB tests and Windows/Linux portability",
           "resources": ["actions"],
           "instructions": "Explain the committed starter jobs and extend the database suite discovery with your actual .db.test.ts tests. The existing PostgreSQL service runs practice-fixture checks; it is not proof of product migrations. Add a product migration test and demonstrate one deliberately failing check locally and, once published, on a real PR.",
@@ -662,79 +1070,97 @@
         }
       ],
       "budget": {
-        "learning": 90,
-        "tasks": 150,
-        "shared": 30,
-        "review": 30
+        "learning": 180,
+        "tasks": 300,
+        "practice": 120,
+        "shared": 60,
+        "review": 120,
+        "problemSolving": 120
       },
-      "tracks": ["B", "C", "E"]
+      "tracks": ["B", "C", "E"],
+      "problemSolving": {
+        "id": "P18.1",
+        "path": "week-18/problem-solving/README.md",
+        "focus": "Bounded retries for a read exercise",
+        "instructions": "Write a pure decision function for a maximum of three read attempts; test the bound without adding automatic application write retries.",
+        "proof": "Include the solution and tests, empty/boundary cases, one corrected attempt and a plain-language explanation. Revisit one earlier exercise within the same two-hour block."
+      }
     },
     {
-      "number": 14,
-      "title": "Investigate, repair and rehearse a clean start",
+      "number": 19,
+      "title": "Build one bounded extension and prepare the portfolio",
       "phase": "Deliver",
-      "need": "The application must be maintainable when something fails and when a different person starts it.",
-      "before": "Use a reversible failure only in disposable/local test data. The maintainer chooses a fixture or condition, not a destructive change to a real database.",
-      "outcome": "An evidence-led repair, an explained query plan and a corrected runbook.",
-      "shared": "shared/delivery/incident.md, shared/database/migrations/ and shared/delivery/runbook.md",
+      "need": "Every student needs attributable implementation evidence without turning the common product into ten unrelated applications.",
+      "before": "Complete the core merchant flow and Week 18 failure checks first. Select one scope from docs/15-individual-extension.md and agree its proof before adding code. Reuse the existing API, database and React client.",
+      "outcome": "One bounded tested extension, an attributable case study and a rehearsed complete demo.",
+      "shared": "shared/delivery/extension-decisions.md and shared/delivery/portfolio-guide.md",
+      "tracks": ["B", "E", "C"],
       "tasks": [
         {
-          "id": "E11.1",
-          "title": "Break, investigate and fix one failure",
-          "minutes": 60,
-          "path": "week-14/incident/postmortem.md",
-          "learn": "Evidence-led debugging and regression tests",
-          "resources": ["logs", "nodeTest"],
-          "instructions": "Investigate one local failure such as a wrong DB URL, missing owner filter, unhandled SQL conflict or stale UI result. Record evidence and wrong guesses before changing code. Add a failing regression test, fix the cause and write a brief blameless postmortem.",
-          "proof": "Your evidence identifies the cause and a regression test catches the original bug.",
-          "trap": "Never inject failures into another person's database or loosen validation until a test goes green."
+          "id": "B11.1",
+          "title": "Implement a small reviewed extension",
+          "minutes": 100,
+          "path": "week-19/extension/plan.md",
+          "learn": "Scope control, backward-compatible changes and tested integration",
+          "resources": ["extension", "contract"],
+          "instructions": "Choose merchant-owned CSV export, one separate bounded merchant-owned search endpoint, or a request/incident diagnostic improvement from the extension guide. State the user need, exact paths, limit, failure cases and estimate before review. Implement it in your continuing app with tests, companion code and forward migrations only if justified. Update your canonical API specification for any endpoint change. Do not add a new framework.",
+          "proof": "A reviewer reproduces the new behavior and one failure; the existing core suite stays green. Evidence identifies your implementation rather than inherited shared code.",
+          "trap": "An extension does not replace any core task, make real payments or require adding every student's feature to shared/."
         },
         {
-          "id": "D07.1",
-          "title": "Explain one index from the query",
-          "minutes": 45,
-          "path": "week-14/database/query-plan.sql",
-          "learn": "EXPLAIN, filter/order alignment and measurement limits",
-          "resources": ["explain"],
-          "instructions": "Inspect the merchant list query with EXPLAIN on synthetic rows. Propose a supporting merchant/time/ID index and compare plans before/after on a suitable fixture size. Add it through a new migration if justified. Say why a tiny table may use a sequential scan correctly.",
-          "proof": "The index proposal matches actual filters/order and the explanation does not claim a measured speedup without evidence.",
-          "trap": "An index is not automatically better for every table or write-heavy operation."
+          "id": "E14.1",
+          "title": "Write an attributable technical case study",
+          "minutes": 100,
+          "path": "week-19/portfolio/case-study.md",
+          "learn": "Authorship, trade-offs, hard-problem explanation and honest career evidence",
+          "resources": ["evidence", "git"],
+          "instructions": "Write a short case study with user need, architecture, one hard problem, your failed approach, tested fix and one improvement. Link your authored core/extension commits and reviews. Distinguish your own app, shared contributions and supplied helpers. Draft two defensible resume statements; do not claim production, Rust or blockchain work from this sprint.",
+          "proof": "A peer can trace every implementation claim to code and proof and ask you to explain one trade-off. No secrets or private grades appear.",
+          "trap": "A shared repo URL or generated essay is not evidence that you personally implemented each feature."
         },
         {
-          "id": "E11.2",
-          "title": "Rehearse the clean-start handover",
-          "minutes": 45,
-          "path": "week-14/delivery/clean-start-notes.md",
-          "learn": "Setup instructions, fresh state and reproducibility",
-          "resources": ["setup"],
-          "instructions": "Draft week-15/delivery/runbook.md from your existing NOTES.md and wiring instructions, then give a peer the repository and that runbook. Use a fresh named disposable database and npm ci. Watch them migrate, seed, start API/UI and send a fixture without verbal shortcuts. Record and fix confusing instructions; continue the same runbook in Week 15.",
-          "proof": "A non-author gets to the protected event screen using written commands; missing steps are corrected.",
-          "trap": "Do not delete or reset a personal or shared database to make the rehearsal look clean."
+          "id": "C06.2",
+          "title": "Rehearse the complete portfolio demonstration",
+          "minutes": 100,
+          "path": "week-19/delivery/demo-plan.md",
+          "learn": "User-focused demonstrations, safe synthetic data and portfolio communication",
+          "resources": ["contract", "delivery"],
+          "instructions": "Plan a demo under three minutes showing the core operator flow and your bounded extension. Prepare synthetic records for paging, duplicates/conflict and two-merchant isolation, and choose a focused negative case to show. Check setup steps and the updated OpenAPI; save credentials only in ignored configuration. Rehearse without silently changing the product contract.",
+          "proof": "A peer follows the planned sequence, sees real requests/results and identifies your extension and one limitation. The plan fits the time limit without exposing credentials.",
+          "trap": "Do not use a public tunnel, paid deployment or a polished video to replace clean-start and backend test evidence."
         }
       ],
       "budget": {
-        "learning": 90,
-        "tasks": 150,
-        "shared": 30,
-        "review": 30
+        "learning": 180,
+        "tasks": 300,
+        "practice": 120,
+        "shared": 60,
+        "review": 120,
+        "problemSolving": 120
       },
-      "tracks": ["E", "D"]
+      "problemSolving": {
+        "id": "P19.1",
+        "path": "week-19/problem-solving/README.md",
+        "focus": "Revisit a weak earlier problem",
+        "instructions": "Choose the same mentor-assigned earlier exercise for the cohort, solve it without copied code and compare the new explanation with the first attempt.",
+        "proof": "Include the solution and tests, empty/boundary cases, one corrected attempt and a plain-language explanation. Revisit one earlier exercise within the same two-hour block."
+      }
     },
     {
-      "number": 15,
+      "number": 20,
       "title": "Demonstrate and hand over the merchant application",
       "phase": "Deliver",
       "need": "The product and learning evidence must survive the original builders and continue into Sprint 2.",
       "before": "Do not add new features this week. Bring the clean-start corrections, test matrix, approved contracts and authored contribution links.",
       "milestone": "Independent handover",
-      "outcome": "A reproducible local product, an honest demo and attributable contribution evidence.",
+      "outcome": "An independently reproducible local product, tested extension, short demo and attributable oral/repair evidence.",
       "shared": "shared/delivery/runbook.md, shared/delivery/final-architecture.md, shared/delivery/demo.md and README.md",
       "tasks": [
         {
           "id": "E12.1",
           "title": "Finish the runbook and architecture",
-          "minutes": 60,
-          "path": "week-15/delivery/runbook.md",
+          "minutes": 120,
+          "path": "week-20/delivery/runbook.md",
           "learn": "Actual architecture, migrations, seed accounts, tests and limitations",
           "resources": ["delivery"],
           "instructions": "Write the final native-Windows runbook with clone/install, local configuration, database creation, migration/seed, API/UI start, tests, common failures and shutdown. Include a diagram matching actual code and a short next-sprint boundary. Propose the shared root README update in the shared-task PR.",
@@ -744,33 +1170,42 @@
         {
           "id": "C06.1",
           "title": "Demonstrate the merchant's real actions",
-          "minutes": 35,
-          "path": "week-15/delivery/demo.md",
+          "minutes": 70,
+          "path": "week-20/delivery/demo.md",
           "learn": "User-focused demo and browser/API evidence",
           "resources": ["contract"],
-          "instructions": "Demonstrate login, one accepted fixture, invalid input, duplicate/conflicting ID, filtered/paged viewing, another merchant's rejection and logout. Explain one UI/API/DB request path and state the local-only and session-revocation limits.",
-          "proof": "The demo shows negative cases as well as success, with no real money, credentials or customer data.",
+          "instructions": "Record a demo video under three minutes using synthetic data: login, one accepted fixture, a focused invalid/duplicate/conflict case, filtered/paged viewing, another merchant's rejection and logout. Include your bounded extension or link its separate short proof. Explain one UI/API/DB request path and state local-only and session-revocation limits. Link the video or a reviewable recording artifact in demo.md without committing large media or secrets.",
+          "proof": "A non-author watches the real working demo and its focused negative case; the full written/test matrix covers the remaining cases. No real money, credentials or customer data appears.",
           "trap": "A polished screen does not replace backend evidence."
         },
         {
           "id": "E12.2",
           "title": "Complete the independent start and contribution record",
-          "minutes": 55,
-          "path": "week-15/delivery/handover.md",
+          "minutes": 110,
+          "path": "week-20/delivery/handover.md",
           "learn": "Clean-start proof, authorship and technical explanation",
           "resources": ["evidence", "git"],
-          "instructions": "Have a non-author follow the final runbook and record commands/outcomes. Link your own core task commits/PRs and shared-project contributions. Write two defensible resume statements about work you actually did and one limitation you can explain. Keep private grading outside this public repository.",
-          "proof": "The final witness succeeds using the runbook, core tests pass, and individual contributions are attributable.",
+          "instructions": "Have a non-author follow the final runbook and record commands/outcomes. Link your core task commits/PRs, bounded extension, shared contributions, case study and demo. Complete an oral review explaining one request-to-database path and a 30-minute no-AI repair of a small reversible defect with documentation allowed. Record technical proof, not private grades. Write two defensible resume statements and one improvement you can explain.",
+          "proof": "The independent start succeeds, core and extension tests pass, and the reviewer records the explain-back/repair observation. Implementation claims are attributable; incomplete work is not labelled complete.",
           "trap": "Do not claim production ownership, Rust expertise or smart-contract work from this sprint."
         }
       ],
       "budget": {
-        "learning": 90,
-        "tasks": 150,
-        "shared": 30,
-        "review": 30
+        "learning": 180,
+        "tasks": 300,
+        "practice": 120,
+        "shared": 60,
+        "review": 120,
+        "problemSolving": 120
       },
-      "tracks": ["E", "C"]
+      "tracks": ["E", "C"],
+      "problemSolving": {
+        "id": "P20.1",
+        "path": "week-20/problem-solving/README.md",
+        "focus": "Explain-back and review",
+        "instructions": "Explain one prior solution without AI, state time/space costs and improve one weak test. This is foundation practice, not a hiring guarantee.",
+        "proof": "Include the solution and tests, empty/boundary cases, one corrected attempt and a plain-language explanation. Revisit one earlier exercise within the same two-hour block."
+      }
     }
   ],
   "tracks": {
@@ -906,7 +1341,24 @@
     ],
     "evidence": ["Assessment and review", "../docs/10-assessment.md"],
     "setup": ["Windows setup", "../docs/02-windows-setup.md"],
-    "delivery": ["Delivery documentation", "../shared/delivery/README.md"]
+    "delivery": ["Delivery documentation", "../shared/delivery/README.md"],
+    "openapi": [
+      "OpenAPI 3.1 specification",
+      "https://spec.openapis.org/oas/v3.1.1.html"
+    ],
+    "apiDocs": [
+      "Document the continuing API",
+      "../docs/13-api-documentation.md"
+    ],
+    "problemSolving": [
+      "Weekly problem-solving practice",
+      "../docs/14-problem-solving.md"
+    ],
+    "extension": [
+      "Bounded individual extension",
+      "../docs/15-individual-extension.md"
+    ],
+    "ai": ["AI use and explanation checkpoints", "../docs/07-resources.md"]
   },
   "students": [
     "BE01",
@@ -919,5 +1371,16 @@
     "BE08",
     "BE09",
     "BE10"
-  ]
+  ],
+  "durationWeeks": 20,
+  "weeklyHours": {
+    "core": 15,
+    "maximum": 20,
+    "problemSolving": 2
+  },
+  "application": {
+    "apiRoot": "week-06/api",
+    "migrationRoot": "week-08/database/migrations",
+    "clientRoot": "week-16/client"
+  }
 }

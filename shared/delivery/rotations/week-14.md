@@ -1,9 +1,9 @@
 # Week 14: weekly contribution record
 
-Everyone completes the same individual core tasks. Assign shared work to available students using the [responsibility guide](../../../docs/06-team-roles.md), not a fixed pair schedule.
+Everyone completes the same core tasks and problem-solving block. Assign shared work to available students using the [responsibility guide](../../../docs/06-team-roles.md), not a fixed pair schedule.
 
-- Shared contribution: shared/delivery/incident.md, shared/database/migrations/ and shared/delivery/runbook.md
-- Task IDs: E11.1, D07.1, E11.2
+- Shared contribution: shared/api/openapi.json, shared/api/test/security.db.test.ts and shared/delivery/security-review.md
+- Task IDs: B10.1, B10.2, E13.1
 - Log coordinator:
 
 ## Task ownership
@@ -14,7 +14,7 @@ Add one row per bounded shared task. Rotate implementation, test and review resp
 | ------------------- | ------- | ----- | ------------------- | -------------- | ----------- | ----- |
 |                     |         |       |                     |                |             |       |
 
-Use Available, In progress, In review or Merged. Assignment is not completion; link the passing proof and non-author review before recording a task as complete.
+Use Available, In progress, In review or Merged. Assignment is not completion; link passing proof and non-author review before recording a task as complete.
 
 ## Evidence and handover
 
@@ -24,4 +24,4 @@ Use Available, In progress, In review or Merged. Assignment is not completion; l
 - Open task, current owner and next action:
 - Reassignment: task, preserved branch/PR, new owner and technical next step:
 
-Keep personal reasons for absence and private feedback out of this log. A maintainer can reassign an unavailable owner/reviewer; individual practice continues. Do not invent completed work or witnesses.
+Keep personal absence reasons, grades and no-AI assessment details out of this log. A maintainer can reassign an unavailable owner/reviewer; individual practice continues. Do not invent completed work or witnesses. Week 19 extensions stay individual unless explicitly accepted as shared scope.

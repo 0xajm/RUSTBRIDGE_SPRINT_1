@@ -41,3 +41,7 @@ export function studentAppEnvironment(student, original) {
   if (connection) environment.DATABASE_URL = connection;
   return environment;
 }
+
+export function studentApiRelativePath(student) {
+  return 'students/' + parseStudentId(student) + '/week-06/api/server.ts';
+}

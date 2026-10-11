@@ -21,3 +21,9 @@ Run npm.cmd run check for every change and npm.cmd run test:db for database-rela
 ## Curriculum references
 
 The learning model draws on [Data Sprint's blueprint](https://github.com/StartwithDot/Data-Sprint-1/blob/main/docs/curriculum-blueprint.md) and [Rust Backend Sprint's shared plan](https://github.com/jrk101/Rust-Backend-Sprint-1/blob/main/docs/11-shared-build-plan.md). This repository's tasks, product boundary and pacing are specific to MerchantDesk.
+
+## Twenty-week delivery
+
+The curriculum assumes 15-20 hours weekly including the common two-hour problem-solving block. Preserve the common core and rotating shared responsibilities; give beginner setup/concept feedback without skipping hard proofs. No Next.js, paid service or public hosting is required in Sprint 1.
+
+Week 14 and Week 20 include witnessed no-AI repair/explain-back. Keep assessment grades outside the public repo. Week 19 extensions need bounded scope and cannot replace core tasks or force ten extra shared features. Complete the final demo, independent start and authored case-study evidence before recording completion.

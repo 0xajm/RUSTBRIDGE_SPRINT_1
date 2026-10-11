@@ -1,16 +1,20 @@
 import { existsSync } from 'node:fs';
 import path from 'node:path';
 import { spawn } from 'node:child_process';
-import { parseStudentId, studentAppEnvironment } from './student-context.mjs';
+import {
+  parseStudentId,
+  studentAppEnvironment,
+  studentApiRelativePath,
+} from './student-context.mjs';
 
 try {
   const student = parseStudentId(process.argv[2]);
   if (process.argv.length !== 3)
     throw new Error('Usage: npm.cmd run dev:student -- BE01');
-  const file = path.resolve('students', student, 'week-04/api/server.ts');
+  const file = path.resolve(studentApiRelativePath(student));
   if (!existsSync(file))
     throw new Error(
-      'Create your Week 4 API shell first. See docs/12-application-wiring.md.',
+      'Create your Week 6 API shell first. See docs/12-application-wiring.md.',
     );
   const child = spawn(process.execPath, ['--import', 'tsx', file], {
     stdio: 'inherit',

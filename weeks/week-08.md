@@ -1,73 +1,86 @@
-# Week 8: Authenticate a merchant operator
+# Week 8: Make accepted events survive restart
 
-MerchantDesk | Sprint 1 | B: Backend Development + E: Engineering and Delivery
+MerchantDesk | Sprint 1 | D: SQL and Persistence + B: Backend Development + E: Engineering and Delivery
 
 ## The project need
 
-The API must distinguish a signed-in operator from an anonymous request before exposing merchant data.
+Restarting the API currently loses all accepted events.
 
 ## Before you start
 
-Use the supplied password helper in fixtures/passwords.ts and @fastify/secure-session. Read the exact session settings in docs/04-api-and-security-contract.md. Do not design custom encryption or teach JWT and sessions together.
+Bring the agreed model and HTTP tests. Use a disposable test database for tests, not your practice database. Follow the migration-runner interface in shared/database/README.md.
 
 ## Keep the application connected
 
-Add login and session modules to the original app. Register session support before protected routes and remove access through earlier anonymous routes; do not create a second authentication server.
-
-See the [application wiring guide](../docs/12-application-wiring.md) for commands and module connections.
+Use the Week 6 API factory and keep all numbered migrations in the Week 8 migration directory. See the [application wiring guide](../docs/12-application-wiring.md) for commands and module connections.
 
 ## Outcome
 
-Login, expiry and logout with protected API access.
+A fresh migration, parameterized storage and a restart proof. Milestone: Durable event flow.
 
 ## Learn and use
 
-| Task    | Concepts and reading                                                                                                                                                                                                        | Minutes |
-| ------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------: |
-| `B05.1` | Authentication, password hashing, seeded accounts and generic failures. [Node 22 crypto](https://nodejs.org/docs/latest-v22.x/api/crypto.html), [Fastify secure-session](https://github.com/fastify/fastify-secure-session) |      60 |
-| `B05.2` | HttpOnly cookies, plugin expiry, logout and server identity. [Fastify secure-session](https://github.com/fastify/fastify-secure-session)                                                                                    |      50 |
-| `E07.1` | Authentication versus authorization, CSRF and local-only operation. [OWASP CSRF prevention](https://cheatsheetseries.owasp.org/cheatsheets/Cross-Site_Request_Forgery_Prevention_Cheat_Sheet.html)                          |      40 |
+| Task    | Concepts and reading                                                                                                                                                                                                                                                                                        | Planned task minutes |
+| ------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------: |
+| `D03.1` | DDL, constraints, timestamps and forward migrations. [PostgreSQL 17 tutorial](https://www.postgresql.org/docs/17/tutorial.html), [PostgreSQL constraints](https://www.postgresql.org/docs/17/ddl-constraints.html)                                                                                          |                  110 |
+| `B03.1` | pg pooling, parameterized queries, dependency injection and shutdown. [Parameterized node-postgres queries](https://node-postgres.com/features/queries), [node-postgres pooling](https://node-postgres.com/features/pooling), [node-postgres transactions](https://node-postgres.com/features/transactions) |                  120 |
+| `E06.1` | Database integration tests and restart evidence. [Fastify testing](https://fastify.dev/docs/v5.7.x/Guides/Testing/)                                                                                                                                                                                         |                   70 |
+
+Task time is part of the [15-hour core weekly budget](../docs/11-scope-and-continuation.md), not the whole week. Guided learning, consolidation, review, shared work and the two-hour problem-solving block are also included. Up to five additional hours are for repetition or finishing feedback, not extra required technologies.
 
 ## Core tasks
 
-### 1. Add seeded operator login (`B05.1`)
+### 1. Write and apply the first migration (`D03.1`)
 
-- [ ] Add operators related to merchants and a local seed script that reads demo passwords from ignored environment variables. Use the supplied async password helper rather than plaintext storage. Validate and bound login fields, query by email with parameters, and return the same failure message for absent users and wrong passwords. No signup/reset feature is required.
+- [ ] Create merchants and payment_events from the agreed field contract, including a foreign key, amount check and timestamp columns. Use the supplied runner via npm.cmd run migrate:practice -- students/BE01/week-08/database/migrations, replacing BE01. Read fixtures/migration-runner.ts and its support tests, then explain ordered version tracking, one-client transactions and repeat-run behavior. Write schema-relative SQL without transaction commands; do not invent runner plumbing in this task.
 
-**Primary path:** `students/<student-id>/week-08/api/login.ts`.
+**Primary path:** `students/<student-id>/week-08/database/migrations/001-events.sql`.
 
-**Proof for review:** Correct credentials succeed; wrong credentials fail; the database and responses contain no plaintext password. Test the helper with good and bad passwords.
+**Proof for review:** An empty test database migrates; invalid amount/merchant writes fail; a second runner invocation preserves rows.
 
-**Known trap:** Passwords, session keys and hashes do not belong in logs or PR screenshots.
+**Known trap:** Do not edit a migration after the shared cohort has applied it. Add a new migration.
 
-### 2. Use an expiring cookie session (`B05.2`)
+### 2. Connect a pooled repository (`B03.1`)
 
-- [ ] Use a generated 32-byte key from ignored configuration, explicit one-hour plugin expiry and matching cookie lifetime. Set HttpOnly and SameSite=Lax. Secure is false only for loopback HTTP development; HTTPS requires Secure. Regenerate at login, delete at logout, and protect event routes with a server-resolved operator.
+- [ ] Replace the in-memory storage through a small injected repository. Use bounded Pool configuration, parameter placeholders and finally-based client release. Keep app construction separate from listening and close the pool on shutdown.
 
-**Primary path:** `students/<student-id>/week-08/api/session.ts`.
+**Primary path:** `students/<student-id>/week-08/api/repository.ts`.
 
-**Proof for review:** Missing/tampered/expired cookies fail; logout clears the browser session; a server-side check enforces expiry.
+**Proof for review:** An event can be inserted and read through the HTTP API without SQL string interpolation or a leaked client.
 
-**Known trap:** Stateless logout clears this browser's cookie but does not revoke a stolen copy before expiry. Name that limitation.
+**Known trap:** A transaction must stay on one checked-out client, not separate pool.query calls.
 
-### 3. Review the auth and browser boundary (`E07.1`)
+### 3. Prove persistence and isolate the test (`E06.1`)
 
-- [ ] Draw where credentials, encrypted cookie and merchant ID live. For login/logout/event writes require application/json and an exact allowed Origin including scheme/host/port; test missing or foreign origins. Node simulator and injection tests must deliberately send the agreed Origin. Do not rely on SameSite alone.
+- [ ] Use a dedicated test database/schema. Accept one event, close/rebuild the app, and read it back. Record the commands. Demonstrate that a failing database write is not reported as accepted.
 
-**Primary path:** `students/<student-id>/week-08/security/auth-model.md`.
+**Primary path:** `students/<student-id>/week-08/api/persistence.db.test.ts`.
 
-**Proof for review:** A peer checks anonymous, bad-origin and expiry cases and finds no credential exposure.
+**Proof for review:** A real database-backed event survives app restart; test cleanup affects only the disposable test namespace.
 
-**Known trap:** An Origin check is a browser CSRF control, not authentication for arbitrary scripts. Do not enable wildcard credentialed CORS.
+**Known trap:** A mocked repository test cannot establish PostgreSQL persistence.
+
+## Two-hour problem-solving block (`P08.1`)
+
+**Focus:** Nested data and lookup.
+
+Join small merchant/event arrays by ID in memory and preserve a merchant with no events; compare nested scans and a lookup.
+
+**Evidence path:** `students/<student-id>/week-08/problem-solving/README.md`.
+
+**Proof:** Include the solution and tests, empty/boundary cases, one corrected attempt and a plain-language explanation. Revisit one earlier exercise within the same two-hour block.
+
+Follow the [problem-solving guide](../docs/14-problem-solving.md). This common block is included in the weekly budget and does not replace the three project tasks.
 
 ## Shared contribution
 
-Assigned task owners contribute reviewed work to `shared/database/migrations/003-operators.sql, shared/api/src/auth.ts and shared/delivery/security-model.md`. Record the non-author review or witness in the [Week 8 contribution log](../shared/delivery/rotations/week-08.md).
+Assigned task owners contribute reviewed work to `shared/database/migrations/, shared/api/src/repository.ts and shared/api/test/persistence.db.test.ts`. Record scope, non-author review and actual proof in the [Week 8 contribution log](../shared/delivery/rotations/week-08.md). Everyone completes the same core practice; no fixed pair is a prerequisite.
 
 ## Completion checklist
 
-- [ ] Three focused task-ID commits with the required proof
-- [ ] Peer review and assigned shared task or witness work completed
-- [ ] One implementation decision and failure case explained
+- [ ] Focused task-ID commits include required implementation and failure proofs
+- [ ] The common problem-solving block and one corrected attempt are recorded
+- [ ] Peer review and assigned shared task or witness work are complete
+- [ ] One implementation decision and failure case are explained
 
 Next: [Week 9](week-09.md).

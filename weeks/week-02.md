@@ -1,67 +1,82 @@
-# Week 2: Represent events and ask the first SQL questions
+# Week 2: Make values, decisions and functions explainable
 
-MerchantDesk | Sprint 1 | T: TypeScript and JavaScript + D: SQL and Persistence + E: Engineering and Delivery
+MerchantDesk | Sprint 1 | T: TypeScript and JavaScript + E: Engineering and Delivery
 
 ## The project need
 
-The merchant needs event counts, while fields such as amounts and event kinds need an agreed meaning.
+A merchant event summary needs predictable decisions, not copied code that only works for one example.
 
 ## Before you start
 
-Bring Week 1's inspector. Install PostgreSQL using setup sections 4-5 and load fixtures/practice.sql into your personal practice database. The fixture is supplied now, not promised by a later week.
+Continue the Week 1 inspector. Use TypeScript files to practise JavaScript behavior; no PostgreSQL, server or React is needed.
 
 ## Outcome
 
-Typed event data, real SQL answers and an explicit input contract.
+Small pure functions, deliberate branches and a reproduced debugging correction.
 
 ## Learn and use
 
-| Task    | Concepts and reading                                                                                                                                                                                                                   | Minutes |
-| ------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------: |
-| `T02.1` | Primitive types, arrays, object types, branches and iteration. [Everyday types](https://www.typescriptlang.org/docs/handbook/2/everyday-types.html), [JavaScript guide](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide) |      50 |
-| `D01.1` | Tables, rows, SELECT, WHERE, ORDER BY and GROUP BY. [PostgreSQL 17 tutorial](https://www.postgresql.org/docs/17/tutorial.html)                                                                                                         |      65 |
-| `E02.1` | Runtime input, integer minor units, timestamps and non-goals. [MerchantDesk API contract](../docs/04-api-and-security-contract.md)                                                                                                     |      35 |
+| Task    | Concepts and reading                                                                                                                                                                                                                                                                | Planned task minutes |
+| ------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------: |
+| `T01.2` | const/let, primitive values, strict equality, conditions and integer arithmetic. [JavaScript guide](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide), [TypeScript for new programmers](https://www.typescriptlang.org/docs/handbook/typescript-from-scratch)          |                  100 |
+| `T01.3` | Parameters, return values, scope, pure functions and assertions. [Functions](https://www.typescriptlang.org/docs/handbook/2/functions.html), [Node 22 test runner](https://nodejs.org/docs/latest-v22.x/api/test.html)                                                              |                  100 |
+| `E01.3` | Reading stack traces, minimal reproductions, feedback and repair. [JavaScript guide](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide), [GitHub reviews](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/reviewing-changes-in-pull-requests) |                  100 |
+
+Task time is part of the [15-hour core weekly budget](../docs/11-scope-and-continuation.md), not the whole week. Guided learning, consolidation, review, shared work and the two-hour problem-solving block are also included. Up to five additional hours are for repetition or finishing feedback, not extra required technologies.
 
 ## Core tasks
 
-### 1. Work with a typed event list (`T02.1`)
+### 1. Trace values and make explicit decisions (`T01.2`)
 
-- [ ] Define an event type using the actual fixture fields. Iterate over several events, select captured payments and count them. Compare a loop with filter. Explain one case where a missing value differs from zero.
+- [ ] Write small examples using one synthetic event. Distinguish a missing amount, zero, a numeric string and an integer. Use explicit branches to produce a summary or a stated input issue. Trace the values before running the program; keep integer paise separate from display formatting.
 
-**Primary path:** `students/<student-id>/week-02/typescript/event-list.ts`.
+**Primary path:** `students/<student-id>/week-02/typescript/decisions.ts`.
 
-**Proof for review:** The captured count matches the fixture. npm.cmd run typecheck rejects an intentionally wrong assignment; restore valid code and rerun successfully before committing.
+**Proof for review:** Recorded predictions match the actual output for at least six cases, including missing, zero and wrong-type values. Explain one corrected prediction.
 
-**Known trap:** Type annotations do not validate JSON received from another process.
+**Known trap:** Truthiness and loose equality can hide zero or turn bad input into apparently valid data.
 
-### 2. Load and query the practice database (`D01.1`)
+### 2. Extract and test a pure summary function (`T01.3`)
 
-- [ ] Load the supplied SQL using the setup guide, then write queries for captured events, merchant totals and the latest events. Put answers and commands in NOTES.md. This is a personal practice database, not the shared final schema.
+- [ ] Extract a function from the inspector that takes an explicitly typed event and returns a summary without reading files or printing. Write summary.test.ts with assertions for at least three event kinds and an amount. Explain parameters, local variables and return values. Continue calling it from the inspector.
 
-**Primary path:** `students/<student-id>/week-02/sql/first-queries.sql`.
+**Primary path:** `students/<student-id>/week-02/typescript/summary.ts`.
 
-**Proof for review:** Queries return real rows from the supplied fixture, including both merchants. State what one row means.
+**Proof for review:** The same input produces the same summary, tests fail when a result is deliberately wrong, and running the function does not mutate the input.
 
-**Known trap:** Install time belongs inside this task's budget. Ask for setup help instead of borrowing a personal database.
+**Known trap:** A console message or copied expected value without an assertion is not a test.
 
-### 3. Agree the event field rules (`E02.1`)
+### 3. Investigate one small programming mistake (`E01.3`)
 
-- [ ] Use docs/01-project-brief.md and fixtures/cases.json to specify required fields, bounds, allowed event kinds and the duplicate key. Explain why merchant identity will eventually come from authentication, not an arbitrary body field.
+- [ ] Introduce a reversible mistake in your own exercise, such as a wrong branch or an undefined property. Record expected versus actual behavior, the relevant error or assertion and a small reproduction. Repair it and have a peer explain the cause. Keep the valid implementation and its regression test in the final commit.
 
-**Primary path:** `students/<student-id>/week-02/design/event-contract.md`.
+**Primary path:** `students/<student-id>/week-02/review/debugging.md`.
 
-**Proof for review:** Every fixture case has an expected accept/reject result and a reason. Money is expressed in integer paise, not floating point rupees.
+**Proof for review:** The notes contain an actual failing observation, a reasoned repair and the passing command. No intentional broken code remains in the PR.
 
-**Known trap:** Sandbox event data is not authorization and this course does not process payments.
+**Known trap:** Do not fix a failing test by deleting its assertion or hiding an error with a success return.
+
+## Two-hour problem-solving block (`P02.1`)
+
+**Focus:** Branching and small functions.
+
+Write a function that counts a character in a string using a loop; handle empty input and explain every variable.
+
+**Evidence path:** `students/<student-id>/week-02/problem-solving/README.md`.
+
+**Proof:** Include the solution and tests, empty/boundary cases, one corrected attempt and a plain-language explanation. Revisit one earlier exercise within the same two-hour block.
+
+Follow the [problem-solving guide](../docs/14-problem-solving.md). This common block is included in the weekly budget and does not replace the three project tasks.
 
 ## Shared contribution
 
-Assigned task owners contribute reviewed work to `shared/delivery/event-contract.md and shared/database/practice-notes.md`. Record the non-author review or witness in the [Week 2 contribution log](../shared/delivery/rotations/week-02.md).
+Assigned task owners contribute reviewed work to `shared/simulator/summary.ts and shared/delivery/foundations.md`. Record scope, non-author review and actual proof in the [Week 2 contribution log](../shared/delivery/rotations/week-02.md). Everyone completes the same core practice; no fixed pair is a prerequisite.
 
 ## Completion checklist
 
-- [ ] Three focused task-ID commits with the required proof
-- [ ] Peer review and assigned shared task or witness work completed
-- [ ] One implementation decision and failure case explained
+- [ ] Focused task-ID commits include required implementation and failure proofs
+- [ ] The common problem-solving block and one corrected attempt are recorded
+- [ ] Peer review and assigned shared task or witness work are complete
+- [ ] One implementation decision and failure case are explained
 
 Next: [Week 3](week-03.md).

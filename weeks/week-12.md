@@ -1,73 +1,86 @@
-# Week 12: Consolidate correctness before adding polish
+# Week 12: Enforce merchant ownership across every route
 
-MerchantDesk | Sprint 1 | D: SQL and Persistence + B: Backend Development + E: Engineering and Delivery
+MerchantDesk | Sprint 1 | D: SQL and Persistence + B: Backend Development + C: Client Integration
 
 ## The project need
 
-The happy-path demo works, but duplicates, transactions and regressions need trustworthy checks.
+A signed-in operator must not see or write another merchant's events.
 
 ## Before you start
 
-This is a consolidation week with no new framework. Use earlier labs and their failing tests; retain all essential ownership and validation checks.
+Seed two synthetic merchants and one operator for each. Derive merchant ownership from a verified session and current database operator, never from the request body or URL alone.
 
 ## Keep the application connected
 
-All new regression tests import the same Week 4 factory and inject isolated repository dependencies. Do not validate a disconnected demonstration instead of the continuing app.
-
-See the [application wiring guide](../docs/12-application-wiring.md) for commands and module connections.
+Use the Week 6 API factory and keep all numbered migrations in the Week 8 migration directory. See the [application wiring guide](../docs/12-application-wiring.md) for commands and module connections.
 
 ## Outcome
 
-A coherent test matrix, one exercised transaction and corrected weak cases.
+A working authenticated event API with cross-merchant rejection. Milestone: Protected merchant flow.
 
 ## Learn and use
 
-| Task    | Concepts and reading                                                                                                                                                                                               | Minutes |
-| ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------: |
-| `D06.1` | Transactions, rollback, client release and isolated state. [node-postgres transactions](https://node-postgres.com/features/transactions)                                                                           |      50 |
-| `B08.1` | Adversarial cases, timestamps, amount bounds and conflict semantics. [Fastify testing](https://fastify.dev/docs/v5.7.x/Guides/Testing/), [Node 22 test runner](https://nodejs.org/docs/latest-v22.x/api/test.html) |      60 |
-| `E09.1` | Risk-based tests, explain-back and focused revision. [Assessment and review](../docs/10-assessment.md)                                                                                                             |      40 |
+| Task    | Concepts and reading                                                                                                                                                                                                | Planned task minutes |
+| ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------: |
+| `D05.1` | Owner-filtered SQL, join boundaries and foreign keys. [Parameterized node-postgres queries](https://node-postgres.com/features/queries), [PostgreSQL 17 tutorial](https://www.postgresql.org/docs/17/tutorial.html) |                  110 |
+| `B06.1` | Authentication hooks, authorization and negative integration tests. [Fastify testing](https://fastify.dev/docs/v5.7.x/Guides/Testing/)                                                                              |                  120 |
+| `C02.1` | Cookie-aware HTTP consumers and safe configuration. [Using Fetch](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch)                                                                           |                   70 |
+
+Task time is part of the [15-hour core weekly budget](../docs/11-scope-and-continuation.md), not the whole week. Guided learning, consolidation, review, shared work and the two-hour problem-solving block are also included. Up to five additional hours are for repetition or finishing feedback, not extra required technologies.
 
 ## Core tasks
 
-### 1. Exercise rollback on one checked-out client (`D06.1`)
+### 1. Scope every database operation (`D05.1`)
 
-- [ ] In a disposable test namespace, perform two related writes, deliberately fail the second and prove the first was rolled back. Use one checked-out client, BEGIN/COMMIT/ROLLBACK and finally release. Explain why a single event insert does not need an artificial multi-step transaction.
+- [ ] Apply merchant_id filters to list, detail, conflict lookup and insertion paths. Resolve an operator's current merchant in the database. For an existing event owned by another merchant return the same 404 as a missing ID. Keep duplicate keys merchant-scoped.
 
-**Primary path:** `students/<student-id>/week-12/database/rollback.ts`.
+**Primary path:** `students/<student-id>/week-12/database/owned-queries.sql`.
 
-**Proof for review:** The deliberate failure leaves no partial first write and the pool remains usable afterward.
+**Proof for review:** Merchant A cannot read B's event even with its exact ID. Each merchant may use the same provider_event_id independently.
 
-**Known trap:** Do not hold a database transaction around a network request.
+**Known trap:** A hidden UI button is not database authorization.
 
-### 2. Strengthen a weak boundary test (`B08.1`)
+### 2. Test the protected API end to end (`B06.1`)
 
-- [ ] Choose the weakest core API boundary and add a test that exposes it: amount coercion, impossible date, equal timestamp paging, changed duplicate content or cross-owner lookup. Fix the bug, then rerun the whole current suite. Improve parsing without loosening the agreed field contract.
+- [ ] Test anonymous list/read/write, A reading B's known ID, a forged merchant_id field, and a valid A write. Reject the injected owner field through body validation. Cover login/logout origins and safe error bodies. Use the existing app factory and a disposable database.
 
-**Primary path:** `students/<student-id>/week-12/api/boundary.db.test.ts`.
+**Primary path:** `students/<student-id>/week-12/api/ownership.db.test.ts`.
 
-**Proof for review:** Your added test fails before the fix and passes afterward; the existing core checks remain green.
+**Proof for review:** 401 for anonymous, 404 for another owner's detail, 400 for forged body field, and successful own-merchant requests. No test relies only on UI behavior.
 
-**Known trap:** A test relying on whichever row happens to come first is not stable.
+**Known trap:** Ensure Fastify does not silently strip merchant_id and make the forged request look accepted.
 
-### 3. Map requirements to evidence and revise (`E09.1`)
+### 3. Update the simulator to authenticate (`C02.1`)
 
-- [ ] Map each V1 behavior to a unit, HTTP, real-database or browser check. Identify one missing proof, add it or explain the remaining limit. Revisit a Week 2/3 concept from memory, then correct your explanation against the code.
+- [ ] Read disposable credentials from local environment variables, log in, reuse the returned cookie on one event request, and send the configured Origin. Keep passwords/cookies out of output. Do not parse combined Set-Cookie strings by splitting on commas.
 
-**Primary path:** `students/<student-id>/week-12/quality/test-matrix.md`.
+**Primary path:** `students/<student-id>/week-12/client/send-authenticated.ts`.
 
-**Proof for review:** Every milestone behavior has a named check and your revision records a real correction.
+**Proof for review:** The same script succeeds for its merchant and fails without the cookie. A witness reproduces the flow.
 
-**Known trap:** Coverage percentages and green starter tests do not prove the completed merchant features.
+**Known trap:** This is a sandbox API client, not a signed payment-provider webhook integration.
+
+## Two-hour problem-solving block (`P12.1`)
+
+**Focus:** Isolation and identity keys.
+
+Group events by merchant plus provider ID; demonstrate how provider ID alone conflates two merchants.
+
+**Evidence path:** `students/<student-id>/week-12/problem-solving/README.md`.
+
+**Proof:** Include the solution and tests, empty/boundary cases, one corrected attempt and a plain-language explanation. Revisit one earlier exercise within the same two-hour block.
+
+Follow the [problem-solving guide](../docs/14-problem-solving.md). This common block is included in the weekly budget and does not replace the three project tasks.
 
 ## Shared contribution
 
-Assigned task owners contribute reviewed work to `shared/api/test/, shared/database/README.md and shared/delivery/test-matrix.md`. Record the non-author review or witness in the [Week 12 contribution log](../shared/delivery/rotations/week-12.md).
+Assigned task owners contribute reviewed work to `shared/api/src/routes/events.ts, shared/api/test/ownership.db.test.ts and shared/simulator/send-event.ts`. Record scope, non-author review and actual proof in the [Week 12 contribution log](../shared/delivery/rotations/week-12.md). Everyone completes the same core practice; no fixed pair is a prerequisite.
 
 ## Completion checklist
 
-- [ ] Three focused task-ID commits with the required proof
-- [ ] Peer review and assigned shared task or witness work completed
-- [ ] One implementation decision and failure case explained
+- [ ] Focused task-ID commits include required implementation and failure proofs
+- [ ] The common problem-solving block and one corrected attempt are recorded
+- [ ] Peer review and assigned shared task or witness work are complete
+- [ ] One implementation decision and failure case are explained
 
 Next: [Week 13](week-13.md).

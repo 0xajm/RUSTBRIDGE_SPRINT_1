@@ -19,3 +19,15 @@ Use the supported Node 22.x and PostgreSQL 17 setup. Install project dependencie
 ## AI-assisted learning
 
 An assistant can explain an error or suggest a small experiment. Verify its suggestions against documentation and tests, keep secrets out of prompts and be able to explain your result. Do not submit unexplained generated code or fabricated evidence.
+
+## Additional bounded references
+
+- [API documentation guide](13-api-documentation.md): OpenAPI, synthetic request/response examples and implementation checks.
+- [Common problem-solving guide](14-problem-solving.md): arrays, strings, maps, basic algorithms and explained tests.
+- [Individual extension guide](15-individual-extension.md): one small feature with unchanged core guarantees.
+
+## Explain-back and no-AI checkpoints
+
+AI and videos may explain concepts, suggest experiments or help interpret an error during ordinary learning. Verify suggestions with documentation, tests and your own explanation. Do not send secrets, private student records or invented results to an assistant.
+
+Weeks 14 and 20 contain a 30-minute no-AI repair with documentation allowed. A reviewer selects a small reversible defect in the learner's own disposable exercise or code, witnesses an assertion and repair, and asks for an explanation. The time box is a checkpoint, not automatic failure: record an incomplete attempt honestly and schedule a focused retry. Public evidence records commands/technical observations, never private grades or rankings.

@@ -1,77 +1,86 @@
-# Week 6: Make accepted events survive restart
+# Week 6: Cross the HTTP boundary without losing the model
 
-MerchantDesk | Sprint 1 | D: SQL and Persistence + B: Backend Development + E: Engineering and Delivery
+MerchantDesk | Sprint 1 | B: Backend Development + T: TypeScript and JavaScript + E: Engineering and Delivery
 
 ## The project need
 
-Restarting the API currently loses all accepted events.
+Another program must send or request events without sharing the API's memory.
 
 ## Before you start
 
-Bring the agreed model and HTTP tests. Use a disposable test database for tests, not your practice database. Follow the migration-runner interface in shared/database/README.md.
+Read the HTTP contract in docs/04-api-and-security-contract.md. PostgreSQL practice and TypeScript exercises continue; do not replace them with a standalone framework course.
 
 ## Keep the application connected
 
-Inject the new repository into the original factory. Keep migrations in week-06/database/migrations and use your own lab_beXX schema, as described in the wiring guide.
-
-See the [application wiring guide](../docs/12-application-wiring.md) for commands and module connections.
+Use the Week 6 API factory and keep all numbered migrations in the Week 8 migration directory. See the [application wiring guide](../docs/12-application-wiring.md) for commands and module connections.
 
 ## Outcome
 
-A fresh migration, parameterized storage and a restart proof.
+A tiny HTTP application, observable async behavior and an API plan.
 
 ## Learn and use
 
-| Task    | Concepts and reading                                                                                                                                                                                                                                                                                        | Minutes |
-| ------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------: |
-| `D03.1` | DDL, constraints, timestamps and forward migrations. [PostgreSQL 17 tutorial](https://www.postgresql.org/docs/17/tutorial.html), [PostgreSQL constraints](https://www.postgresql.org/docs/17/ddl-constraints.html)                                                                                          |      55 |
-| `B03.1` | pg pooling, parameterized queries, dependency injection and shutdown. [Parameterized node-postgres queries](https://node-postgres.com/features/queries), [node-postgres pooling](https://node-postgres.com/features/pooling), [node-postgres transactions](https://node-postgres.com/features/transactions) |      60 |
-| `E06.1` | Database integration tests and restart evidence. [Fastify testing](https://fastify.dev/docs/v5.7.x/Guides/Testing/)                                                                                                                                                                                         |      35 |
+| Task    | Concepts and reading                                                                                                                                                                                                                                                                              | Planned task minutes |
+| ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------: |
+| `B01.1` | HTTP methods, paths, headers, status, JSON and app factories. [HTTP overview](https://developer.mozilla.org/en-US/docs/Web/HTTP/Overview), [Fastify getting started](https://fastify.dev/docs/v5.7.x/Guides/Getting-Started/), [Fastify testing](https://fastify.dev/docs/v5.7.x/Guides/Testing/) |                  120 |
+| `T04.1` | Promises, await, try/catch, JSON parsing and cleanup. [Using promises](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Using_promises)                                                                                                                                              |                  100 |
+| `E04.1` | Request/response contracts and design trade-offs. [MerchantDesk API contract](../docs/04-api-and-security-contract.md), [HTTP overview](https://developer.mozilla.org/en-US/docs/Web/HTTP/Overview)                                                                                               |                   80 |
+
+Task time is part of the [15-hour core weekly budget](../docs/11-scope-and-continuation.md), not the whole week. Guided learning, consolidation, review, shared work and the two-hour problem-solving block are also included. Up to five additional hours are for repetition or finishing feedback, not extra required technologies.
 
 ## Core tasks
 
-### 1. Write and apply the first migration (`D03.1`)
+### 1. Build and inspect a tiny Fastify API (`B01.1`)
 
-- [ ] Create merchants and payment_events from the agreed field contract, including a foreign key, amount check and timestamp columns. Use the supplied runner via npm.cmd run migrate:practice -- students/BE01/week-06/database/migrations, replacing BE01. Read fixtures/migration-runner.ts and its support tests, then explain ordered version tracking, one-client transactions and repeat-run behavior. Write schema-relative SQL without transaction commands; do not invent runner plumbing in this task.
+- [ ] Copy the immutable fixtures/api-starter once into your week-06/api folder as described in docs/12-application-wiring.md. Continue its exported createApp factory and separate server.ts listener. Add an in-memory GET /api/events returning a few synthetic records, send a request with curl.exe and add an app.inject test in app.test.ts. Run the app with npm.cmd run dev:student -- BE01, replacing BE01. Bind to loopback and retain this entry point in later weeks.
 
-**Primary path:** `students/<student-id>/week-06/database/migrations/001-events.sql`.
+**Primary path:** `students/<student-id>/week-06/api/app.ts`.
 
-**Proof for review:** An empty test database migrates; invalid amount/merchant writes fail; a second runner invocation preserves rows.
+**Proof for review:** An annotated exchange names method, URL, response status and JSON. The test runs without opening a network port.
 
-**Known trap:** Do not edit a migration after the shared cohort has applied it. Add a new migration.
+**Known trap:** The in-memory lab is local and temporary. It has no authentication yet and must not be publicly exposed.
 
-### 2. Connect a pooled repository (`B03.1`)
+### 2. Observe async work and failure (`T04.1`)
 
-- [ ] Replace the in-memory storage through a small injected repository. Use bounded Pool configuration, parameter placeholders and finally-based client release. Keep app construction separate from listening and close the pool on shutdown.
+- [ ] Read the supplied fixture with node:fs/promises. Compare an awaited result with the Promise itself. Handle a missing file and malformed JSON deliberately; pass parsed data through the earlier checks. Explain why async is not a new thread for each request.
 
-**Primary path:** `students/<student-id>/week-06/api/repository.ts`.
+**Primary path:** `students/<student-id>/week-06/typescript/async-reader.ts`.
 
-**Proof for review:** An event can be inserted and read through the HTTP API without SQL string interpolation or a leaked client.
+**Proof for review:** Successful and failing runs terminate with useful, safe messages. A parsing failure is not mistaken for an empty event list.
 
-**Known trap:** A transaction must stay on one checked-out client, not separate pool.query calls.
+**Known trap:** Catch only what you can explain; do not catch every error and return success.
 
-### 3. Prove persistence and isolate the test (`E06.1`)
+### 3. Review the API and schema together (`E04.1`)
 
-- [ ] Use a dedicated test database/schema. Accept one event, close/rebuild the app, and read it back. Record the commands. Demonstrate that a failing database write is not reported as accepted.
+- [ ] Specify the initial POST/list/detail routes, field rules, error shape and the future owner filter. Draw the request path and name the limits of the in-memory version. Compare the plan with Week 5's relational model.
 
-**Primary path:** `students/<student-id>/week-06/api/persistence.db.test.ts`.
+**Primary path:** `students/<student-id>/week-06/design/api-contract.md`.
 
-**Proof for review:** A real database-backed event survives app restart; test cleanup affects only the disposable test namespace.
+**Proof for review:** A peer can name what belongs in HTTP, validation and persistence, and what is missing before public deployment.
 
-**Known trap:** A mocked repository test cannot establish PostgreSQL persistence.
+**Known trap:** Do not invent queue, Rust service or microservice boundaries in Sprint 1.
+
+## Two-hour problem-solving block (`P06.1`)
+
+**Focus:** Strings and maps.
+
+Build a character-frequency Map and find the first non-repeated character; explain memory use.
+
+**Evidence path:** `students/<student-id>/week-06/problem-solving/README.md`.
+
+**Proof:** Include the solution and tests, empty/boundary cases, one corrected attempt and a plain-language explanation. Revisit one earlier exercise within the same two-hour block.
+
+Follow the [problem-solving guide](../docs/14-problem-solving.md). This common block is included in the weekly budget and does not replace the three project tasks.
 
 ## Shared contribution
 
-Assigned task owners contribute reviewed work to `shared/database/migrations/, shared/api/src/repository.ts and shared/api/test/persistence.db.test.ts`. Record the non-author review or witness in the [Week 6 contribution log](../shared/delivery/rotations/week-06.md).
-
-## Milestone: Durable event flow
-
-Record this shared milestone as complete only after a non-author reproduces the outcome and records commands and results in the contribution log.
+Assigned task owners contribute reviewed work to `shared/api/src/app.ts and shared/delivery/api-contract.md`. Record scope, non-author review and actual proof in the [Week 6 contribution log](../shared/delivery/rotations/week-06.md). Everyone completes the same core practice; no fixed pair is a prerequisite.
 
 ## Completion checklist
 
-- [ ] Three focused task-ID commits with the required proof
-- [ ] Peer review and assigned shared task or witness work completed
-- [ ] One implementation decision and failure case explained
+- [ ] Focused task-ID commits include required implementation and failure proofs
+- [ ] The common problem-solving block and one corrected attempt are recorded
+- [ ] Peer review and assigned shared task or witness work are complete
+- [ ] One implementation decision and failure case are explained
 
 Next: [Week 7](week-07.md).

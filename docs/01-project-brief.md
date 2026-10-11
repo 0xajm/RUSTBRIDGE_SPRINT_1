@@ -52,7 +52,7 @@ All data is synthetic. INR amounts are integer paise. The application records ev
 
 The first local HTTP lab uses one synthetic merchant and in-memory storage. PostgreSQL arrives before authentication. These versions stay loopback-only.
 
-Week 8 adds seeded operators and one-hour encrypted cookie sessions. Week 9 applies verified merchant ownership to every operation and proves it using two merchants. Do not publicly deploy the earlier labs.
+Week 11 adds seeded operators and one-hour encrypted cookie sessions. Week 12 applies verified merchant ownership to every operation and proves it using two merchants. Do not publicly deploy the earlier labs.
 
 ## Non-goals
 

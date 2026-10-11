@@ -18,7 +18,7 @@ The server adds immutable ID, verified merchant_id and received_at. Never accept
 
 ## Shared wire format
 
-Use these shapes when implementing the routes, simulator and UI, including before Week 10's response-schema tests. Internal database types may differ; map them explicitly at the HTTP boundary.
+Use these shapes when implementing the routes, simulator and UI, including before Week 16's response-schema tests. Internal database types may differ; map them explicitly at the HTTP boundary.
 
 - **Public event:** exactly the five input fields plus `id`, `merchant_id` and `received_at`. IDs are nonempty opaque JSON strings, not numbers; clients must not parse meaning from them. Both timestamps use the exact UTC format above. `amount_minor` remains a JSON number.
 - **Login body:** exactly `{ "email": "one@example.test", "password": "local value" }`. Normalize the email by trimming and lowercasing, then require a nonempty string of at most 254 characters; seed email addresses in that same form. Passwords are strings of 1-256 UTF-8 bytes; never trim or normalize them. Reject extra fields and invalid types with 400. Validly shaped but incorrect credentials get the same generic 401.
@@ -30,9 +30,9 @@ Use these shapes when implementing the routes, simulator and UI, including befor
 
 These are synthetic shape examples, not credentials to seed or implementation answers. The student defines the internal types, mapping, queries and tests.
 
-## Protected application routes by Week 9
+## Protected application routes by Week 12
 
-The dependency-readiness route is added in Week 13. All other routes in the table are part of the Week 9 protected-flow target.
+The dependency-readiness route is added in Week 18. All other routes in the table are part of the Week 12 protected-flow target.
 
 | Method/path         | Auth                     | Required behavior                                                          |
 | ------------------- | ------------------------ | -------------------------------------------------------------------------- |
@@ -80,3 +80,9 @@ The references are [OWASP CSRF guidance](https://cheatsheetseries.owasp.org/chea
 ## Following-sprint integration
 
 PayHook will use a separate receiver endpoint and service credential, not operator cookies or Origin headers as authentication. The [program handoff](../admin/payhook-handoff.md) defines that future contract. It adds no Sprint 1 endpoints or tasks.
+
+## API description and extensions
+
+The [API documentation guide](13-api-documentation.md) starts a student-authored OpenAPI description in Week 10 and updates it for the protected flow in Week 14. The supplied [specification shell](../fixtures/openapi-starter.json) describes liveness only. Planned and implemented endpoints must be distinguished; JSON syntax and green starter checks do not prove a completed API.
+
+Week 19 extensions follow the [bounded scope guide](15-individual-extension.md). Preserve the required core paths, exact body fields, list-query rules and ownership guarantees. Put additional search/export operations at separate reviewed paths rather than silently changing the core contract. The shared product does not require every extension.

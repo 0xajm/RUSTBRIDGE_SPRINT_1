@@ -8,12 +8,12 @@ export function App() {
         dashboard.
       </p>
       <ul>
-        <li>Weeks 4-9: students implement the protected event API.</li>
+        <li>Weeks 6-15: students implement the protected event API.</li>
         <li>
-          Weeks 10-11: students build and connect the small React interface.
+          Weeks 16-17: students build and connect the small React interface.
         </li>
         <li>
-          Weeks 12-15: students test, repair and hand over the application.
+          Weeks 18-20: students test, repair and hand over the application.
         </li>
       </ul>
       <p>Use synthetic data only. No real payments are processed.</p>

@@ -4,13 +4,16 @@ This is a maintainer-facing program design reference. Students complete the Spri
 
 ## Program progression
 
-| Sprint | Main learning                                                                                         | Application progression                                                                               |
-| ------ | ----------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------- |
-| 1      | TypeScript Web2 application foundations                                                               | MerchantDesk: local merchant event API, database and small interface                                  |
-| 2      | Rust, Cargo, ownership/errors, Tokio, Actix Web and SQLx                                              | Build PayHook and connect its verified deliveries to MerchantDesk                                     |
-| 3      | Production engineering, Linux, Docker, CI, failure/recovery, Redis when justified and one cloud model | Strengthen PayHook retries, history and recovery; operate both applications with a free core run path |
-| 4      | Web3 fundamentals, Solana, Anchor, Rust and TS clients                                                | Extend the product through a clearly scoped sandbox chain integration                                 |
-| 5      | Solidity/EVM, Foundry, contract/client integration and security exercises                             | Add a scoped EVM capability and compare assumptions with Solana                                       |
+| Sprint | Program weeks | Main learning                                                                         | Application progression                                                 |
+| ------ | ------------- | ------------------------------------------------------------------------------------- | ----------------------------------------------------------------------- |
+| 1      | 1-20          | JavaScript/TypeScript, Fastify, PostgreSQL, React + Vite                              | MerchantDesk, a tested extension and local portfolio demo               |
+| 2      | 21-34         | Rust, Cargo, Tokio, Actix Web, SQLx                                                   | PayHook and its verified service-to-service deliveries                  |
+| 3      | 35-47         | Linux, Docker/Compose, CI, recovery, one cloud deployment and bounded LLM integration | Operated MerchantDesk + PayHook with one evaluated read-only AI feature |
+| 4      | 48-59         | Solana, Rust, Anchor, TS client, wallets and basic indexing                           | One bounded sandbox chain capability                                    |
+| 5      | 60-67         | Solidity/EVM, Foundry, OpenZeppelin, viem/wagmi and Rust alloy                        | Comparable EVM capability and Solana/EVM comparison                     |
+| 6      | 68-73         | Portfolio, mock interviews, oral defences and applications                            | Showable, attributable work and job preparation                         |
+
+This is the 73-week program direction, not six completed syllabuses. Later infrastructure and AI work require a free local alternative; cloud/API access and any cost approval are arranged separately. They do not change Sprint 1's local-only boundary.
 
 These later directions need their own detailed syllabuses. MerchantDesk and PayHook remain distinct applications; no blockchain features are added to Sprint 1.
 
@@ -41,7 +44,7 @@ The later POST /integrations/payhook/events route uses a separate, per-merchant,
 
 Keep credentials in ignored local configuration or protected service configuration. Never put them in URLs, browser code, event bodies, logs or demonstrations. Bind local exercises to loopback; any non-loopback deployment requires HTTPS. Reject missing/invalid/revoked receiver credentials with a generic 401. The server resolves the merchant from the verified credential, never from a submitted merchant_id.
 
-The integration route must not inherit the browser-cookie/Origin gate. An Origin header is not service authentication. Conversely, a receiver token must not authorize the /api management routes. Provisioning and rotation are implemented when this route is introduced in the following sprint, not added to the current 45 tasks.
+The integration route must not inherit the browser-cookie/Origin gate. An Origin header is not service authentication. Conversely, a receiver token must not authorize the /api management routes. Provisioning and rotation are implemented when this route is introduced in the following sprint, not added to the current 60 tasks.
 
 See [OWASP REST security](https://cheatsheetseries.owasp.org/cheatsheets/REST_Security_Cheat_Sheet.html) and the [Bearer header format](https://www.rfc-editor.org/rfc/rfc6750). This uses the header convention, not a claim that the course implements an OAuth authorization server.
 

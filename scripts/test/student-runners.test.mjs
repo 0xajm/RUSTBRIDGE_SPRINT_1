@@ -5,7 +5,11 @@ import { tmpdir } from 'node:os';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import test from 'node:test';
-import { studentAppEnvironment, testDatabaseUrl } from '../student-context.mjs';
+import {
+  studentAppEnvironment,
+  studentApiRelativePath,
+  testDatabaseUrl,
+} from '../student-context.mjs';
 import { findSuiteTests, findTests } from '../test-files.mjs';
 
 const cwd = fileURLToPath(new URL('../../', import.meta.url));
@@ -111,7 +115,7 @@ test('migration commands reject malformed URLs without printing credentials', ()
           'tsx',
           'fixtures/migrate.ts',
           mode,
-          'students/BE01/week-06/database/migrations',
+          'students/BE01/week-08/database/migrations',
         ],
         {
           ...process.env,
@@ -126,6 +130,31 @@ test('migration commands reject malformed URLs without printing credentials', ()
         false,
       );
     }
+  }
+});
+
+test('practice migrations reject stale and escaping paths before connecting', () => {
+  for (const directory of [
+    'students/BE01/week-06/database/migrations',
+    'students/BE99/week-08/database/migrations',
+    '../students/BE01/week-08/database/migrations',
+    'shared/database/migrations',
+  ]) {
+    const result = run(
+      '--import',
+      ['tsx', 'fixtures/migrate.ts', 'practice', directory],
+      {
+        ...process.env,
+        TEST_DATABASE_URL:
+          'postgresql://qa:SHOULD_NOT_BE_LOGGED@localhost/merchantdesk_test',
+      },
+    );
+    assert.equal(result.status, 1);
+    assert.match(result.stderr, /week-08\/database\/migrations/);
+    assert.equal(
+      (result.stdout + result.stderr).includes('SHOULD_NOT_BE_LOGGED'),
+      false,
+    );
   }
 });
 
@@ -151,7 +180,7 @@ test('default suites include authored student tests and propagate their failures
   try {
     const shared = path.join(root, 'shared/api/test');
     const tooling = path.join(root, 'scripts/test');
-    const student = path.join(root, 'students/BE01/week-03');
+    const student = path.join(root, 'students/BE01/week-05');
     for (const directory of [shared, tooling, student])
       await mkdir(directory, { recursive: true });
     await writeFile(path.join(shared, 'passing.test.mjs'), '');
@@ -177,4 +206,16 @@ test('default suites include authored student tests and propagate their failures
     // Remove only this test's newly created temporary fixture tree.
     await rm(root, { recursive: true, force: true });
   }
+});
+
+test('student API paths use the Week 6 continuing factory and reject escaping IDs', () => {
+  assert.equal(
+    studentApiRelativePath('BE01'),
+    'students/BE01/week-06/api/server.ts',
+  );
+  assert.equal(
+    studentApiRelativePath('BE10'),
+    'students/BE10/week-06/api/server.ts',
+  );
+  assert.throws(() => studentApiRelativePath('../BE01'), /BE01 through BE10/);
 });

@@ -12,10 +12,10 @@ let schema = 'merchantdesk';
 if (mode === 'practice') {
   const normalized = directory?.replaceAll('\\', '/');
   const match = normalized?.match(
-    /^students\/(BE(?:0[1-9]|10))\/week-06\/database\/migrations\/?$/,
+    /^students\/(BE(?:0[1-9]|10))\/week-08\/database\/migrations\/?$/,
   );
   if (!match)
-    throw new Error('Supply students/YOUR_BE_ID/week-06/database/migrations.');
+    throw new Error('Supply students/YOUR_BE_ID/week-08/database/migrations.');
   schema = 'lab_' + match[1].toLowerCase();
 } else if (mode !== 'product') {
   throw new Error('Use the documented product or practice command.');
@@ -41,7 +41,7 @@ if (!validConnection) {
 }
 if (!directory || !existsSync(directory))
   throw new Error(
-    'Create the Week 6 migration directory first. See the week file.',
+    'Create the Week 8 migration directory first. See the week file.',
   );
 const client = new pg.Client({
   connectionString,

@@ -43,7 +43,7 @@ npm.cmd run dev:web
 
 Use http://localhost:5173 for the UI and http://localhost:3000/health/live for API liveness. Stop each process with Ctrl+C. Neither starter requires PostgreSQL or credentials.
 
-## 4. Native PostgreSQL (inside Week 2)
+## 4. Native PostgreSQL (inside Week 4)
 
 Use the free **PostgreSQL 17** Windows installer listed by [PostgreSQL](https://www.postgresql.org/download/windows/). Select the server and command-line tools; pgAdmin is optional. No Docker, WSL, managed database, trial or credit card is required.
 
@@ -97,7 +97,7 @@ npm.cmd run test:db
 
 The first checks connectivity to the practice database. The second requires a database whose name ends in `_test`, creates a random owned test schema and removes only that schema afterward. Do not point it at the product or practice database. The starter tests cover the supplied fixtures; product database tests are added by students.
 
-## 6. Session key (Week 8)
+## 6. Session key (Week 11)
 
 Generate a key locally:
 

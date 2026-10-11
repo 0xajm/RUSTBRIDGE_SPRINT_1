@@ -11,6 +11,8 @@ Command and result:
 Important failure case:
 Choice and rejected alternative:
 Peer review or outside witness:
+Problem-solving evidence (weekly individual PR):
+Extension/API-contract impact (if applicable):
 
 ## Checks
 

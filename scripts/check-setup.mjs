@@ -17,6 +17,6 @@ if (failures.length) {
   process.exitCode = 1;
 } else {
   console.log(
-    'Node, Git, root dependencies and working directory are ready. PostgreSQL is introduced in Week 2.',
+    'Node, Git, root dependencies and working directory are ready. PostgreSQL is introduced in Week 4.',
   );
 }

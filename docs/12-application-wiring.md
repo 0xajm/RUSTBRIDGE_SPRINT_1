@@ -1,108 +1,98 @@
 # One continuing individual application
 
-From Week 4 onward, keep one MerchantDesk API entry point in students/YOUR_ID/week-04/api. Later week folders hold modules and evidence used by that same app, not a separate server each week.
+From Week 6, keep one MerchantDesk API entry point in students/YOUR_ID/week-06/api. Later week folders hold modules and evidence used by that same app, not a new server each week. All numbered migrations stay in week-08/database/migrations; the one React client starts in week-16/client.
 
-The shared product still lives in shared/. Promote a reviewed module there only for your assigned shared task, with an agreed file scope and non-author review. Continue your practice app if another shared task is delayed; it must not depend on that person's unfinished branch. Do not copy a completed shared solution back into your practice app.
+The shared application remains in shared/. Promote reviewed work only for an assigned shared task, adapting imports and preserving authorship. Continue individual practice if another shared task is delayed; do not import another student's branch or copy a finished shared solution as your answer.
 
-## Copy the immutable API shell once in Week 4
+## Copy the API shell once in Week 6
 
-Run from the repository root. Replace BE01 with your assigned ID. Only copy when week-04/api does not already exist; preserve earlier work otherwise.
+Run from the repository root, replacing BE01 with your ID. Copy only if the destination does not exist; preserve earlier work otherwise.
 
 ```powershell
-Copy-Item -LiteralPath "fixtures/api-starter" -Destination "students/BE01/week-04/api" -Recurse
+Copy-Item -LiteralPath "fixtures/api-starter" -Destination "students/BE01/week-06/api" -Recurse
 npm.cmd run dev:student -- BE01
 ```
 
-The copied app supplies liveness only. B01.1 adds the small GET /api/events exercise and its test. The listener stays in server.ts; tests call createApp and app.inject without starting a server.
+The shell supplies liveness only. B01.1 adds the first in-memory GET and injection test. Keep createApp in week-06/api/app.ts and the listener in week-06/api/server.ts; tests call the factory without opening a port.
 
-Use the same command in Weeks 5-15. Stop the shared API before running your own: both use port 3000. The Week 10 client uses the same loopback API address through its development proxy.
+Use dev:student throughout Weeks 6-20. Stop the shared API first: both use port 3000. The Week 16 client uses port 5173 and the supplied proxy.
 
-## The composition root
+## Compose later modules
 
-Keep week-04/api/app.ts as the place that assembles your app. Keep week-04/api/server.ts as the process entry point. Import later modules into the factory and register each route once.
-
-For example, these imports belong in your original app.ts after the modules are written:
+After their files and exports exist, these imports belong in the original app.ts:
 
 ```typescript
-import { registerEventRoutes } from '../../week-05/api/events.js';
-import { createRepository } from '../../week-06/api/repository.js';
-import { registerSession } from '../../week-08/api/session.js';
-import { registerLoginRoutes } from '../../week-08/api/login.js';
+import { registerEventRoutes } from '../../week-07/api/events.js';
+import { createRepository } from '../../week-08/api/repository.js';
+import { registerSession } from '../../week-11/api/session.js';
+import { registerLoginRoutes } from '../../week-11/api/login.js';
 ```
 
-Use .js specifiers for TypeScript module imports in the Node app. Node/tsx resolve the source .ts files; the root compiler verifies them. Do not paste these imports before their files/exports exist.
+Use .js specifiers for Node-oriented TypeScript modules. Agree argument types; inject repositories/auth dependencies when tests need them. Importing the factory must not start a listener or require global database setup.
 
-Agree the small argument types in your own code. createApp accepts injected repository/auth dependencies when tests need them. It must not open a port or require global network/database setup just to be imported.
+| Week/task                | Artifact relative to students/YOUR_ID/                   | Composition responsibility                                                                  |
+| ------------------------ | -------------------------------------------------------- | ------------------------------------------------------------------------------------------- |
+| 2-3, T01/T02 foundations | pure summary/collection/lookup modules and tests         | Reuse pure functions without automatically running their CLI                                |
+| 5, T03.1/E03.1           | week-05/typescript/validate-event.ts and test            | Runtime boundary exercise, separate from route JSON Schema                                  |
+| 6, B01.1                 | week-06/api/app.ts, server.ts and app.test.ts            | One factory/listener pair and first memory GET                                              |
+| 7, B02.1/C01.1           | week-07/api/events.ts and client/send-event.ts           | Register event POST/list/detail once; replace the initial demonstration GET                 |
+| 8, D03.1/B03.1/E06.1     | migrations, repository and persistence test              | Inject PostgreSQL storage into the original routes; test close/rebuild                      |
+| 9, D04.1/T05.1/B04.1     | identity SQL, result union and list helper               | Keep the forward identity migration in week-08/database/migrations/002-event-identity.sql   |
+| 10, B02.2/C01.2/E04.2    | week-10/api/openapi.json and consumer/evidence           | Document and call the real API; do not create another implementation                        |
+| 11, B05/E07              | login/session modules and security model                 | Register session before guarded routes; add operators via a forward migration and safe seed |
+| 12, D05/B06/C02          | owned queries, ownership test and authenticated consumer | Derive merchant from the verified current operator on every operation                       |
+| 13, D06/B08/E09          | rollback and boundary tests, test matrix                 | Exercise the existing factory/repository; mark browser proofs pending                       |
+| 14, B10/E13              | OpenAPI review, security DB tests and checkpoint         | Update the Week 10 canonical specification and test rejected-write state                    |
+| 15, D07/E11              | query plan, incident and backend clean-start notes       | Draft the same Week 20 runbook, with browser steps pending                                  |
+| 16-17, C03/C04/B07       | week-16/client/src/ and response tests                   | One client uses relative /api; server owns authorization and public mapping                 |
+| 18, B09/C05/E10          | operation/client/CI proof                                | Extend current modules and tests, not an unrelated monitoring demo                          |
+| 19, B11/E14/C06.2        | reviewed extension, case study and demo plan             | Companion code stays in the same app; preserve core routes/tests                            |
+| 20, E12/C06.1            | runbook, demo and handover                               | Document actual complete commands and attributable work                                     |
 
-## How the existing tasks connect
+Primary task paths locate evidence, not a one-file-only rule. Necessary companion factory, repository, test, seed and migration edits belong in the same focused commit.
 
-All paths below are relative to students/YOUR_ID/. This table names composition responsibilities, not completed task solutions.
+In Week 11 remove anonymous access to assembled event routes. In Week 12 apply current merchant ownership throughout. Do not retain an older unprotected route under another path.
 
-| Week/task                | Existing task artifact                                                  | Connect it to the continuing app                                                                                                                            |
-| ------------------------ | ----------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 3, T03.1/E03.1           | week-03/typescript/validate-event.ts and its test                       | Keep the pure boundary exercise reusable; route schema validation remains a separate runtime check                                                          |
-| 4, B01.1                 | week-04/api/app.ts plus server.ts/app.test.ts                           | Export createApp; add the first in-memory GET route                                                                                                         |
-| 5, B02.1                 | week-05/api/events.ts                                                   | Export registerEventRoutes; replace the Week 4 demonstration GET with this route module, not a second GET at the same path                                  |
-| 5, C01.1                 | week-05/client/send-event.ts                                            | Send requests to the server started by dev:student; this file is a consumer, not another listener                                                           |
-| 6, D03.1                 | week-06/database/migrations/001-events.sql                              | Keep all later numbered application migrations in this same directory                                                                                       |
-| 6, B03.1                 | week-06/api/repository.ts                                               | Export createRepository; inject its database implementation into the existing route module instead of adding another event API                              |
-| 6, E06.1                 | week-06/api/persistence.db.test.ts                                      | Import the Week 4 factory, inject the test repository and prove close/rebuild persistence in the same isolated test namespace                               |
-| 7, D04.1                 | week-07/database/deduplication.sql                                      | Use the identity SQL as the task artifact and place its reviewed forward migration in week-06/database/migrations/002-event-identity.sql in the same commit |
-| 7, T05.1/B04.1           | week-07/typescript/repository-results.ts and week-07/api/list-events.ts | Import the result types/mapping and list-query helper into the repository/route layer; keep one registered list route                                       |
-| 8, B05.1                 | week-08/api/login.ts                                                    | Export registerLoginRoutes; place operator DDL in week-06/database/migrations/003-operators.sql and add environment-fed seed tooling                        |
-| 8, B05.2                 | week-08/api/session.ts                                                  | Export registerSession; configure the session plugin before routes and provide the verified-principal guard used by event routes                            |
-| 9, D05.1/B06.1           | week-09/database/owned-queries.sql and week-09/api/ownership.db.test.ts | Apply owned queries inside the existing repository and test the same assembled app, not an unrelated auth demonstration                                     |
-| 9, C02.1                 | week-09/client/send-authenticated.ts                                    | Log in to your original API, then send its cookie and exact allowed Origin; do not add a new server                                                         |
-| 10-11, C03/C04           | week-10/client/src/ files                                               | Continue the same copied React client and call relative /api; keep backend authorization in the API                                                         |
-| 10-13, B07.1/B08.1/B09.1 | response, boundary and operation task files                             | Extend tests/modules while installing their behavior in the original app/repository; tests must exercise that composition                                   |
-| 14-15, E11/E12           | incident and delivery evidence                                          | Document the actual continuing app command, migrations, seed command and tests                                                                              |
+## Database selection
 
-Companion edits to app.ts, server.ts, repository.ts, seed code and numbered SQL are part of the same focused task commit. The primary task path is an evidence locator, not a rule forbidding necessary integration edits.
+Week 4 uses PRACTICE_DATABASE_URL and the supplied practice schema. Shared code uses DATABASE_URL and merchantdesk. Individual apps use TEST_DATABASE_URL and lab_be01, lab_be02, etc.
 
-Register the session plugin before routes that use it. In Week 8, remove anonymous access to the assembled event routes; in Week 9, enforce the current verified merchant on every database operation. Do not leave the earlier unauthenticated demonstration route available under a second path.
+dev:student replaces its child DATABASE_URL with TEST_DATABASE_URL and sets DATABASE_SCHEMA to your lab schema; it never falls back to shared product data. The early memory app may run without a test URL, but the Week 8 repository must fail clearly if database configuration is missing.
 
-## Database selection without cross-student writes
-
-Week 2 uses PRACTICE_DATABASE_URL and the separate practice schema. The shared product uses DATABASE_URL and merchantdesk. Individual apps use TEST_DATABASE_URL and lab_be01, lab_be02, etc.
-
-dev:student deliberately overrides the child's DATABASE_URL with TEST_DATABASE_URL and sets DATABASE_SCHEMA to your own lab schema. It never falls back to the shared product URL. If TEST_DATABASE_URL is absent, the early memory app may run but the Week 6 database repository must report missing configuration.
-
-In Week 6, make server.ts pass the runner's DATABASE_URL/DATABASE_SCHEMA to createRepository. The repository must use the chosen schema, not hard-code public or merchantdesk. Validate a schema identifier before placing it in SQL; parameterize ordinary data values.
-
-Apply your current migrations from the original directory:
+In Week 8 pass the runner's URL/schema through server.ts to createRepository. Validate schema identifiers before placing them in SQL, and parameterize ordinary data values. Do not hard-code public or merchantdesk in individual queries.
 
 ```powershell
-npm.cmd run migrate:practice -- students/BE01/week-06/database/migrations
+npm.cmd run migrate:practice -- students/BE01/week-08/database/migrations
 npm.cmd run dev:student -- BE01
 ```
 
-The migration command creates the dedicated lab_be01 schema in the test database. Create merchants with an early synthetic seed before inserting events; Week 8 extends that seed with operators. Seed commands read configuration locally, are documented in your NOTES.md and never print credentials.
+The runner requires a database name ending in _test and creates lab_be01. Seed merchants before inserting events; Week 11 extends that seed with operators. Read seed credentials from ignored configuration and do not print them.
 
-Before Week 7's uniqueness migration, inspect your existing event rows for repeated merchant/provider identities. Earlier labs may already contain duplicates. Do not silently delete rows or reset a database to make ADD UNIQUE pass: preserve the originals, agree a reconciliation for identical versus conflicting groups with the reviewer, and record it in the forward migration. Test both a fresh schema and an upgrade from a small pre-Week-7 fixture. This is separate from preventing new concurrent duplicates.
+Before Week 9's unique-key migration, inspect older rows for duplicate merchant/provider identities. Preserve originals and obtain reviewed reconciliation; do not silently delete or reset. Test fresh and upgrade fixtures, separately from preventing new concurrent duplicates.
 
-Database tests create their own random test schema, apply the same migrations there and inject that repository into createApp. They must not clean the persistent lab schema or depend on someone else's seeded records. Close apps/pools and remove only the namespace created by that test.
+Real DB tests create random disposable schemas, apply the same migrations and inject the repository into the factory. Close apps/pools and remove only the schema the test created, never the persistent lab or another student's namespace.
 
-## Run all your authored tests
-
-Create each test at its specified task path. Use .test.ts for fast tests and .db.test.ts for real-database tests:
+## Run authored tests
 
 ```powershell
 npm.cmd run test:student -- BE01
 npm.cmd run test:student:db -- BE01
+npm.cmd run typecheck
 ```
 
-The first discovers your fast tests across the week folders. The second requires TEST_DATABASE_URL ending in _test and discovers your database tests. A command reports missing tests until you have written them; it does not invent proof.
+Use .test.ts for fast checks and .db.test.ts for database checks. Root suites include authored student tests already present. Empty folders do not produce invented proof. Keep special seed/setup commands in NOTES.md.
 
-For one focused file, the existing test:practice command still works. Keep NOTES.md beside a task when its seed or special proof needs another command.
+## Keep one API description
 
-## Run the individual browser flow in Week 11
+Copy the [OpenAPI shell](../fixtures/openapi-starter.json) using the [documentation guide](13-api-documentation.md). Week 10 creates week-10/api/openapi.json; Week 14 updates that file and records review in week-14/design/openapi-review.md. Extensions and final delivery update the same canonical specification.
 
-Keep the API running with dev:student. In another root terminal:
+## Copy the React shell once in Week 16
 
 ```powershell
-npm.cmd run dev --prefix students/BE01/week-10/client
+Copy-Item -LiteralPath "fixtures/web-starter" -Destination "students/BE01/week-16/client" -Recurse
+npm.cmd run dev --prefix students/BE01/week-16/client
 ```
 
-Open http://localhost:5173. Use relative /api URLs, the existing proxy and the same configured APP_ORIGIN. Stop the shared UI first. Cookies are controlled by the server, not copied into browser storage.
+Only copy if the destination is absent. Week 16 starts with static records; Week 17 connects the protected backend. Use http://localhost:5173 and relative /api requests. The supplied proxy points at the loopback API; the same APP_ORIGIN and server-controlled cookie apply. Stop the shared UI before starting yours.
 
-Before promotion, rerun your own app flow and tests. When promoting, change imports from cross-week practice paths to shared modules; shared code must never import a student's folder.
+Do not copy browser cookies into storage or move ownership checks into the interface. No Next.js, router, new backend framework or repeated weekly dependency installation is required.
