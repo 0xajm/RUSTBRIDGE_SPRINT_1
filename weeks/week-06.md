@@ -12,7 +12,7 @@ Read the HTTP contract in docs/04-api-and-security-contract.md. PostgreSQL pract
 
 ## Keep the application connected
 
-Use the Week 6 API factory and keep all numbered migrations in the Week 8 migration directory. See the [application wiring guide](../docs/12-application-wiring.md) for commands and module connections.
+Start the continuing API factory this week. Database-backed migrations begin in Week 8; no migration directory is required yet. See the [application wiring guide](../docs/12-application-wiring.md) for commands and module connections.
 
 ## Outcome
 

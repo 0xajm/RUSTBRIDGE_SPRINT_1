@@ -1,9 +1,11 @@
 import assert from 'node:assert/strict';
 import { existsSync, readFileSync, readdirSync } from 'node:fs';
 import path from 'node:path';
+import { verifyCurriculumReferences } from './curriculum-references.mjs';
 
 assert.ok(existsSync('curriculum.json'), 'Run from the repository root.');
 const data = JSON.parse(readFileSync('curriculum.json', 'utf8'));
+verifyCurriculumReferences(data, (file) => readFileSync(file, 'utf8'));
 assert.equal(data.weeks.length, 20);
 assert.equal(data.durationWeeks, 20);
 assert.deepEqual(data.weeklyHours, {
@@ -187,6 +189,14 @@ assert.ok(
 assert.ok(guide.includes(data.application.apiRoot + '/app.ts'));
 assert.ok(guide.includes(data.application.clientRoot));
 const dependencies = JSON.parse(readFileSync('package.json', 'utf8'));
+const lockedRoot = JSON.parse(readFileSync('package-lock.json', 'utf8'))
+  .packages[''];
+for (const key of ['dependencies', 'devDependencies', 'engines'])
+  assert.deepEqual(
+    dependencies[key],
+    lockedRoot[key],
+    'Lockfile mismatch: ' + key,
+  );
 assert.ok(
   !dependencies.dependencies.next && !dependencies.devDependencies.next,
 );
@@ -245,5 +255,5 @@ function visit(directory) {
 }
 visit('.');
 console.log(
-  'Verified 20 weeks, 60 core task IDs, 20 problem-solving blocks, 10 students, 15-hour core budgets, application paths, local links and no em dashes.',
+  'Verified 20 weeks, 60 core task IDs, 20 problem-solving blocks, 10 students, week/index alignment, setup timing, 15-hour core budgets, application paths, lockfile, local links and no em dashes.',
 );

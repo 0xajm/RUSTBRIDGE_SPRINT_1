@@ -32,7 +32,7 @@ Task time is part of the [15-hour core weekly budget](../docs/11-scope-and-conti
 
 ### 1. Finish the runbook and architecture (`E12.1`)
 
-- [ ] Write the final native-Windows runbook with clone/install, local configuration, database creation, migration/seed, API/UI start, tests, common failures and shutdown. Include a diagram matching actual code and a short next-sprint boundary. Propose the shared root README update in the shared-task PR.
+- [ ] Consolidate the Week 15 clean-start notes and subsequent corrections into the final native-Windows runbook with clone/install, local configuration, database creation, migration/seed, API/UI start, tests, common failures and shutdown. Include a diagram matching actual code and a short next-sprint boundary. Propose the shared root README update in the shared-task PR.
 
 **Primary path:** `students/<student-id>/week-20/delivery/runbook.md`.
 

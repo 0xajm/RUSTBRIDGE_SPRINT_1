@@ -29,6 +29,8 @@ git merge --ff-only origin/main
 git switch -c be01-week-01
 ```
 
+Task IDs are stable labels, not week numbers: `T02.1` is assigned in Week 4. Follow the week heading and linked task instructions rather than inferring the schedule from an ID.
+
 Read the current week completely. Complete one task, run its proof and make a focused commit with the task ID first:
 
 ```powershell

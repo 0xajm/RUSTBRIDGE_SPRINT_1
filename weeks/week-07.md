@@ -12,7 +12,7 @@ Bring the app factory and field contract. Use Fastify's built-in JSON Schema; do
 
 ## Keep the application connected
 
-Use the Week 6 API factory and keep all numbered migrations in the Week 8 migration directory. See the [application wiring guide](../docs/12-application-wiring.md) for commands and module connections.
+Continue the Week 6 API factory with in-memory storage. Database-backed migrations begin in Week 8; no migration directory is required yet. See the [application wiring guide](../docs/12-application-wiring.md) for commands and module connections.
 
 ## Outcome
 

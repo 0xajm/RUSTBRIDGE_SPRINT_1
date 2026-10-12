@@ -884,7 +884,7 @@
           "path": "week-15/delivery/clean-start-notes.md",
           "learn": "Setup instructions, fresh state and reproducibility",
           "resources": ["setup"],
-          "instructions": "Draft week-20/delivery/runbook.md from NOTES.md and the wiring guide. Have a peer use a fresh named disposable database and npm ci to migrate, seed, start the API, sign in through the simulator and submit/list an event without verbal shortcuts. Record and fix confusing steps. Mark UI steps as pending until Weeks 16-17; extend this same runbook in Weeks 19-20.",
+          "instructions": "Draft the backend runbook in week-15/delivery/clean-start-notes.md from NOTES.md and the wiring guide. Have a peer use a fresh named disposable database and npm ci to migrate, seed, start the API, sign in through the simulator and submit/list an event without verbal shortcuts. Record and fix confusing steps. Mark UI steps as pending until Weeks 16-17. Reuse these notes during the Week 19 rehearsal and consolidate them into the final runbook in Week 20; no future-week file is required now.",
           "proof": "A non-author reaches the protected API and persisted event using written commands; missing steps are corrected and no browser completion is claimed yet.",
           "trap": "Do not delete or reset a personal or shared database to make the rehearsal look clean."
         }
@@ -1163,7 +1163,7 @@
           "path": "week-20/delivery/runbook.md",
           "learn": "Actual architecture, migrations, seed accounts, tests and limitations",
           "resources": ["delivery"],
-          "instructions": "Write the final native-Windows runbook with clone/install, local configuration, database creation, migration/seed, API/UI start, tests, common failures and shutdown. Include a diagram matching actual code and a short next-sprint boundary. Propose the shared root README update in the shared-task PR.",
+          "instructions": "Consolidate the Week 15 clean-start notes and subsequent corrections into the final native-Windows runbook with clone/install, local configuration, database creation, migration/seed, API/UI start, tests, common failures and shutdown. Include a diagram matching actual code and a short next-sprint boundary. Propose the shared root README update in the shared-task PR.",
           "proof": "A stranger can find every command, secret variable and dependency; unfinished product work is named, not hidden.",
           "trap": "Do not describe Docker, queues, Rust, deployment or real payments as implemented in Sprint 1."
         },

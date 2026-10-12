@@ -52,7 +52,7 @@ Task time is part of the [15-hour core weekly budget](../docs/11-scope-and-conti
 
 ### 3. Rehearse a clean backend start (`E11.2`)
 
-- [ ] Draft week-20/delivery/runbook.md from NOTES.md and the wiring guide. Have a peer use a fresh named disposable database and npm ci to migrate, seed, start the API, sign in through the simulator and submit/list an event without verbal shortcuts. Record and fix confusing steps. Mark UI steps as pending until Weeks 16-17; extend this same runbook in Weeks 19-20.
+- [ ] Draft the backend runbook in week-15/delivery/clean-start-notes.md from NOTES.md and the wiring guide. Have a peer use a fresh named disposable database and npm ci to migrate, seed, start the API, sign in through the simulator and submit/list an event without verbal shortcuts. Record and fix confusing steps. Mark UI steps as pending until Weeks 16-17. Reuse these notes during the Week 19 rehearsal and consolidate them into the final runbook in Week 20; no future-week file is required now.
 
 **Primary path:** `students/<student-id>/week-15/delivery/clean-start-notes.md`.
 

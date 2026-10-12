@@ -179,11 +179,23 @@ test('default suites include authored student tests and propagate their failures
   const root = await mkdtemp(path.join(tmpdir(), 'merchantdesk-suite-'));
   try {
     const shared = path.join(root, 'shared/api/test');
+    const simulator = path.join(root, 'shared/simulator/test');
+    const databaseTests = path.join(root, 'shared/database/test');
     const tooling = path.join(root, 'scripts/test');
     const student = path.join(root, 'students/BE01/week-05');
-    for (const directory of [shared, tooling, student])
+    for (const directory of [
+      shared,
+      simulator,
+      databaseTests,
+      tooling,
+      student,
+    ])
       await mkdir(directory, { recursive: true });
     await writeFile(path.join(shared, 'passing.test.mjs'), '');
+    const simulatorTest = path.join(simulator, 'summary.test.mjs');
+    await writeFile(simulatorTest, '');
+    const sharedDb = path.join(databaseTests, 'migration.db.test.mjs');
+    await writeFile(sharedDb, '');
     const broken = path.join(student, 'broken.test.mjs');
     await writeFile(broken, "throw new Error('intentional student failure');");
     const db = path.join(student, 'persistence.db.test.mjs');
@@ -191,6 +203,8 @@ test('default suites include authored student tests and propagate their failures
 
     const fast = await findSuiteTests(root, undefined, false);
     assert.ok(fast.includes(broken));
+    assert.ok(fast.includes(simulatorTest));
+    assert.ok(!fast.includes(sharedDb));
     assert.ok(!fast.includes(db));
     const environment = { ...process.env };
     delete environment.NODE_TEST_CONTEXT;
@@ -200,7 +214,10 @@ test('default suites include authored student tests and propagate their failures
     });
     assert.notEqual(result.status, 0);
     assert.match(result.stdout + result.stderr, /intentional student failure/);
-    assert.deepEqual(await findSuiteTests(root, undefined, true), [db]);
+    assert.deepEqual(
+      await findSuiteTests(root, undefined, true),
+      [sharedDb, db].sort(),
+    );
     assert.deepEqual(await findSuiteTests(root, 'BE01', false), [broken]);
   } finally {
     // Remove only this test's newly created temporary fixture tree.

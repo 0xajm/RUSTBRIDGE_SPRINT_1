@@ -13,6 +13,8 @@
   "include": [
     "shared/api/src/**/*.ts",
     "shared/api/test/**/*.ts",
+    "shared/simulator/**/*.ts",
+    "shared/database/**/*.ts",
     "fixtures/*.ts",
     "fixtures/api-starter/**/*.ts"
   ]

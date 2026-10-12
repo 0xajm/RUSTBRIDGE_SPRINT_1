@@ -43,7 +43,7 @@ Use .js specifiers for Node-oriented TypeScript modules. Agree argument types; i
 | 12, D05/B06/C02          | owned queries, ownership test and authenticated consumer | Derive merchant from the verified current operator on every operation                       |
 | 13, D06/B08/E09          | rollback and boundary tests, test matrix                 | Exercise the existing factory/repository; mark browser proofs pending                       |
 | 14, B10/E13              | OpenAPI review, security DB tests and checkpoint         | Update the Week 10 canonical specification and test rejected-write state                    |
-| 15, D07/E11              | query plan, incident and backend clean-start notes       | Draft the same Week 20 runbook, with browser steps pending                                  |
+| 15, D07/E11              | query plan, incident and backend clean-start notes       | Draft the backend runbook in Week 15 notes; consolidate in Week 20 after browser proof      |
 | 16-17, C03/C04/B07       | week-16/client/src/ and response tests                   | One client uses relative /api; server owns authorization and public mapping                 |
 | 18, B09/C05/E10          | operation/client/CI proof                                | Extend current modules and tests, not an unrelated monitoring demo                          |
 | 19, B11/E14/C06.2        | reviewed extension, case study and demo plan             | Companion code stays in the same app; preserve core routes/tests                            |
