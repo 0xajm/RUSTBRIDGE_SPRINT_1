@@ -1,6 +1,6 @@
 export function parseStudentId(value) {
-  if (typeof value !== 'string' || !/^RB(?:[1-9]|1[0-2])$/.test(value)) {
-    throw new Error('Supply one student ID from RB1 through RB12.');
+  if (typeof value !== 'string' || !/^RB(?:[1-9]|1[0-4])$/.test(value)) {
+    throw new Error('Supply one student ID from RB1 through RB14.');
   }
   return value;
 }

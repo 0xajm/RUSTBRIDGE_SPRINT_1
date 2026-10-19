@@ -2,7 +2,7 @@
 
 **MerchantDesk: TypeScript and Web2 Application Foundations**
 
-20 weeks | 12 students | 15-20 hours weekly | Windows | free local tooling
+20 weeks | 14 students | 15-20 hours weekly | Windows | free local tooling
 
 Build MerchantDesk, a merchant-side application for receiving and inspecting synthetic payment notifications. An operator signs in, submits sample events and views only their merchant's history. The backend validates input, persists records, handles duplicates and protects ownership. A small React + Vite interface makes the API usable.
 
@@ -52,7 +52,7 @@ Plan for a 15-hour core week, including two hours of problem-solving, guided lea
 | --------- | -------------------------------------------------------------------------------- |
 | docs/     | Product contract, setup, API documentation, problem-solving and extension guides |
 | weeks/    | The 20 canonical weekly task files                                               |
-| students/ | Individual workspaces for RB1 through RB12                                       |
+| students/ | Individual workspaces for RB1 through RB14                                       |
 | shared/   | One reviewed API, interface, database and simulator                              |
 | fixtures/ | Synthetic inputs and copyable teaching scaffolds                                 |
 | scripts/  | Setup, test and consistency tooling                                              |

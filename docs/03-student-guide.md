@@ -1,8 +1,8 @@
 # Student guide
 
-All twelve students complete the same curriculum. Your weekly problem statement points to the canonical instructions in `weeks/`; write answers and code in your own folder.
+All fourteen students complete the same curriculum. Your weekly problem statement points to the canonical instructions in `weeks/`; write answers and code in your own folder.
 
-Use your assigned roll number from RB1 through RB12 in folder paths and student commands. IDs have no leading zero; for example, use RB1, not RB01. Branch examples use the lowercase equivalent, such as rb1-week-01.
+Use your assigned roll number from RB1 through RB14 in folder paths and student commands. IDs have no leading zero; for example, use RB1, not RB01. Branch examples use the lowercase equivalent, such as rb1-week-01.
 
 ## Set up GitHub
 

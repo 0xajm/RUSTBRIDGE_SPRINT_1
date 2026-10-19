@@ -1090,7 +1090,7 @@
       "number": 19,
       "title": "Build one bounded extension and prepare the portfolio",
       "phase": "Deliver",
-      "need": "Every student needs attributable implementation evidence without turning the common product into twelve unrelated applications.",
+      "need": "Every student needs attributable implementation evidence without turning the common product into fourteen unrelated applications.",
       "before": "Complete the core merchant flow and Week 18 failure checks first. Select one scope from docs/15-individual-extension.md and agree its proof before adding code. Reuse the existing API, database and React client.",
       "outcome": "One bounded tested extension, an attributable case study and a rehearsed complete demo.",
       "shared": "shared/delivery/extension-decisions.md and shared/delivery/portfolio-guide.md",
@@ -1372,7 +1372,9 @@
     "RB9",
     "RB10",
     "RB11",
-    "RB12"
+    "RB12",
+    "RB13",
+    "RB14"
   ],
   "durationWeeks": 20,
   "weeklyHours": {
