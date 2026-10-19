@@ -42,7 +42,7 @@ Task time is part of the [15-hour core weekly budget](../docs/11-scope-and-conti
 
 **Primary path:** `students/<student-id>/week-01/typescript/inspector.ts`.
 
-**Proof for review:** npm.cmd run practice -- students/BE01/week-01/typescript/inspector.ts runs after replacing BE01. Explain that tsx runs the code without typechecking; npm.cmd run typecheck is the separate compiler check.
+**Proof for review:** npm.cmd run practice -- students/RB1/week-01/typescript/inspector.ts runs after replacing RB1. Explain that tsx runs the code without typechecking; npm.cmd run typecheck is the separate compiler check.
 
 **Known trap:** You do not need arrays, async, React or a database to finish this first program.
 

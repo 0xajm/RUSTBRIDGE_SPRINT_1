@@ -7,7 +7,7 @@ The cohort builds MerchantDesk, an application that records synthetic payment ev
 1. Install Git, an editor and Node using sections 1-2 of [Windows setup](02-windows-setup.md).
 2. Follow **Set up GitHub** in the [student guide](03-student-guide.md) to accept your collaborator invitation and clone the official repository. Run `npm.cmd ci` inside that cloned folder.
 3. Return to Windows setup for `setup:check`, `check` and the section 3 shell checks, then read the student guide's weekly workflow.
-4. Find your BE number in [students/](../students/README.md).
+4. Find your RB number in [students/](../students/README.md).
 5. Open `week-01/problem_statement.md` in your folder and follow its task link.
 
 No prior programming experience, PostgreSQL, Docker, cloud account or payment-provider account is required for Week 1.
@@ -19,7 +19,7 @@ Read the project requirement, investigate the relevant concept, attempt the task
 - **Sprint:** this complete 20-week course.
 - **Week:** one learning, building and review block.
 - **Track:** a recurring skill category, not a student specialisation.
-- **Individual workspace:** your `students/BE##/` folder.
+- **Individual workspace:** your `students/RB<number>/` folder.
 - **Shared build:** the single application in `shared/`.
 
 Everyone completes the same 60 core tasks and 20 common problem-solving blocks. Task IDs, paths, required proof and failure cases appear in the canonical week files. Follow the reading linked to the task you are doing, not entire documentation sites.

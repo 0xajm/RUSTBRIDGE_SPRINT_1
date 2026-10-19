@@ -1,6 +1,8 @@
 # Student guide
 
-All ten students complete the same curriculum. Your weekly problem statement points to the canonical instructions in `weeks/`; write answers and code in your own folder.
+All twelve students complete the same curriculum. Your weekly problem statement points to the canonical instructions in `weeks/`; write answers and code in your own folder.
+
+Use your assigned roll number from RB1 through RB12 in folder paths and student commands. IDs have no leading zero; for example, use RB1, not RB01. Branch examples use the lowercase equivalent, such as rb1-week-01.
 
 ## Set up GitHub
 
@@ -26,7 +28,7 @@ Start with a clean main branch. Replace the student ID and week below with your 
 git switch main
 git fetch origin
 git merge --ff-only origin/main
-git switch -c be01-week-01
+git switch -c rb1-week-01
 ```
 
 Task IDs are stable labels, not week numbers: `T02.1` is assigned in Week 4. Follow the week heading and linked task instructions rather than inferring the schedule from an ID.
@@ -34,13 +36,13 @@ Task IDs are stable labels, not week numbers: `T02.1` is assigned in Week 4. Fol
 Read the current week completely. Complete one task, run its proof and make a focused commit with the task ID first:
 
 ```powershell
-git add students/BE01/week-01/typescript/inspector.ts
+git add students/RB1/week-01/typescript/inspector.ts
 git diff --cached
 git commit -m "T01.1 inspect a sandbox event"
-git push -u origin be01-week-01
+git push -u origin rb1-week-01
 ```
 
-On GitHub, open a PR in the official repository with base `main` and compare `be01-week-01`. One weekly individual PR may contain the three focused task commits. Include task IDs, test commands/results, a failure case and one explained decision. Review an assigned peer's work; your own PR needs a non-author reviewer. Apply feedback in the same PR. If your reviewer is unavailable, request another reviewer or a maintainer instead of waiting for a fixed partner.
+On GitHub, open a PR in the official repository with base `main` and compare `rb1-week-01`. One weekly individual PR may contain the three focused task commits. Include task IDs, test commands/results, a failure case and one explained decision. Review an assigned peer's work; your own PR needs a non-author reviewer. Apply feedback in the same PR. If your reviewer is unavailable, request another reviewer or a maintainer instead of waiting for a fixed partner.
 
 The primary task path identifies the main artifact. Include necessary companion modules, tests, migrations and notes in the same focused commit. When a task refers to an earlier week, continue that existing application rather than restarting it.
 
@@ -48,11 +50,11 @@ If main is dirty or `--ff-only` fails, inspect the unfinished work or divergence
 
 ## Run your work
 
-Run commands from the repository root, using your actual BE number and file paths:
+Run commands from the repository root, using your actual RB number and file paths:
 
 ```powershell
-npm.cmd run practice -- students/BE01/week-01/typescript/inspector.ts
-npm.cmd run test:practice -- students/BE01/week-05/typescript/validate-event.test.ts
+npm.cmd run practice -- students/RB1/week-01/typescript/inspector.ts
+npm.cmd run test:practice -- students/RB1/week-05/typescript/validate-event.test.ts
 npm.cmd run typecheck
 ```
 
@@ -61,9 +63,9 @@ npm.cmd run typecheck
 From Week 6, follow the [application wiring guide](12-application-wiring.md). Copy the API starter once, keep `week-06/api/app.ts` as the factory and `server.ts` as the listener, and connect later modules to that app.
 
 ```powershell
-npm.cmd run dev:student -- BE01
-npm.cmd run test:student -- BE01
-npm.cmd run test:student:db -- BE01
+npm.cmd run dev:student -- RB1
+npm.cmd run test:student -- RB1
+npm.cmd run test:student:db -- RB1
 ```
 
 Database tests require the dedicated `_test` database. Tests use separate disposable schemas; individual apps use their own lab schema. Root dependencies support all labs, so do not install another dependency set every week. `npm.cmd test` includes shared/tooling tests and all authored student fast tests present; `npm.cmd run check` verifies the full repository without requiring a database. `npm.cmd run test:db` includes shared and authored student database tests. Targeted commands above help isolate your own failure.
@@ -73,8 +75,8 @@ Database tests require the dedicated `_test` database. Tests use separate dispos
 Copy only if the destination does not already exist:
 
 ```powershell
-Copy-Item -LiteralPath "fixtures/web-starter" -Destination "students/BE01/week-16/client" -Recurse
-npm.cmd run dev --prefix students/BE01/week-16/client
+Copy-Item -LiteralPath "fixtures/web-starter" -Destination "students/RB1/week-16/client" -Recurse
+npm.cmd run dev --prefix students/RB1/week-16/client
 ```
 
 Keep editing this client in later weeks. Stop the shared UI/API before running your own: they use the same ports, 5173 and 3000. The client uses relative `/api` requests through the supplied proxy.
@@ -83,7 +85,7 @@ Keep editing this client in later weeks. Stop the shared UI/API before running y
 
 Follow the [shared-project responsibilities](06-team-roles.md). Everyone practises all core skills, but the main application is built from different assigned contributions. Each shared task has an available owner, a non-author reviewer, a bounded file scope and required proof. Rotate implementation, test and review responsibilities rather than assigning permanent specialists.
 
-For an assigned shared task, create a separate branch from current main, such as `be01-week-08-shared-migration`, and open a separate PR into main. Reuse reviewed practice, adapt imports into shared modules and include its focused tests. Preserve authorship and use a task-ID commit such as `D03.1 shared add event migration`. Shared code must not import a student's folder.
+For an assigned shared task, create a separate branch from current main, such as `rb1-week-08-shared-migration`, and open a separate PR into main. Reuse reviewed practice, adapt imports into shared modules and include its focused tests. Preserve authorship and use a task-ID commit such as `D03.1 shared add event migration`. Shared code must not import a student's folder.
 
 Record the actual owner, review and PR in the week's contribution log. If an owner is unavailable, a maintainer reassigns the unfinished task and preserves existing work. Continue your own practice; do not wait for that person's code or copy the shared solution as your answer. Keep the shared slot inside the weekly budget: promotion reuses proven work, not a second unrelated assignment. Record evidence using the [assessment guide](10-assessment.md).
 

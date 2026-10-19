@@ -2,7 +2,7 @@
 
 1. One focused task purpose per commit, with its stable ID first.
 2. One weekly individual PR can hold the three focused task commits.
-3. Work in your BE folder for individual practice; change shared paths only for an assigned project task.
+3. Work in your RB folder for individual practice; change shared paths only for an assigned project task.
 4. Do not commit .env, credentials, local databases, dependencies or build output.
 5. Shared changes need tests, a non-author check and maintainer review.
 6. Preserve student authorship; do not squash when the cohort uses authored commits as evidence.

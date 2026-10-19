@@ -7,10 +7,10 @@ Everyone learns the same core skills and contributes to one MerchantDesk applica
 1. Use the week's shared paths and required outcome to identify bounded implementation, test, integration and review tasks. Reuse proven individual work rather than inventing another assignment.
 2. Assign each task an available owner and a non-author reviewer. Record its task ID, file scope, completion proof and PR in the [weekly contribution log](../shared/delivery/rotations/week-01.md). A maintainer can review or witness when a peer is unavailable.
 3. Give every active student a manageable contribution or review. Rotate responsibilities across the sprint so every student owns implementation and tests as well as reviews. Use actual contribution records to balance opportunities, not a fixed BE-number schedule.
-4. Agree interfaces and file ownership before parallel edits. Split a database feature into migration, repository, HTTP integration and tests when useful; do not make ten people edit the same module independently.
+4. Agree interfaces and file ownership before parallel edits. Split a database feature into migration, repository, HTTP integration and tests when useful; do not make twelve people edit the same module independently.
 5. Keep one owner responsible for assembling the weekly log from the actual PRs and witness results. Do not have everyone rewrite the same evidence file.
 
-All students still complete the same individual core tasks. A shared test or review does not replace practising a skill yourself. There is no fixed build pair, permanent review ring or requirement to wait for a particular BE number.
+All students still complete the same individual core tasks. A shared test or review does not replace practising a skill yourself. There is no fixed build pair, permanent review ring or requirement to wait for a particular RB number.
 
 ## If an owner or reviewer is unavailable
 
@@ -22,7 +22,7 @@ Keep personal reasons for absence and private feedback outside the public log. R
 
 ## Review and merge
 
-Use separate task branches and PRs into the official main. Individual practice stays in your BE folder; shared-task branches change only their agreed product paths, tests and evidence. Only reviewed, passing work reaches main. A maintainer merges; shared authentication, ownership and migration changes need direct maintainer review.
+Use separate task branches and PRs into the official main. Individual practice stays in your RB folder; shared-task branches change only their agreed product paths, tests and evidence. Only reviewed, passing work reaches main. A maintainer merges; shared authentication, ownership and migration changes need direct maintainer review.
 
 The owner/admin arranges collaborator access and required checks/approvals. Write access is not full admin access, and these written cohort rules do not configure GitHub protection by themselves. Do not claim protections are active before checking them. Do not force-push main or bypass a failed check.
 

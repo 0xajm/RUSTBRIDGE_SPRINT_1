@@ -21,8 +21,8 @@ In Week 1 a runnable function plus an expected/actual table is sufficient; autom
 Use students/YOUR_ID/week-NN/problem-solving/README.md for the problem, assumptions, run/test commands, one corrected attempt and explanation. Keep solution.ts and solution.test.ts beside it when applicable. These are student-authored files, not supplied answers.
 
 ```powershell
-npm.cmd run practice -- students/BE01/week-03/problem-solving/solution.ts
-npm.cmd run test:practice -- students/BE01/week-03/problem-solving/solution.test.ts
+npm.cmd run practice -- students/RB1/week-03/problem-solving/solution.ts
+npm.cmd run test:practice -- students/RB1/week-03/problem-solving/solution.test.ts
 npm.cmd run typecheck
 ```
 

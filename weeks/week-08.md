@@ -32,7 +32,7 @@ Task time is part of the [15-hour core weekly budget](../docs/11-scope-and-conti
 
 ### 1. Write and apply the first migration (`D03.1`)
 
-- [ ] Create merchants and payment_events from the agreed field contract, including a foreign key, amount check and timestamp columns. Use the supplied runner via npm.cmd run migrate:practice -- students/BE01/week-08/database/migrations, replacing BE01. Read fixtures/migration-runner.ts and its support tests, then explain ordered version tracking, one-client transactions and repeat-run behavior. Write schema-relative SQL without transaction commands; do not invent runner plumbing in this task.
+- [ ] Create merchants and payment_events from the agreed field contract, including a foreign key, amount check and timestamp columns. Use the supplied runner via npm.cmd run migrate:practice -- students/RB1/week-08/database/migrations, replacing RB1. Read fixtures/migration-runner.ts and its support tests, then explain ordered version tracking, one-client transactions and repeat-run behavior. Write schema-relative SQL without transaction commands; do not invent runner plumbing in this task.
 
 **Primary path:** `students/<student-id>/week-08/database/migrations/001-events.sql`.
 

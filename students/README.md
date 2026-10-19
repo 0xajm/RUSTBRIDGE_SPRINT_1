@@ -1,21 +1,25 @@
 # Individual practice
 
-Ten students, one essential learning path. Every student does all core skills. These folders are not frontend/backend specialisations.
+Twelve students, one essential learning path. Every student does all core skills. These folders are not frontend/backend specialisations.
+
+Use your assigned roll number exactly as shown, from RB1 through RB12. Do not add a leading zero: RB1 is correct, not RB01.
 
 | ID   | Workspace              |
 | ---- | ---------------------- |
-| BE01 | [BE01](BE01/README.md) |
-| BE02 | [BE02](BE02/README.md) |
-| BE03 | [BE03](BE03/README.md) |
-| BE04 | [BE04](BE04/README.md) |
-| BE05 | [BE05](BE05/README.md) |
-| BE06 | [BE06](BE06/README.md) |
-| BE07 | [BE07](BE07/README.md) |
-| BE08 | [BE08](BE08/README.md) |
-| BE09 | [BE09](BE09/README.md) |
-| BE10 | [BE10](BE10/README.md) |
+| RB1  | [RB1](RB1/README.md)   |
+| RB2  | [RB2](RB2/README.md)   |
+| RB3  | [RB3](RB3/README.md)   |
+| RB4  | [RB4](RB4/README.md)   |
+| RB5  | [RB5](RB5/README.md)   |
+| RB6  | [RB6](RB6/README.md)   |
+| RB7  | [RB7](RB7/README.md)   |
+| RB8  | [RB8](RB8/README.md)   |
+| RB9  | [RB9](RB9/README.md)   |
+| RB10 | [RB10](RB10/README.md) |
+| RB11 | [RB11](RB11/README.md) |
+| RB12 | [RB12](RB12/README.md) |
 
-Open your current `week-NN/problem_statement.md`. The actual tasks live in [weeks/](../weeks/week-01.md) and are linked, not duplicated 10 times.
+Open your current `week-NN/problem_statement.md`. The actual tasks live in [weeks/](../weeks/week-01.md) and are linked, not duplicated 12 times.
 
 Everyone practises the same skills here. Different students own bounded contributions to the single product in [shared/](../shared/README.md), with rotating implementation, test and review responsibilities. Use the [responsibility guide](../docs/06-team-roles.md); no fixed pair or absent student is a prerequisite for your practice.
 

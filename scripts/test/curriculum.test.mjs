@@ -1,7 +1,11 @@
 import assert from 'node:assert/strict';
-import { readFileSync } from 'node:fs';
+import { readFileSync, readdirSync } from 'node:fs';
 import test from 'node:test';
-import { studentApiRelativePath } from '../student-context.mjs';
+import {
+  parseStudentId,
+  studentAppEnvironment,
+  studentApiRelativePath,
+} from '../student-context.mjs';
 import { verifyCurriculumReferences } from '../curriculum-references.mjs';
 
 const read = (file) =>
@@ -9,6 +13,63 @@ const read = (file) =>
 const curriculum = read('curriculum.json');
 const readText = (file) =>
   readFileSync(new URL('../../' + file, import.meta.url), 'utf8');
+
+test('all twelve RB roll numbers have complete workspaces and isolated application paths', () => {
+  const expected = Array.from({ length: 12 }, (_, index) => 'RB' + (index + 1));
+  assert.deepEqual(curriculum.students, expected);
+  assert.deepEqual(
+    readdirSync(new URL('../../students/', import.meta.url), {
+      withFileTypes: true,
+    })
+      .filter((entry) => entry.isDirectory())
+      .map((entry) => entry.name)
+      .sort(),
+    [...expected].sort(),
+  );
+  const schemas = new Set();
+  for (const student of expected) {
+    assert.equal(parseStudentId(student), student);
+    assert.equal(
+      studentApiRelativePath(student),
+      'students/' + student + '/week-06/api/server.ts',
+    );
+    const schema = studentAppEnvironment(student, {}).DATABASE_SCHEMA;
+    assert.equal(schema, 'lab_' + student.toLowerCase());
+    schemas.add(schema);
+    assert.ok(
+      readText('students/' + student + '/README.md').startsWith(
+        '# ' + student + ':',
+      ),
+    );
+    for (const week of curriculum.weeks) {
+      const number = String(week.number).padStart(2, '0');
+      assert.ok(
+        readText(
+          'students/' + student + '/week-' + number + '/problem_statement.md',
+        ).startsWith('# ' + student + ': Week ' + week.number + '\n'),
+      );
+    }
+  }
+  assert.equal(schemas.size, 12);
+});
+
+test('roll numbers reject zero padding, out-of-roster values and non-string input', () => {
+  for (const value of [
+    undefined,
+    null,
+    '',
+    'RB0',
+    'RB01',
+    'RB13',
+    'RB99',
+    'rb1',
+    '../RB1',
+    'RB1/../RB2',
+    12,
+    { toString: () => 'RB1' },
+  ])
+    assert.throws(() => parseStudentId(value), /RB1 through RB12/);
+});
 
 test('week headings, task indexes, all student pointers and environment timing agree', () => {
   verifyCurriculumReferences(curriculum, readText);
@@ -20,11 +81,11 @@ test('curriculum verification rejects stale week labels and task paths', () => {
     ['weeks/week-04.md', '# Week 4:', '# Week 2:'],
     ['shared/delivery/rotations/week-04.md', '# Week 4:', '# Week 2:'],
     [
-      'students/BE10/week-04/problem_statement.md',
-      '# BE10: Week 4',
-      '# BE10: Week 2',
+      'students/RB10/week-04/problem_statement.md',
+      '# RB10: Week 4',
+      '# RB10: Week 2',
     ],
-    ['students/BE10/README.md', '- [Week 4]', '- [Week 2]'],
+    ['students/RB10/README.md', '- [Week 4]', '- [Week 2]'],
     [
       'docs/05-task-index.md',
       'week-04/sql/first-queries.sql',
@@ -86,8 +147,8 @@ test('twenty-week budgets include problem-solving without adding it on top', () 
 
 test('application roots match the continuing student runner and do not require future task files', () => {
   assert.equal(
-    studentApiRelativePath('BE01'),
-    'students/BE01/' + curriculum.application.apiRoot + '/server.ts',
+    studentApiRelativePath('RB1'),
+    'students/RB1/' + curriculum.application.apiRoot + '/server.ts',
   );
   assert.equal(
     curriculum.application.migrationRoot,

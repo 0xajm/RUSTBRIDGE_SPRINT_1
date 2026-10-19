@@ -18,8 +18,19 @@ assert.deepEqual(data.application, {
   migrationRoot: 'week-08/database/migrations',
   clientRoot: 'week-16/client',
 });
-assert.equal(data.students.length, 10);
-assert.equal(new Set(data.students).size, 10);
+const expectedStudents = Array.from(
+  { length: 12 },
+  (_, index) => 'RB' + (index + 1),
+);
+assert.deepEqual(data.students, expectedStudents);
+assert.deepEqual(
+  readdirSync('students', { withFileTypes: true })
+    .filter((entry) => entry.isDirectory())
+    .map((entry) => entry.name)
+    .sort(),
+  [...expectedStudents].sort(),
+  'Student folders must match the current RB roster.',
+);
 const ids = new Set();
 const problemIds = new Set();
 for (const [index, week] of data.weeks.entries()) {
@@ -159,7 +170,7 @@ assert.ok(
 const roles = readFileSync('docs/06-team-roles.md', 'utf8');
 assert.ok(roles.includes('non-author reviewer'));
 assert.ok(roles.includes('reassigns the unfinished task'));
-assert.ok(!/BE01, BE02|Each student builds three times/.test(roles));
+assert.ok(!/RB1, RB2|Each student builds three times/.test(roles));
 assert.ok(publication.includes(official + '.git'));
 assert.ok(
   !publication.includes(
@@ -255,5 +266,5 @@ function visit(directory) {
 }
 visit('.');
 console.log(
-  'Verified 20 weeks, 60 core task IDs, 20 problem-solving blocks, 10 students, week/index alignment, setup timing, 15-hour core budgets, application paths, lockfile, local links and no em dashes.',
+  'Verified 20 weeks, 60 core task IDs, 20 problem-solving blocks, 12 students, week/index alignment, setup timing, 15-hour core budgets, application paths, lockfile, local links and no em dashes.',
 );

@@ -12,10 +12,10 @@ let schema = 'merchantdesk';
 if (mode === 'practice') {
   const normalized = directory?.replaceAll('\\', '/');
   const match = normalized?.match(
-    /^students\/(BE(?:0[1-9]|10))\/week-08\/database\/migrations\/?$/,
+    /^students\/(RB(?:[1-9]|1[0-2]))\/week-08\/database\/migrations\/?$/,
   );
   if (!match)
-    throw new Error('Supply students/YOUR_BE_ID/week-08/database/migrations.');
+    throw new Error('Supply students/YOUR_RB_ID/week-08/database/migrations.');
   schema = 'lab_' + match[1].toLowerCase();
 } else if (mode !== 'product') {
   throw new Error('Use the documented product or practice command.');
