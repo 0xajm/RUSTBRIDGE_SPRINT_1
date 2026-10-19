@@ -31,7 +31,7 @@
           "learn": "Values, variables, objects, console output and the TS/JS relationship",
           "resources": ["ts", "js"],
           "instructions": "After npm ci, use the fixture at fixtures/events.json. Begin with one object and print its event ID, kind and amount_minor. Add a function that returns that summary. Record the run command in NOTES.md next to the script. Do not print credentials or customer data.",
-          "proof": "npm.cmd run practice -- students/BE01/week-01/typescript/inspector.ts runs after replacing BE01. Explain that tsx runs the code without typechecking; npm.cmd run typecheck is the separate compiler check.",
+          "proof": "npm.cmd run practice -- students/RB1/week-01/typescript/inspector.ts runs after replacing RB1. Explain that tsx runs the code without typechecking; npm.cmd run typecheck is the separate compiler check.",
           "trap": "You do not need arrays, async, React or a database to finish this first program."
         },
         {
@@ -319,7 +319,7 @@
           "path": "week-06/api/app.ts",
           "learn": "HTTP methods, paths, headers, status, JSON and app factories",
           "resources": ["http", "fastify", "ftest"],
-          "instructions": "Copy the immutable fixtures/api-starter once into your week-06/api folder as described in docs/12-application-wiring.md. Continue its exported createApp factory and separate server.ts listener. Add an in-memory GET /api/events returning a few synthetic records, send a request with curl.exe and add an app.inject test in app.test.ts. Run the app with npm.cmd run dev:student -- BE01, replacing BE01. Bind to loopback and retain this entry point in later weeks.",
+          "instructions": "Copy the immutable fixtures/api-starter once into your week-06/api folder as described in docs/12-application-wiring.md. Continue its exported createApp factory and separate server.ts listener. Add an in-memory GET /api/events returning a few synthetic records, send a request with curl.exe and add an app.inject test in app.test.ts. Run the app with npm.cmd run dev:student -- RB1, replacing RB1. Bind to loopback and retain this entry point in later weeks.",
           "proof": "An annotated exchange names method, URL, response status and JSON. The test runs without opening a network port.",
           "trap": "The in-memory lab is local and temporary. It has no authentication yet and must not be publicly exposed."
         },
@@ -441,7 +441,7 @@
           "path": "week-08/database/migrations/001-events.sql",
           "learn": "DDL, constraints, timestamps and forward migrations",
           "resources": ["pg", "constraints"],
-          "instructions": "Create merchants and payment_events from the agreed field contract, including a foreign key, amount check and timestamp columns. Use the supplied runner via npm.cmd run migrate:practice -- students/BE01/week-08/database/migrations, replacing BE01. Read fixtures/migration-runner.ts and its support tests, then explain ordered version tracking, one-client transactions and repeat-run behavior. Write schema-relative SQL without transaction commands; do not invent runner plumbing in this task.",
+          "instructions": "Create merchants and payment_events from the agreed field contract, including a foreign key, amount check and timestamp columns. Use the supplied runner via npm.cmd run migrate:practice -- students/RB1/week-08/database/migrations, replacing RB1. Read fixtures/migration-runner.ts and its support tests, then explain ordered version tracking, one-client transactions and repeat-run behavior. Write schema-relative SQL without transaction commands; do not invent runner plumbing in this task.",
           "proof": "An empty test database migrates; invalid amount/merchant writes fail; a second runner invocation preserves rows.",
           "trap": "Do not edit a migration after the shared cohort has applied it. Add a new migration."
         },
@@ -1090,7 +1090,7 @@
       "number": 19,
       "title": "Build one bounded extension and prepare the portfolio",
       "phase": "Deliver",
-      "need": "Every student needs attributable implementation evidence without turning the common product into ten unrelated applications.",
+      "need": "Every student needs attributable implementation evidence without turning the common product into twelve unrelated applications.",
       "before": "Complete the core merchant flow and Week 18 failure checks first. Select one scope from docs/15-individual-extension.md and agree its proof before adding code. Reuse the existing API, database and React client.",
       "outcome": "One bounded tested extension, an attributable case study and a rehearsed complete demo.",
       "shared": "shared/delivery/extension-decisions.md and shared/delivery/portfolio-guide.md",
@@ -1361,16 +1361,18 @@
     "ai": ["AI use and explanation checkpoints", "../docs/07-resources.md"]
   },
   "students": [
-    "BE01",
-    "BE02",
-    "BE03",
-    "BE04",
-    "BE05",
-    "BE06",
-    "BE07",
-    "BE08",
-    "BE09",
-    "BE10"
+    "RB1",
+    "RB2",
+    "RB3",
+    "RB4",
+    "RB5",
+    "RB6",
+    "RB7",
+    "RB8",
+    "RB9",
+    "RB10",
+    "RB11",
+    "RB12"
   ],
   "durationWeeks": 20,
   "weeklyHours": {

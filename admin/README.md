@@ -26,4 +26,4 @@ The learning model draws on [Data Sprint's blueprint](https://github.com/Startwi
 
 The curriculum assumes 15-20 hours weekly including the common two-hour problem-solving block. Preserve the common core and rotating shared responsibilities; give beginner setup/concept feedback without skipping hard proofs. No Next.js, paid service or public hosting is required in Sprint 1.
 
-Week 14 and Week 20 include witnessed no-AI repair/explain-back. Keep assessment grades outside the public repo. Week 19 extensions need bounded scope and cannot replace core tasks or force ten extra shared features. Complete the final demo, independent start and authored case-study evidence before recording completion.
+Week 14 and Week 20 include witnessed no-AI repair/explain-back. Keep assessment grades outside the public repo. Week 19 extensions need bounded scope and cannot replace core tasks or force twelve extra shared features. Complete the final demo, independent start and authored case-study evidence before recording completion.

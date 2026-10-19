@@ -32,7 +32,7 @@ Task time is part of the [15-hour core weekly budget](../docs/11-scope-and-conti
 
 ### 1. Build and inspect a tiny Fastify API (`B01.1`)
 
-- [ ] Copy the immutable fixtures/api-starter once into your week-06/api folder as described in docs/12-application-wiring.md. Continue its exported createApp factory and separate server.ts listener. Add an in-memory GET /api/events returning a few synthetic records, send a request with curl.exe and add an app.inject test in app.test.ts. Run the app with npm.cmd run dev:student -- BE01, replacing BE01. Bind to loopback and retain this entry point in later weeks.
+- [ ] Copy the immutable fixtures/api-starter once into your week-06/api folder as described in docs/12-application-wiring.md. Continue its exported createApp factory and separate server.ts listener. Add an in-memory GET /api/events returning a few synthetic records, send a request with curl.exe and add an app.inject test in app.test.ts. Run the app with npm.cmd run dev:student -- RB1, replacing RB1. Bind to loopback and retain this entry point in later weeks.
 
 **Primary path:** `students/<student-id>/week-06/api/app.ts`.
 

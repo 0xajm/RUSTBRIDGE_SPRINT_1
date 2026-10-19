@@ -4,11 +4,11 @@ OpenAPI describes an HTTP interface; it does not implement routes or prove behav
 
 ## Start once in Week 10
 
-From the repository root, replace BE01. Preserve an existing specification rather than overwriting it:
+From the repository root, replace RB1. Preserve an existing specification rather than overwriting it:
 
 ```powershell
-New-Item -ItemType Directory -Path "students/BE01/week-10/api" -Force
-Copy-Item -LiteralPath "fixtures/openapi-starter.json" -Destination "students/BE01/week-10/api/openapi.json"
+New-Item -ItemType Directory -Path "students/RB1/week-10/api" -Force
+Copy-Item -LiteralPath "fixtures/openapi-starter.json" -Destination "students/RB1/week-10/api/openapi.json"
 ```
 
 The shell describes only the supplied liveness route. Do not describe it as a finished API. Add the event operations actually implemented in your Week 6 continuing application, using synthetic examples and the exact public wire format.
@@ -28,9 +28,9 @@ In Week 20 compare every implemented operation with the actual tests and runbook
 ## Prove it against our server
 
 ```powershell
-Get-Content -LiteralPath "students/BE01/week-10/api/openapi.json" -Raw | ConvertFrom-Json | Out-Null
-npm.cmd run test:student -- BE01
-npm.cmd run test:student:db -- BE01
+Get-Content -LiteralPath "students/RB1/week-10/api/openapi.json" -Raw | ConvertFrom-Json | Out-Null
+npm.cmd run test:student -- RB1
+npm.cmd run test:student:db -- RB1
 ```
 
 The first checks JSON syntax only, not complete OpenAPI semantic validity or server conformance. A peer must construct requests from the specification and compare real status/body/header behavior. Keep redacted exchanges and negative tests as evidence; never copy cookies/passwords into the specification.

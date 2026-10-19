@@ -4,7 +4,7 @@ MerchantDesk | Sprint 1 | B: Backend Development + E: Engineering and Delivery +
 
 ## The project need
 
-Every student needs attributable implementation evidence without turning the common product into ten unrelated applications.
+Every student needs attributable implementation evidence without turning the common product into twelve unrelated applications.
 
 ## Before you start
 

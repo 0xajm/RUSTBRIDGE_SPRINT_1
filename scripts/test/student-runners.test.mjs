@@ -23,15 +23,41 @@ function run(script, args, env = process.env) {
 }
 
 test('student commands reject invalid or escaping IDs before running code', () => {
-  for (const id of ['BE99', '../BE01']) {
+  for (const id of ['RB0', 'RB01', 'RB13', 'RB99', '../RB1']) {
     for (const [script, args] of [
       ['scripts/run-student-api.mjs', [id]],
       ['scripts/run-tests.mjs', ['--student', id]],
     ]) {
       const result = run(script, args);
       assert.equal(result.status, 1);
-      assert.match(result.stderr, /BE01 through BE10/);
+      assert.match(result.stderr, /RB1 through RB12/);
     }
+  }
+});
+
+test('the new RB11 and RB12 workspaces reach the normal student runner checks', () => {
+  for (const student of ['RB11', 'RB12']) {
+    const api = run('scripts/run-student-api.mjs', [student]);
+    assert.equal(api.status, 1);
+    assert.match(api.stderr, /Create your Week 6 API shell first/);
+    const tests = run('scripts/run-tests.mjs', ['--student', student]);
+    assert.equal(tests.status, 1);
+    assert.match(
+      tests.stderr,
+      new RegExp('No fast tests found for ' + student),
+    );
+    const migration = run(
+      '--import',
+      [
+        'tsx',
+        'fixtures/migrate.ts',
+        'practice',
+        'students/' + student + '/week-08/database/migrations',
+      ],
+      { ...process.env, TEST_DATABASE_URL: '' },
+    );
+    assert.equal(migration.status, 1);
+    assert.match(migration.stderr, /Configure the dedicated database URL/);
   }
 });
 
@@ -40,12 +66,12 @@ test('test launcher rejects missing IDs, unknown options and duplicate flags', (
     ['--student'],
     ['--unknown'],
     ['--db', '--db'],
-    ['--student', 'BE01', '--student', 'BE02'],
-    ['--student', 'BE01', 'extra'],
+    ['--student', 'RB1', '--student', 'RB2'],
+    ['--student', 'RB1', 'extra'],
   ]) {
     const result = run('scripts/run-tests.mjs', args);
     assert.equal(result.status, 1);
-    assert.match(result.stderr, /Usage:|BE01 through BE10/);
+    assert.match(result.stderr, /Usage:|RB1 through RB12/);
   }
 });
 
@@ -54,12 +80,12 @@ test('student environment selects its lab schema without product fallback', () =
     DATABASE_URL: 'postgresql://qa@localhost/merchantdesk',
     TEST_DATABASE_URL: 'postgresql://qa@localhost/merchantdesk_test',
   };
-  const environment = studentAppEnvironment('BE03', input);
+  const environment = studentAppEnvironment('RB3', input);
   assert.equal(environment.DATABASE_URL, input.TEST_DATABASE_URL);
-  assert.equal(environment.DATABASE_SCHEMA, 'lab_be03');
+  assert.equal(environment.DATABASE_SCHEMA, 'lab_rb3');
   assert.equal(input.DATABASE_URL, 'postgresql://qa@localhost/merchantdesk');
   assert.equal(
-    studentAppEnvironment('BE01', { DATABASE_URL: input.DATABASE_URL })
+    studentAppEnvironment('RB1', { DATABASE_URL: input.DATABASE_URL })
       .DATABASE_URL,
     undefined,
   );
@@ -91,7 +117,7 @@ test('shared and student DB commands reject unsafe configuration before connecti
     TEST_DATABASE_URL:
       'postgresql://qa:SHOULD_NOT_BE_LOGGED@localhost/merchantdesk',
   };
-  for (const args of [['--db'], ['--db', '--student', 'BE01']]) {
+  for (const args of [['--db'], ['--db', '--student', 'RB1']]) {
     const result = run('scripts/run-tests.mjs', args, env);
     assert.equal(result.status, 1);
     assert.match(result.stderr, /_test/);
@@ -115,7 +141,7 @@ test('migration commands reject malformed URLs without printing credentials', ()
           'tsx',
           'fixtures/migrate.ts',
           mode,
-          'students/BE01/week-08/database/migrations',
+          'students/RB1/week-08/database/migrations',
         ],
         {
           ...process.env,
@@ -135,9 +161,9 @@ test('migration commands reject malformed URLs without printing credentials', ()
 
 test('practice migrations reject stale and escaping paths before connecting', () => {
   for (const directory of [
-    'students/BE01/week-06/database/migrations',
-    'students/BE99/week-08/database/migrations',
-    '../students/BE01/week-08/database/migrations',
+    'students/RB1/week-06/database/migrations',
+    'students/RB99/week-08/database/migrations',
+    '../students/RB1/week-08/database/migrations',
     'shared/database/migrations',
   ]) {
     const result = run(
@@ -182,7 +208,7 @@ test('default suites include authored student tests and propagate their failures
     const simulator = path.join(root, 'shared/simulator/test');
     const databaseTests = path.join(root, 'shared/database/test');
     const tooling = path.join(root, 'scripts/test');
-    const student = path.join(root, 'students/BE01/week-05');
+    const student = path.join(root, 'students/RB1/week-05');
     for (const directory of [
       shared,
       simulator,
@@ -218,7 +244,7 @@ test('default suites include authored student tests and propagate their failures
       await findSuiteTests(root, undefined, true),
       [sharedDb, db].sort(),
     );
-    assert.deepEqual(await findSuiteTests(root, 'BE01', false), [broken]);
+    assert.deepEqual(await findSuiteTests(root, 'RB1', false), [broken]);
   } finally {
     // Remove only this test's newly created temporary fixture tree.
     await rm(root, { recursive: true, force: true });
@@ -227,12 +253,12 @@ test('default suites include authored student tests and propagate their failures
 
 test('student API paths use the Week 6 continuing factory and reject escaping IDs', () => {
   assert.equal(
-    studentApiRelativePath('BE01'),
-    'students/BE01/week-06/api/server.ts',
+    studentApiRelativePath('RB1'),
+    'students/RB1/week-06/api/server.ts',
   );
   assert.equal(
-    studentApiRelativePath('BE10'),
-    'students/BE10/week-06/api/server.ts',
+    studentApiRelativePath('RB10'),
+    'students/RB10/week-06/api/server.ts',
   );
-  assert.throws(() => studentApiRelativePath('../BE01'), /BE01 through BE10/);
+  assert.throws(() => studentApiRelativePath('../RB1'), /RB1 through RB12/);
 });

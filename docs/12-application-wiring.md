@@ -6,11 +6,11 @@ The shared application remains in shared/. Promote reviewed work only for an ass
 
 ## Copy the API shell once in Week 6
 
-Run from the repository root, replacing BE01 with your ID. Copy only if the destination does not exist; preserve earlier work otherwise.
+Run from the repository root, replacing RB1 with your ID. Copy only if the destination does not exist; preserve earlier work otherwise.
 
 ```powershell
-Copy-Item -LiteralPath "fixtures/api-starter" -Destination "students/BE01/week-06/api" -Recurse
-npm.cmd run dev:student -- BE01
+Copy-Item -LiteralPath "fixtures/api-starter" -Destination "students/RB1/week-06/api" -Recurse
+npm.cmd run dev:student -- RB1
 ```
 
 The shell supplies liveness only. B01.1 adds the first in-memory GET and injection test. Keep createApp in week-06/api/app.ts and the listener in week-06/api/server.ts; tests call the factory without opening a port.
@@ -55,18 +55,18 @@ In Week 11 remove anonymous access to assembled event routes. In Week 12 apply c
 
 ## Database selection
 
-Week 4 uses PRACTICE_DATABASE_URL and the supplied practice schema. Shared code uses DATABASE_URL and merchantdesk. Individual apps use TEST_DATABASE_URL and lab_be01, lab_be02, etc.
+Week 4 uses PRACTICE_DATABASE_URL and the supplied practice schema. Shared code uses DATABASE_URL and merchantdesk. Individual apps use TEST_DATABASE_URL and lab_rb1, lab_rb2, etc.
 
 dev:student replaces its child DATABASE_URL with TEST_DATABASE_URL and sets DATABASE_SCHEMA to your lab schema; it never falls back to shared product data. The early memory app may run without a test URL, but the Week 8 repository must fail clearly if database configuration is missing.
 
 In Week 8 pass the runner's URL/schema through server.ts to createRepository. Validate schema identifiers before placing them in SQL, and parameterize ordinary data values. Do not hard-code public or merchantdesk in individual queries.
 
 ```powershell
-npm.cmd run migrate:practice -- students/BE01/week-08/database/migrations
-npm.cmd run dev:student -- BE01
+npm.cmd run migrate:practice -- students/RB1/week-08/database/migrations
+npm.cmd run dev:student -- RB1
 ```
 
-The runner requires a database name ending in _test and creates lab_be01. Seed merchants before inserting events; Week 11 extends that seed with operators. Read seed credentials from ignored configuration and do not print them.
+The runner requires a database name ending in _test and creates lab_rb1. Seed merchants before inserting events; Week 11 extends that seed with operators. Read seed credentials from ignored configuration and do not print them.
 
 Before Week 9's unique-key migration, inspect older rows for duplicate merchant/provider identities. Preserve originals and obtain reviewed reconciliation; do not silently delete or reset. Test fresh and upgrade fixtures, separately from preventing new concurrent duplicates.
 
@@ -75,8 +75,8 @@ Real DB tests create random disposable schemas, apply the same migrations and in
 ## Run authored tests
 
 ```powershell
-npm.cmd run test:student -- BE01
-npm.cmd run test:student:db -- BE01
+npm.cmd run test:student -- RB1
+npm.cmd run test:student:db -- RB1
 npm.cmd run typecheck
 ```
 
@@ -89,8 +89,8 @@ Copy the [OpenAPI shell](../fixtures/openapi-starter.json) using the [documentat
 ## Copy the React shell once in Week 16
 
 ```powershell
-Copy-Item -LiteralPath "fixtures/web-starter" -Destination "students/BE01/week-16/client" -Recurse
-npm.cmd run dev --prefix students/BE01/week-16/client
+Copy-Item -LiteralPath "fixtures/web-starter" -Destination "students/RB1/week-16/client" -Recurse
+npm.cmd run dev --prefix students/RB1/week-16/client
 ```
 
 Only copy if the destination is absent. Week 16 starts with static records; Week 17 connects the protected backend. Use http://localhost:5173 and relative /api requests. The supplied proxy points at the loopback API; the same APP_ORIGIN and server-controlled cookie apply. Stop the shared UI before starting yours.

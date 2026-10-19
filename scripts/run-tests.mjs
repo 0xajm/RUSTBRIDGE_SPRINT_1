@@ -11,7 +11,7 @@ try {
     if (argument === '--db' && !database) database = true;
     else if (argument === '--student' && student === undefined)
       student = parseStudentId(args.shift());
-    else throw new Error('Usage: run-tests.mjs [--db] [--student BE01]');
+    else throw new Error('Usage: run-tests.mjs [--db] [--student RB1]');
   }
 
   const environment = { ...process.env };
