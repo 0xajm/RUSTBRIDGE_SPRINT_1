@@ -19,7 +19,7 @@ assert.deepEqual(data.application, {
   clientRoot: 'week-16/client',
 });
 const expectedStudents = Array.from(
-  { length: 12 },
+  { length: 14 },
   (_, index) => 'RB' + (index + 1),
 );
 assert.deepEqual(data.students, expectedStudents);
@@ -266,5 +266,5 @@ function visit(directory) {
 }
 visit('.');
 console.log(
-  'Verified 20 weeks, 60 core task IDs, 20 problem-solving blocks, 12 students, week/index alignment, setup timing, 15-hour core budgets, application paths, lockfile, local links and no em dashes.',
+  'Verified 20 weeks, 60 core task IDs, 20 problem-solving blocks, 14 students, week/index alignment, setup timing, 15-hour core budgets, application paths, lockfile, local links and no em dashes.',
 );
