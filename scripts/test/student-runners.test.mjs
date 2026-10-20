@@ -23,41 +23,59 @@ function run(script, args, env = process.env) {
 }
 
 test('student commands reject invalid or escaping IDs before running code', () => {
-  for (const id of ['RB0', 'RB01', 'RB15', 'RB99', '../RB1']) {
+  for (const id of ['RB0', 'RB01', 'RB16', 'RB99', '../RB1']) {
     for (const [script, args] of [
       ['scripts/run-student-api.mjs', [id]],
       ['scripts/run-tests.mjs', ['--student', id]],
     ]) {
       const result = run(script, args);
       assert.equal(result.status, 1);
-      assert.match(result.stderr, /RB1 through RB14/);
+      assert.match(result.stderr, /RB1 through RB15/);
     }
   }
 });
 
-test('the RB11 through RB14 workspaces reach the normal student runner checks', () => {
-  for (const student of ['RB11', 'RB12', 'RB13', 'RB14']) {
-    const api = run('scripts/run-student-api.mjs', [student]);
-    assert.equal(api.status, 1);
-    assert.match(api.stderr, /Create your Week 6 API shell first/);
-    const tests = run('scripts/run-tests.mjs', ['--student', student]);
-    assert.equal(tests.status, 1);
-    assert.match(
-      tests.stderr,
-      new RegExp('No fast tests found for ' + student),
-    );
-    const migration = run(
-      '--import',
-      [
-        'tsx',
-        'fixtures/migrate.ts',
-        'practice',
-        'students/' + student + '/week-08/database/migrations',
-      ],
-      { ...process.env, TEST_DATABASE_URL: '' },
-    );
-    assert.equal(migration.status, 1);
-    assert.match(migration.stderr, /Configure the dedicated database URL/);
+test('RB11 through RB15 reach normal runner checks in isolated empty workspaces', async () => {
+  const root = await mkdtemp(path.join(tmpdir(), 'merchantdesk-roster-'));
+  const runFixture = (args, env = process.env) =>
+    spawnSync(process.execPath, args, { cwd: root, env, encoding: 'utf8' });
+  try {
+    for (const student of ['RB11', 'RB12', 'RB13', 'RB14', 'RB15']) {
+      await mkdir(path.join(root, 'students', student), { recursive: true });
+      const api = runFixture([
+        path.join(cwd, 'scripts/run-student-api.mjs'),
+        student,
+      ]);
+      assert.equal(api.status, 1);
+      assert.match(api.stderr, /Create your Week 6 API shell first/);
+      const tests = runFixture([
+        path.join(cwd, 'scripts/run-tests.mjs'),
+        '--student',
+        student,
+      ]);
+      assert.equal(tests.status, 1);
+      assert.match(
+        tests.stderr,
+        new RegExp('No fast tests found for ' + student),
+      );
+      const migration = runFixture(
+        [
+          '--import',
+          import.meta.resolve('tsx'),
+          path.join(cwd, 'fixtures/migrate.ts'),
+          'practice',
+          'students/' + student + '/week-08/database/migrations',
+        ],
+        { ...process.env, TEST_DATABASE_URL: '' },
+      );
+      assert.equal(migration.status, 1);
+      assert.match(migration.stderr, /Configure the dedicated database URL/);
+    }
+  } finally {
+    // Only remove the fresh temporary workspaces owned by this test.
+    assert.equal(path.dirname(path.resolve(root)), path.resolve(tmpdir()));
+    assert.ok(path.basename(root).startsWith('merchantdesk-roster-'));
+    await rm(root, { recursive: true, force: true });
   }
 });
 
@@ -71,7 +89,7 @@ test('test launcher rejects missing IDs, unknown options and duplicate flags', (
   ]) {
     const result = run('scripts/run-tests.mjs', args);
     assert.equal(result.status, 1);
-    assert.match(result.stderr, /Usage:|RB1 through RB14/);
+    assert.match(result.stderr, /Usage:|RB1 through RB15/);
   }
 });
 
@@ -260,5 +278,5 @@ test('student API paths use the Week 6 continuing factory and reject escaping ID
     studentApiRelativePath('RB10'),
     'students/RB10/week-06/api/server.ts',
   );
-  assert.throws(() => studentApiRelativePath('../RB1'), /RB1 through RB14/);
+  assert.throws(() => studentApiRelativePath('../RB1'), /RB1 through RB15/);
 });

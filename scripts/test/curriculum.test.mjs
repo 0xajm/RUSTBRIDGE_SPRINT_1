@@ -14,8 +14,8 @@ const curriculum = read('curriculum.json');
 const readText = (file) =>
   readFileSync(new URL('../../' + file, import.meta.url), 'utf8');
 
-test('all fourteen RB roll numbers have complete workspaces and isolated application paths', () => {
-  const expected = Array.from({ length: 14 }, (_, index) => 'RB' + (index + 1));
+test('all fifteen RB roll numbers have complete workspaces and isolated application paths', () => {
+  const expected = Array.from({ length: 15 }, (_, index) => 'RB' + (index + 1));
   assert.deepEqual(curriculum.students, expected);
   assert.deepEqual(
     readdirSync(new URL('../../students/', import.meta.url), {
@@ -50,7 +50,7 @@ test('all fourteen RB roll numbers have complete workspaces and isolated applica
       );
     }
   }
-  assert.equal(schemas.size, 14);
+  assert.equal(schemas.size, 15);
 });
 
 test('roll numbers reject zero padding, out-of-roster values and non-string input', () => {
@@ -60,7 +60,7 @@ test('roll numbers reject zero padding, out-of-roster values and non-string inpu
     '',
     'RB0',
     'RB01',
-    'RB15',
+    'RB16',
     'RB99',
     'rb1',
     '../RB1',
@@ -68,7 +68,7 @@ test('roll numbers reject zero padding, out-of-roster values and non-string inpu
     12,
     { toString: () => 'RB1' },
   ])
-    assert.throws(() => parseStudentId(value), /RB1 through RB14/);
+    assert.throws(() => parseStudentId(value), /RB1 through RB15/);
 });
 
 test('week headings, task indexes, all student pointers and environment timing agree', () => {

@@ -1,8 +1,8 @@
 # Individual practice
 
-Fourteen students, one essential learning path. Every student does all core skills. These folders are not frontend/backend specialisations.
+Fifteen students, one essential learning path. Every student does all core skills. These folders are not frontend/backend specialisations.
 
-Use your assigned roll number exactly as shown, from RB1 through RB14. Do not add a leading zero: RB1 is correct, not RB01.
+Use your assigned roll number exactly as shown, from RB1 through RB15. Do not add a leading zero: RB1 is correct, not RB01.
 
 | ID   | Workspace              |
 | ---- | ---------------------- |
@@ -20,8 +20,9 @@ Use your assigned roll number exactly as shown, from RB1 through RB14. Do not ad
 | RB12 | [RB12](RB12/README.md) |
 | RB13 | [RB13](RB13/README.md) |
 | RB14 | [RB14](RB14/README.md) |
+| RB15 | [RB15](RB15/README.md) |
 
-Open your current `week-NN/problem_statement.md`. The actual tasks live in [weeks/](../weeks/week-01.md) and are linked, not duplicated 14 times.
+Open your current `week-NN/problem_statement.md`. The actual tasks live in [weeks/](../weeks/week-01.md) and are linked, not duplicated 15 times.
 
 Everyone practises the same skills here. Different students own bounded contributions to the single product in [shared/](../shared/README.md), with rotating implementation, test and review responsibilities. Use the [responsibility guide](../docs/06-team-roles.md); no fixed pair or absent student is a prerequisite for your practice.
 
