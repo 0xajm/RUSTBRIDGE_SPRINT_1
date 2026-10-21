@@ -41,7 +41,7 @@ React renders the interface. HTTP transports requests; Fastify and PostgreSQL en
 
 ## Extension and portfolio
 
-Week 19 adds one reviewed [bounded extension](15-individual-extension.md) in the same application, not a separate student career track or a new product. It cannot substitute for core proof or require fifteen extra shared features.
+Week 19 adds one reviewed [bounded extension](15-individual-extension.md) in the same application, not a separate student career track or a new product. It cannot substitute for core proof or require twenty extra shared features.
 
 Week 20 requires a reproducible local start, tested behavior, a demo under three minutes, architecture/setup documentation, one hard-problem case study and an oral/no-AI checkpoint. A local demo satisfies the portfolio rule; public deployment is deferred.
 
