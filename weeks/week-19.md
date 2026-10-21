@@ -17,7 +17,7 @@ Outcome: One bounded tested extension, an attributable case study and a rehearse
 
 ## 2. Why We Are Doing It
 
-**The project need:** Every student needs attributable implementation evidence without turning the common product into fifteen unrelated applications.
+**The project need:** Every student needs attributable implementation evidence without turning the common product into twenty unrelated applications.
 
 The client needs proof that you can add one bounded feature without breaking the shared product. Real backend teams value small, reviewed changes, clear trade-offs and honest evidence. These skills help you show your own work and keep the common product stable.
 
