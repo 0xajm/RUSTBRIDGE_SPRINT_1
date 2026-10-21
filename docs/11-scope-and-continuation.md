@@ -2,7 +2,7 @@
 
 ## Course boundary
 
-- 20 weeks, fifteen Windows learners, 60 core project tasks and 20 common problem-solving blocks.
+- 20 weeks, twenty learners on Mac or Windows, 60 core project tasks and 20 common problem-solving blocks.
 - A 15-hour planned core week, including two hours of problem-solving. Up to five additional hours support repetition or completing feedback.
 - One shared MerchantDesk application and the same individual core practice for everyone.
 - JavaScript/TypeScript, Node/Fastify, PostgreSQL/SQL and a small React + Vite interface.
